@@ -1,7 +1,7 @@
 import { env } from '@src/config/env';
 import { HttpError } from '@src/errors';
 import type { ErrorResponseFormat } from '@src/types/response';
-import { type NextFunction, type Request, type Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
 export function errorHandler(
   err: unknown,

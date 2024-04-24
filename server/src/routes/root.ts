@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import type { Dependecies } from '../config/dependencies';
 import { test } from '../controllers/test';
 
