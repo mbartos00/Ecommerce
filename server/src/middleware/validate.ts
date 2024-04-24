@@ -1,5 +1,5 @@
 import { HttpError } from '@src/errors';
-import { type NextFunction, type Request, type Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import type { Schema } from 'zod';
 
 type Detail = {
@@ -14,7 +14,7 @@ export default function validate<T>(schema: Schema<T>) {
     if (!output.success) {
       const details: Detail[] = output.error.issues.map((issue) => {
         const path = issue.path.join('.');
-        const message = issue.message;
+        const { message } = issue;
 
         return {
           path,

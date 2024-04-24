@@ -1,6 +1,6 @@
-import { json, urlencoded, type Express } from 'express';
-import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import { type Express, json, urlencoded } from 'express';
 
 export function setupMiddlewares(app: Express) {
   app.use(cors({}));
