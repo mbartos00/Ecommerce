@@ -1,13 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  presets: [require('@spartan-ng/ui-core/hlm-tailwind-preset')],
   content: [
     "./src/**/*.{html,ts}",
   ],
   theme: {
     colors: {
-      'primary': 'hsl(var(--primary))',
-      'primary-light': 'hsl(var(--primary-light))',
-      'secondary': 'hsl(var(--secondary))',
+      'blue': 'hsl(var(--primary))',
+      'blue-light': 'hsl(var(--blue-light))',
+      'pink': 'hsl(var(--pink))',
       'navy': 'hsl(var(--navy))',
       'grey': 'hsl(var(--grey))',
       'grey-dark': 'hsl(var(--grey-dark))',
