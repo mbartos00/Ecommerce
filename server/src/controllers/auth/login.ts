@@ -17,13 +17,13 @@ export function login({ prisma }: Dependecies) {
       throw new HttpError('Invalid email or password', 401);
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password!);
 
     if (!passwordMatch) {
       throw new HttpError('Invalid email or password', 401);
     }
 
-    const token = generateAccessToken(user._id, '15m');
+    const token = generateAccessToken(user.id, '15m');
 
     res.status(200).json({ status: 'success', token });
   };

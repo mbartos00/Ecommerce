@@ -58,6 +58,7 @@ model Product {
   brand             String
   description       String
   rating            Float
+  price             Float
   images            String[]
   categoryIds       String[]   @db.ObjectId
   categories        Category[] @relation(fields: [categoryIds], references: [id])
@@ -83,7 +84,6 @@ model Category {
 
 model Variant {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  price     Float
   color     String
   condition Condition
   size      Size
@@ -93,15 +93,15 @@ model Variant {
 }
 
 enum Condition {
-  New
-  Used
+  new
+  used
 }
 
 enum Size {
-  XS
-  S
-  M
-  L
-  XL
-  XXL
+  xs
+  s
+  m
+  l
+  xl
+  xxl
 }
