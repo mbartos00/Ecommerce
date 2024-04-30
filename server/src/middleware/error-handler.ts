@@ -5,14 +5,10 @@ import type { NextFunction, Request, Response } from 'express';
 
 export function errorHandler(
   err: unknown,
-  _: Request,
+  req: Request,
   res: Response<ErrorResponseFormat<any>>,
-  next: NextFunction,
+  _: NextFunction,
 ) {
-  if (env.ENV === 'development') {
-    console.log(err);
-  }
-
   if (err instanceof HttpError) {
     const { code, message, details } = err;
 

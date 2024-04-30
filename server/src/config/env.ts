@@ -1,31 +1,11 @@
+import { mongoURLSchema } from '@src/schemas/mongodb';
 import { z } from 'zod';
 
-const mongoDbConnectionStringSchema = z.string().refine(
-  (value) => {
-    if (!value.startsWith('mongodb+srv://')) {
-      return false;
-    }
-
-    const regex = /^mongodb\+srv:\/\/(.+):(.+)@(.+)\/(.+)$/;
-    const match = value.match(regex);
-
-    if (!match) {
-      return false;
-    }
-
-    const [_, username, password, host, databaseName] = match;
-
-    return username && password && host && databaseName;
-  },
-  {
-    message: 'Invalid MongoDB Atlas connection string',
-  },
-);
-
 const environmentSchema = z.object({
-  PORT: z.coerce.number().min(1000),
+  DATABASE_URL: mongoURLSchema,
   ENV: z.enum(['production', 'testing', 'development']).default('development'),
-  DATABASE_URL: mongoDbConnectionStringSchema,
+  PORT: z.coerce.number().min(1000),
+  JWT_SECRET: z.string(),
 });
 
 export const env = environmentSchema.parse(process.env);

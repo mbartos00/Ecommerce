@@ -4,7 +4,7 @@ export type Dependecies = {
   prisma: InstanceType<typeof PrismaClient>;
 };
 
-export function bootstrapDependecies(): Dependecies {
+export async function bootstrapDependecies(): Promise<Dependecies> {
   const prisma = new PrismaClient();
 
   return {
