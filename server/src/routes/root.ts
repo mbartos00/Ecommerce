@@ -1,12 +1,12 @@
 import { Router } from 'express';
 
 import type { Dependecies } from '../config/dependencies';
-import { test } from '../controllers/test';
+import { register } from '../controllers/auth/register';
 
 export function rootRouter(deps: Dependecies) {
   const router = Router();
 
-  router.get('/', test(deps));
+  router.get('/', register(deps));
 
   return router;
 }

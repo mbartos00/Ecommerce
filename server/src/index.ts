@@ -3,7 +3,7 @@ import { env } from './config/env';
 import { createServer } from './server';
 
 async function main() {
-  const deps = bootstrapDependecies();
+  const deps = await bootstrapDependecies();
 
   try {
     const app = createServer(deps);
