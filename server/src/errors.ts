@@ -8,3 +8,8 @@ export class HttpError<T> extends Error {
     this.code = code;
   }
 }
+
+export const errorMessages = {
+  unknownError: 'Something went wrong',
+  noProducts: 'No products found',
+} as const;
