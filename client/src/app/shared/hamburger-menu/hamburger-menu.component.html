@@ -1,0 +1,19 @@
+<hlm-sheet class="lg:hidden">
+  <button
+    class="inline-block w-6 cursor-pointer"
+    id="bottom"
+    variant="outline"
+    brnSheetTrigger
+    side="bottom">
+    <div
+      class="w-full h-1 bg-blue my-1 rounded-sm transform transition-transform duration-500"></div>
+    <div
+      class="w-full h-1 bg-blue my-1 rounded-sm opacity-100 transition-opacity duration-500"></div>
+    <div
+      class="w-full h-1 bg-blue my-1 rounded-sm transform transition-transform duration-500"></div>
+  </button>
+
+  <hlm-sheet-content *brnSheetContent="let ctx" class="!px-4">
+    <app-top-header [hamburgerMenuSheetCtx]="ctx"></app-top-header>
+  </hlm-sheet-content>
+</hlm-sheet>
