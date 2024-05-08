@@ -1,19 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   presets: [require('@spartan-ng/ui-core/hlm-tailwind-preset')],
-  content: [
-    "./src/**/*.{html,ts}",
-  ],
+  content: ['./src/**/*.{html,ts}'],
   theme: {
     colors: {
-      'blue': 'hsl(var(--primary))',
+      blue: 'hsl(var(--primary))',
       'blue-light': 'hsl(var(--blue-light))',
-      'pink': 'hsl(var(--pink))',
-      'navy': 'hsl(var(--navy))',
-      'grey': 'hsl(var(--grey))',
+      pink: 'hsl(var(--pink))',
+      navy: 'hsl(var(--navy))',
+      grey: 'hsl(var(--grey))',
       'grey-dark': 'hsl(var(--grey-dark))',
-      'white': 'hsl(var(--white))',
-      'black': 'hsl(var(--black))',
+      'grey-neutral': 'hsl(var(--grey-neutral))',
+      white: 'hsl(var(--white))',
+      black: 'hsl(var(--black))',
     },
     fontFamily: {
       poppins: ['Poppins', 'sans-serif'],
@@ -22,4 +21,4 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-}
+};

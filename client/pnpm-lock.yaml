@@ -41,6 +41,15 @@ importers:
       '@ng-icons/lucide':
         specifier: ^26.3.0
         version: 26.5.0
+      '@spartan-ng/ui-dialog-brain':
+        specifier: 0.0.1-alpha.347
+        version: 0.0.1-alpha.347(@angular/cdk@17.3.0(@angular/common@17.3.5(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(@spartan-ng/ui-core@0.0.1-alpha.347(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(clsx@1.2.1)(rxjs@7.8.1)(tailwind-merge@2.3.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))
+      '@spartan-ng/ui-menu-brain':
+        specifier: 0.0.1-alpha.347
+        version: 0.0.1-alpha.347(@angular/cdk@17.3.0(@angular/common@17.3.5(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))
+      '@spartan-ng/ui-sheet-brain':
+        specifier: 0.0.1-alpha.347
+        version: 0.0.1-alpha.347(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(@spartan-ng/ui-core@0.0.1-alpha.347(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(clsx@1.2.1)(rxjs@7.8.1)(tailwind-merge@2.3.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))(@spartan-ng/ui-dialog-brain@0.0.1-alpha.347(@angular/cdk@17.3.0(@angular/common@17.3.5(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(@spartan-ng/ui-core@0.0.1-alpha.347(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(clsx@1.2.1)(rxjs@7.8.1)(tailwind-merge@2.3.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3)))))
       class-variance-authority:
         specifier: ^0.6.0
         version: 0.6.1
@@ -1730,6 +1739,26 @@ packages:
       tailwind-merge: ^2.2.0
       tailwindcss: ^3.0.2
       tailwindcss-animate: ^1.0.6
+
+  '@spartan-ng/ui-dialog-brain@0.0.1-alpha.347':
+    resolution: {integrity: sha512-ioCwFZH2shpYT4SY2JNv+C+W4g9FIl3BGQxS99cmmH/1c5o8sG1kdiplFHlxLPPRkZl7/QP2kpTxFSmXsfzwhQ==}
+    peerDependencies:
+      '@angular/cdk': ^17.3.0
+      '@angular/core': ^17.3.0
+      '@spartan-ng/ui-core': 0.0.1-alpha.347
+
+  '@spartan-ng/ui-menu-brain@0.0.1-alpha.347':
+    resolution: {integrity: sha512-o4IMctDvADJqgEt5AD9xz7EV9uw+0JWtoNv6Eb1i+cNIVWuZ6KxiXv61fNzJu9/ZVY3ub2dAh/o4o5Ny/Rlhpg==}
+    peerDependencies:
+      '@angular/cdk': ^17.3.0
+      '@angular/core': ^17.3.0
+
+  '@spartan-ng/ui-sheet-brain@0.0.1-alpha.347':
+    resolution: {integrity: sha512-R6SJusS9r84+t34Lai8yjz5kJdcC53R3IeWIf+UHbACD8VMeiL4d1Fs3WAULkC3/R4jlsdLtKeGZPtWuBD/Z8w==}
+    peerDependencies:
+      '@angular/core': ^17.3.0
+      '@spartan-ng/ui-core': 0.0.1-alpha.347
+      '@spartan-ng/ui-dialog-brain': 0.0.1-alpha.347
 
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -8329,6 +8358,26 @@ snapshots:
       tailwind-merge: 2.3.0
       tailwindcss: 3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))
       tailwindcss-animate: 1.0.7(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3)))
+      tslib: 2.6.2
+
+  '@spartan-ng/ui-dialog-brain@0.0.1-alpha.347(@angular/cdk@17.3.0(@angular/common@17.3.5(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(@spartan-ng/ui-core@0.0.1-alpha.347(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(clsx@1.2.1)(rxjs@7.8.1)(tailwind-merge@2.3.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))':
+    dependencies:
+      '@angular/cdk': 17.3.0(@angular/common@17.3.5(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1)
+      '@angular/core': 17.3.5(rxjs@7.8.1)(zone.js@0.14.4)
+      '@spartan-ng/ui-core': 0.0.1-alpha.347(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(clsx@1.2.1)(rxjs@7.8.1)(tailwind-merge@2.3.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3)))
+      tslib: 2.6.2
+
+  '@spartan-ng/ui-menu-brain@0.0.1-alpha.347(@angular/cdk@17.3.0(@angular/common@17.3.5(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))':
+    dependencies:
+      '@angular/cdk': 17.3.0(@angular/common@17.3.5(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1)
+      '@angular/core': 17.3.5(rxjs@7.8.1)(zone.js@0.14.4)
+      tslib: 2.6.2
+
+  '@spartan-ng/ui-sheet-brain@0.0.1-alpha.347(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(@spartan-ng/ui-core@0.0.1-alpha.347(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(clsx@1.2.1)(rxjs@7.8.1)(tailwind-merge@2.3.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))(@spartan-ng/ui-dialog-brain@0.0.1-alpha.347(@angular/cdk@17.3.0(@angular/common@17.3.5(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(@spartan-ng/ui-core@0.0.1-alpha.347(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(clsx@1.2.1)(rxjs@7.8.1)(tailwind-merge@2.3.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3)))))':
+    dependencies:
+      '@angular/core': 17.3.5(rxjs@7.8.1)(zone.js@0.14.4)
+      '@spartan-ng/ui-core': 0.0.1-alpha.347(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(clsx@1.2.1)(rxjs@7.8.1)(tailwind-merge@2.3.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3)))
+      '@spartan-ng/ui-dialog-brain': 0.0.1-alpha.347(@angular/cdk@17.3.0(@angular/common@17.3.5(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(@spartan-ng/ui-core@0.0.1-alpha.347(@angular/core@17.3.5(rxjs@7.8.1)(zone.js@0.14.4))(clsx@1.2.1)(rxjs@7.8.1)(tailwind-merge@2.3.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@20.12.7)(typescript@5.3.3))))
       tslib: 2.6.2
 
   '@trysound/sax@0.2.0': {}
