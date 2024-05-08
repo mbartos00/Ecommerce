@@ -1,19 +1,14 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import type { Dependecies } from '@src/config/dependencies';
 import { HttpError } from '@src/errors';
 import type { RegisterSchema } from '@src/schemas/auth';
-import type { SuccessResponseFormat } from '@src/types/response';
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
-import type { Dependecies } from '../../config/dependencies';
 
 export function register({ prisma }: Dependecies) {
-  return async (
-    req: Request<{}, {}, RegisterSchema>,
-    res: Response<SuccessResponseFormat>,
-  ) => {
+  return async (req: Request<{}, {}, RegisterSchema>, res: Response) => {
     const { email, password, name } = req.body;
     const saltRounds = 10;
-
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     await prisma.user
@@ -31,12 +26,9 @@ export function register({ prisma }: Dependecies) {
           }
         }
 
-        throw new HttpError('Something went wrong', 500);
+        throw error;
       });
 
-    res.status(201).json({
-      status: 'success',
-      message: 'User created',
-    });
+    res.sendStatus(201);
   };
 }

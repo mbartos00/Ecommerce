@@ -1,6 +1,5 @@
-export type SuccessResponseFormat<T = void> = {
+export type ResponseFormat<T = void> = {
   status: 'success';
-  message: string;
 } & (T extends void ? {} : { data: T });
 
 export type ErrorResponseFormat<T = string> = {

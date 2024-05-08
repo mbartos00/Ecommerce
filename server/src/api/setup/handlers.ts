@@ -1,5 +1,5 @@
-import { errorHandler } from '@src/middleware/error-handler';
-import { notFound } from '@src/middleware/not-found';
+import { errorHandler } from '@src/api/middleware/error-handler';
+import { notFound } from '@src/api/middleware/not-found';
 import type { Express } from 'express';
 
 export function setupHandlers(app: Express) {

@@ -3,10 +3,18 @@ import { HttpError } from '@src/errors';
 import type { LoginSchema } from '@src/schemas/auth';
 import type { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import generateAccessToken from '@src/utils/token-generator';
+import { generateTokens } from '@src/utils/tokens';
+import type { ResponseFormat } from '@src/types/response';
+import { REFRESH_TOKEN_COOKIE_NAME } from '../constants';
+
+type LoginResponse = Response<
+  ResponseFormat & {
+    accessToken: string;
+  }
+>;
 
 export function login({ prisma }: Dependecies) {
-  return async (req: Request<{}, {}, LoginSchema>, res: Response) => {
+  return async (req: Request<{}, {}, LoginSchema>, res: LoginResponse) => {
     const { email, password } = req.body;
 
     const user = await prisma.user.findUnique({
@@ -23,8 +31,18 @@ export function login({ prisma }: Dependecies) {
       throw new HttpError('Invalid email or password', 401);
     }
 
-    const token = generateAccessToken(user.id, '15m');
+    const { accessToken, refreshToken } = generateTokens({
+      id: user.id,
+      role: user.role,
+    });
 
-    res.status(200).json({ status: 'success', token });
+    res.cookie(REFRESH_TOKEN_COOKIE_NAME, refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({ status: 'success', accessToken });
   };
 }
