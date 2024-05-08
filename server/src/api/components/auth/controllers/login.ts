@@ -6,10 +6,14 @@ import bcrypt from 'bcrypt';
 import { generateTokens } from '@src/utils/tokens';
 import type { ResponseFormat } from '@src/types/response';
 import { REFRESH_TOKEN_COOKIE_NAME } from '../constants';
+import type { User } from '@prisma/client';
+
+type LoginUser = Omit<User, 'password'>;
 
 type LoginResponse = Response<
   ResponseFormat & {
     accessToken: string;
+    user: LoginUser;
   }
 >;
 
@@ -43,6 +47,10 @@ export function login({ prisma }: Dependecies) {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({ status: 'success', accessToken });
+    const { password: _, ...userWithoutPassword } = user;
+
+    res
+      .status(200)
+      .json({ status: 'success', accessToken, user: userWithoutPassword });
   };
 }

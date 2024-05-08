@@ -1,19 +1,17 @@
 import type { Dependecies } from '@src/config/dependencies';
 import { env } from '@src/config/env';
 import { HttpError } from '@src/errors';
+import type { ResponseFormat } from '@src/types/response';
+import { generateAccessToken } from '@src/utils/tokens';
 import type { Request, Response } from 'express';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import { REFRESH_TOKEN_COOKIE_NAME } from '../constants';
-import { generateAccessToken } from '@src/utils/tokens';
-import type { ResponseFormat } from '@src/types/response';
 
 export function refreshToken({ prisma }: Dependecies) {
   return async (
     req: Request,
     res: Response<ResponseFormat & { accessToken: string }>,
   ) => {
-    console.log(req.cookies);
-
     const refreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME];
 
     if (!refreshToken) {
