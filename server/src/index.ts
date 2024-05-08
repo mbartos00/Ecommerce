@@ -1,6 +1,6 @@
 import { bootstrapDependecies } from './config/dependencies';
 import { env } from './config/env';
-import { createServer } from './server';
+import { createServer } from './api/server';
 
 async function main() {
   const deps = await bootstrapDependecies();

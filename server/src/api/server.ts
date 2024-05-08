@@ -1,8 +1,8 @@
 import express from 'express';
-import type { Dependecies } from './config/dependencies';
+import type { Dependecies } from '../config/dependencies';
+import { setupHandlers } from './setup/handlers';
 import { setupMiddlewares } from './setup/middlewares';
 import { setupRoutes } from './setup/routes';
-import { setupHandlers } from './setup/handlers';
 import { setupShutdown } from './setup/shutdown';
 
 export function createServer(deps: Dependecies) {
