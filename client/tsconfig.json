@@ -18,13 +18,19 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
+    "lib": ["ES2022", "dom"],
     "paths": {
+      "@app/*": ["./src/app/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@environments/*": ["./src/environments/*"],
+      "@spartan-ng/ui-input-helm": [
+        "./src/app/shared/ui/ui-input-helm/src/index.ts"
+      ],
       "@spartan-ng/ui-button-helm": [
-        "./src/shared/ui/ui-button-helm/src/index.ts"
+        "./src/app/shared/ui/ui-button-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-label-helm": [
+        "./src/app/shared/ui/ui-label-helm/src/index.ts"
       ],
       "@spartan-ng/ui-icon-helm": [
         "./src/app/shared/ui/ui-icon-helm/src/index.ts"
@@ -32,11 +38,11 @@
       "@spartan-ng/ui-sheet-helm": [
         "./src/app/shared/ui/ui-sheet-helm/src/index.ts"
       ],
-      "@spartan-ng/ui-input-helm": [
-        "./src/app/shared/ui/ui-input-helm/src/index.ts"
-      ],
       "@spartan-ng/ui-menu-helm": [
         "./src/app/shared/ui/ui-menu-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-sonner-helm": [
+        "./src/app/shared/ui/ui-sonner-helm/src/index.ts"
       ]
     }
   },
