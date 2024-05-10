@@ -8,7 +8,7 @@ import {
   lucideShoppingBag,
 } from '@ng-icons/lucide';
 import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
-import { HamburgerMenuComponent } from '../hamburger-menu/hamburger-menu.component';
+import { HamburgerMenuComponent } from '../ui/hamburger-menu/hamburger-menu.component';
 import { TopHeaderComponent } from './top-header/top-header.component';
 
 @Component({

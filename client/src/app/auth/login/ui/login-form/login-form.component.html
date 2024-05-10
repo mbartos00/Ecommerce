@@ -1,0 +1,48 @@
+<a [routerLink]="['/']">
+  <app-logo class="mb-4" />
+</a>
+<h1 class="text-navy font-semibold my-2">Welcome to E-com</h1>
+<p class="font-thin text-muted-foreground text-sm mb-5">Sign in to continue</p>
+<form
+  class="w-full flex flex-col justify-center items-center"
+  [formGroup]="loginForm"
+  (ngSubmit)="onSubmit($event)"
+>
+  <div class="flex flex-col gap-4 w-full">
+    <app-form-input
+      label="Email"
+      formControlName="email"
+      placeholder="Your Email"
+      type="email"
+    ></app-form-input>
+    <app-form-input
+      label="Password"
+      formControlName="password"
+      placeholder="Password"
+      type="password"
+    ></app-form-input>
+    <button
+      hlmBtn
+      type="submit"
+      size="lg"
+      [disabled]="loginStatus === 'authenticating'"
+    >
+      Sign In
+    </button>
+  </div>
+  <p class="my-4 text-muted-foreground uppercase text-sm">or</p>
+</form>
+<button hlmBtn variant="link" class="text-xs p-0">Forget password?</button>
+<p class="text-muted-foreground text-xs mt-2">
+  Don't have an account?
+  <button
+    hlmBtn
+    [routerLink]="['/auth', 'register']"
+    variant="link"
+    class="p-0 text-xs"
+  >
+    Register
+  </button>
+</p>
+
+<hlm-toaster />

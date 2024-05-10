@@ -12,7 +12,7 @@ import {
   HlmSheetHeaderComponent,
   HlmSheetTitleDirective,
 } from '@spartan-ng/ui-sheet-helm';
-import { TopHeaderComponent } from '../header/top-header/top-header.component';
+import { TopHeaderComponent } from '../../header/top-header/top-header.component';
 
 @Component({
   selector: 'app-hamburger-menu',
