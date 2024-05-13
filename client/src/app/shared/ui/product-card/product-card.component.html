@@ -1,0 +1,66 @@
+<div
+  class="relative m-10 w-full max-w-xs overflow-hidden rounded-md bg-white shadow-md">
+  <div class="relative group">
+    <img
+      class="h-60 rounded-t-lg object-cover"
+      [src]="product.images[0]"
+      [alt]="product.name" />
+    <div
+      class="absolute inset-0 flex items-center justify-center py-7 px-3 opacity-0 group-hover:opacity-80 transition-opacity">
+      <div
+        class="flex bg-white items-center justify-center w-full h-full gap-7">
+        <div
+          class="w-12 h-12 rounded-full outline outline-offset-4 outline-blue-light hover:outline-blue transition-all flex items-center justify-center">
+          <hlm-icon
+            size="lg"
+            name="lucideHeart"
+            color="hsl(var(--primary))"></hlm-icon>
+        </div>
+        <div
+          class="w-12 h-12 rounded-full outline outline-offset-4 outline-blue-light hover:outline-blue transition-all flex items-center justify-center">
+          <hlm-icon
+            size="lg"
+            name="lucideShoppingCart"
+            color="hsl(var(--primary))"></hlm-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="absolute top-0 left-0 w-16 h-9 pt-2 bg-pink text-center align-middle text-md text-white rounded-sm">
+    <span>HOT</span>
+  </div>
+  <div class="mt-4 px-5 pb-5">
+    <h5 class="text-xl font-semibold tracking-tight text-center text-slate-900">
+      {{ product.name }}
+    </h5>
+    <div class="mt-2.5 mb-5 flex items-center justify-center">
+      @for (star of getStarsArray(); track star) {
+        <svg
+          class="w-4 h-4"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 22 20">
+          <path
+            [attr.fill]="
+              star <= product.rating ? 'hsl(var(--yellow))' : 'hsl(var(--grey))'
+            "
+            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+        </svg>
+      }
+    </div>
+    <div class="flex items-center justify-center gap-4">
+      <span class="text-xl font-semibold text-primary text-slate-900"
+        >${{ product.price }}</span
+      >
+      <p class="flex gap-2">
+        <span class="text-sm text-slate-900 text-grey line-through"
+          >${{ product.price }}</span
+        >
+        <span class="text-sm font-semibold text-pink text-slate-90"
+          >24% Off</span
+        >
+      </p>
+    </div>
+  </div>
+</div>
