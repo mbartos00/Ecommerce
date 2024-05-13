@@ -35,6 +35,9 @@
       "@spartan-ng/ui-icon-helm": [
         "./src/app/shared/ui/ui-icon-helm/src/index.ts"
       ],
+      "@spartan-ng/ui-card-helm": [
+        "./src/app/shared/ui/ui-card-helm/src/index.ts"
+      ],
       "@spartan-ng/ui-sheet-helm": [
         "./src/app/shared/ui/ui-sheet-helm/src/index.ts"
       ],

@@ -13,6 +13,7 @@ module.exports = {
       'grey-neutral': 'hsl(var(--grey-neutral))',
       white: 'hsl(var(--white))',
       black: 'hsl(var(--black))',
+      yellow: 'hsl(var(--yellow))',
     },
     fontFamily: {
       poppins: ['Poppins', 'sans-serif'],
