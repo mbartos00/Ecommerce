@@ -16,6 +16,7 @@ import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { getValidationErrorMessage } from '@app/shared/utils/error-messages';
 import { OnChange, OnTouch } from '@shared/types/control-value-ancessor';
+import { HlmIconComponent } from '../ui-icon-helm/src';
 
 @Component({
   selector: 'app-form-input',
@@ -25,29 +26,32 @@ import { OnChange, OnTouch } from '@shared/types/control-value-ancessor';
     ReactiveFormsModule,
     HlmInputDirective,
     HlmLabelDirective,
+    HlmIconComponent,
   ],
   template: `
     <label hlmLabel>
       {{ label }}
       <input
         hlmInput
-        [error]="control.invalid && control.touched"
+        [error]="(control.invalid && control.touched)"
         ngDefaultControl
         class="w-full"
+        [ngClass]="{ 'pl-11': icon }"
         [placeholder]="placeholder"
         [type]="type"
       />
     </label>
-    @if (control.invalid && control.touched) {
+    @if ((control.invalid && control.touched)) {
       <p class="text-xs text-destructive">{{ getMessage() }}</p>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormInputComponent implements ControlValueAccessor {
-  @Input({ required: true }) label!: string;
+  @Input() label?: string;
   @Input() type: string = 'text';
   @Input() placeholder?: string;
+  @Input() icon?: boolean = false;
 
   @ViewChild(DefaultValueAccessor, { static: true }) dva!: DefaultValueAccessor;
 

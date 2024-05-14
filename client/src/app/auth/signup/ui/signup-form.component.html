@@ -1,0 +1,90 @@
+<section class="grid justify-items-center font-poppins text-grey-neutral">
+  <app-logo></app-logo>
+  <h3 class="mt-4 font-bold text-navy">Let’s Get Started</h3>
+  <p class="mt-2 text-xs">Create a new account</p>
+  <form
+    [formGroup]="signupForm"
+    (ngSubmit)="onSubmit()"
+    class="grid gap-2 max-w-lg w-full m-7"
+  >
+    <div class="relative">
+      <hlm-icon
+        size="sm"
+        name="lucideUser"
+        class="absolute top-4 left-4"
+      ></hlm-icon>
+      <app-form-input
+        formControlName="name"
+        placeholder="Name"
+        type="text"
+        [icon]="true"
+      ></app-form-input>
+    </div>
+
+    <div class="relative">
+      <hlm-icon
+        size="sm"
+        name="lucideUser"
+        class="absolute top-4 left-4"
+      ></hlm-icon>
+      <app-form-input
+        formControlName="lastName"
+        placeholder="Last name"
+        type="text"
+        [icon]="true"
+      ></app-form-input>
+    </div>
+
+    <div class="relative">
+      <hlm-icon
+        size="sm"
+        name="lucideMail"
+        class="absolute top-4 left-4"
+      ></hlm-icon>
+      <app-form-input
+        formControlName="email"
+        placeholder="Email"
+        type="email"
+        [icon]="true"
+      ></app-form-input>
+    </div>
+
+    <div class="relative">
+      <hlm-icon
+        size="sm"
+        name="lucideLock"
+        class="absolute top-4 left-4"
+      ></hlm-icon>
+      <app-form-input
+        formControlName="password"
+        placeholder="Password"
+        type="password"
+        [icon]="true"
+      ></app-form-input>
+    </div>
+
+    <div class="relative">
+      <hlm-icon
+        size="sm"
+        name="lucideLock"
+        class="absolute top-4 left-4"
+      ></hlm-icon>
+      <app-form-input
+        formControlName="confirmPassword"
+        placeholder="Confirm password"
+        type="password"
+        [icon]="true"
+      ></app-form-input>
+    </div>
+
+    <button hlmBtn [disabled]="signupForm.invalid" class="mt-2">Sign up</button>
+  </form>
+  <p class="text-xs">
+    Have an account?
+    <a
+      [routerLink]="['/auth', 'login']"
+      class="text-primary font-bold transition-all"
+      >Log In</a
+    >
+  </p>
+</section>

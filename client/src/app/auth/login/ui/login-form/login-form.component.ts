@@ -15,7 +15,7 @@ import { FormInputComponent } from '@app/shared/ui/form-input/form-input.compone
 import { LogoComponent } from '@app/shared/ui/logo/logo.component';
 import { HlmButtonDirective } from '@app/shared/ui/ui-button-helm/src';
 import { toast } from 'ngx-sonner';
-import { HlmToasterComponent } from '../../../../shared/ui/ui-sonner-helm/src/lib/hlm-toaster.component';
+import { HlmToasterComponent } from '@app/shared/ui/ui-sonner-helm/src';
 import { LoginStatus } from '../../data-access/login.service';
 
 @Component({
