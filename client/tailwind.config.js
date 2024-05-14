@@ -10,6 +10,7 @@ module.exports = {
       navy: 'hsl(var(--navy))',
       grey: 'hsl(var(--grey))',
       'grey-dark': 'hsl(var(--grey-dark))',
+      'grey-light': 'hsl(var(--grey-light))',
       'grey-neutral': 'hsl(var(--grey-neutral))',
       white: 'hsl(var(--white))',
       black: 'hsl(var(--black))',
