@@ -1,34 +1,26 @@
 import type { Dependecies } from '@src/config/dependencies';
+import { DEFAULT_PAGE, DEFAULT_PER_PAGE } from '@src/constants';
 import { HttpError } from '@src/errors';
 import type { QueryParams } from '@src/api/components/products/types';
 import type { ResponseFormat } from '@src/types/response';
 import type { Request, Response } from 'express';
 import type { Product } from '@prisma/client';
 import { buildProductsFilters } from '../utils/build-filters';
-
-type Info = {
-  page: number;
-  perPage: number;
-  count: number;
-  totalPages: number;
-};
-
-const DEFAULT_PAGE = '1';
-const DEFAULT_PRODUCTS_PER_PAGE = '20';
+import type { Pagination } from '@src/types/pagination';
 
 export function getAllProducts({ prisma }: Dependecies) {
   return async (
     req: Request<{}, {}, {}, QueryParams>,
-    res: Response<ResponseFormat<Product[]> & { info: Info }>,
+    res: Response<ResponseFormat<Product[]> & { paginationInfo: Pagination }>,
   ) => {
     const page = parseInt(req.query.page ?? DEFAULT_PAGE);
-    const perPage = parseInt(req.query.perPage ?? DEFAULT_PRODUCTS_PER_PAGE);
+    const perPage = parseInt(req.query.perPage ?? DEFAULT_PER_PAGE);
     const sortBy = req.query.sortBy || 'name';
     const order = req.query.order || 'asc';
 
     const whereClause = buildProductsFilters(req.query);
 
-    const productCount = await prisma.product.count();
+    const productCount = await prisma.product.count({ where: whereClause });
 
     const orderBy = [
       {
@@ -65,7 +57,7 @@ export function getAllProducts({ prisma }: Dependecies) {
 
     res.json({
       status: 'success',
-      info: {
+      paginationInfo: {
         count: productCount,
         page,
         perPage,

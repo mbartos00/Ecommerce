@@ -11,11 +11,22 @@ const productDefaults = {
   imagesPerProduct: 3,
 };
 
-export async function seedProducts() {
-  function getRandNum(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+const newsDefaults = {
+  numOfCategories: 4,
+  numOfNews: 20,
+};
 
+function getRandNum(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomDate(from: Date, to: Date) {
+  const fromTime = from.getTime();
+  const toTime = to.getTime();
+  return new Date(fromTime + Math.random() * (toTime - fromTime));
+}
+
+export async function seedProducts() {
   function getRandomSize() {
     const sizeValues = Object.values(Size);
     const randomIndex = Math.floor(Math.random() * sizeValues.length);
@@ -92,4 +103,77 @@ export async function seedProducts() {
   }
 
   console.log('Seeding products completed!');
+}
+
+export async function seedNews() {
+  await prisma.news.deleteMany();
+  await prisma.newsCategory.deleteMany();
+
+  const fakePostDescription = `
+  <div>
+ <h1>Breaking News: Major Tech Companies Announce New Products</h1>
+ <p>
+    In a groundbreaking announcement, leading tech companies have unveiled their latest innovations, promising to revolutionize the way we live and work. The event, held virtually, saw representatives from Apple, Google, Microsoft, and Amazon showcasing their newest products and services.
+ </p>
+ <br/>
+ <p>
+    <strong>Apple's New iPad Pro</strong> - Apple introduced the iPad Pro 2023, boasting a 12.9-inch Liquid Retina display, A16 Bionic chip, and up to 64GB of storage. The device is designed to cater to both professionals and creatives, offering advanced features such as ProMotion technology for smoother scrolling and a new Magic Keyboard with Touch ID.
+ </p>
+ <br/>
+ <p>
+    <strong>Google's Quantum Computing Breakthrough</strong> - Google announced a significant leap in quantum computing, unveiling a 128-qubit processor that can perform 2 trillion operations per second. This milestone marks a significant step forward in the development of quantum computing, which could potentially solve complex problems in fields like cryptography, optimization, and drug discovery.
+ </p>
+ <br/>
+ <p>
+    <strong>Microsoft's AI-Powered Healthcare Solutions</strong> - Microsoft introduced a suite of AI-powered healthcare solutions aimed at improving patient care and outcomes. The solutions include AI-driven diagnostics, personalized treatment plans, and predictive analytics for healthcare providers. Microsoft's commitment to leveraging AI in healthcare is part of its broader strategy to address global health challenges.
+ </p>
+ <br/>
+ <p>
+    <strong>Amazon's Sustainable Packaging Initiative</strong> - Amazon announced a new initiative to reduce its environmental impact by transitioning to 100% recycled or biodegradable packaging materials by 2040. The company is investing in innovative technologies and partnerships to achieve this ambitious goal, demonstrating its commitment to sustainability and environmental stewardship.
+ </p>
+ <br/>
+ <p>
+    These announcements highlight the ongoing race among tech giants to innovate and lead in various sectors, from hardware and software to healthcare and environmental sustainability. As we look forward to the future, it's clear that technology will continue to play a pivotal role in shaping our world.
+ </p>
+ <br/>
+ <p>
+    <a href="https://www.example.com/news/tech-companies-announce-new-products">Read more about the event and the new products</a>
+ </p>
+</div>
+  `;
+
+  const uniqueCategoryNames = new Set<string>();
+
+  while (uniqueCategoryNames.size < newsDefaults.numOfCategories) {
+    uniqueCategoryNames.add(faker.commerce.department().toLowerCase());
+  }
+
+  await prisma.newsCategory.createMany({
+    data: Array.from(uniqueCategoryNames).map((name) => ({
+      name,
+    })),
+  });
+
+  const newsCategories = await prisma.newsCategory.findMany();
+
+  await prisma.news.createMany({
+    data: Array.from({ length: newsDefaults.numOfNews }).map(() => {
+      const randomCategoryIndex = getRandNum(0, newsCategories.length - 1);
+
+      return {
+        title: faker.commerce.productName(),
+        content: fakePostDescription.replaceAll(' ', ''),
+        description_short: faker.lorem.sentence(20),
+        author_full_name: faker.person.fullName(),
+        imageUrl: faker.image.url(),
+        news_category_id: newsCategories[randomCategoryIndex].id,
+        createdAt: getRandomDate(
+          new Date('2020-02-12T01:57:45.271Z'),
+          new Date(Date.now()),
+        ),
+      };
+    }),
+  });
+
+  console.log('Seeding news completed!');
 }

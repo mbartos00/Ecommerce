@@ -5,12 +5,7 @@ export type QueryParams = {
   perPage?: string;
   search?: string;
   category?: string;
-  min_price?: string;
-  max_price?: string;
-  order?: Order;
-  color?: string;
-  brand?: string;
-  condition?: string;
-  size?: string;
   sortBy?: string;
+  order?: Order;
+  limit?: number;
 };
