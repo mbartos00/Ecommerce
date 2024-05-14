@@ -10,6 +10,7 @@ import {
 import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
 import { HamburgerMenuComponent } from '../ui/hamburger-menu/hamburger-menu.component';
 import { TopHeaderComponent } from './top-header/top-header.component';
+import { BreadcrumbsComponent } from '../ui/breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'app-header',
@@ -20,6 +21,7 @@ import { TopHeaderComponent } from './top-header/top-header.component';
     CommonModule,
     HamburgerMenuComponent,
     TopHeaderComponent,
+    BreadcrumbsComponent,
   ],
   providers: [
     provideIcons({
