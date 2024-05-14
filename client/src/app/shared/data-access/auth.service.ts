@@ -4,7 +4,7 @@ import { environment } from '@environments/environment';
 import { Observable, shareReplay, tap } from 'rxjs';
 import { ACCESS_TOKEN_STORAGE_KEY } from '../constants';
 import { ResponseFormat } from '../types/response';
-import { LoginSchema } from '../types/schemas';
+import { LoginSchema, SignupSchema } from '../types/schemas';
 import { User } from '../types/user';
 import { getAccessToken, saveAccessToken } from '../utils/tokens';
 
@@ -25,12 +25,12 @@ type AuthState = {
   providedIn: 'root',
 })
 export class AuthService {
+  user = computed(() => this.authState().user);
+
   private http = inject(HttpClient);
   private authState = signal<AuthState>({
     user: null,
   });
-
-  user = computed(() => this.authState().user);
 
   constructor() {
     const token = getAccessToken();
@@ -71,5 +71,16 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
+  }
+
+  createAccount(credentials: SignupSchema): Observable<ResponseFormat> {
+    return this.http
+      .post<ResponseFormat>(`${environment.API_URL}/register`, credentials)
+      .pipe(
+        tap(({ status }) => {
+          console.log(status);
+        }),
+        shareReplay()
+      );
   }
 }

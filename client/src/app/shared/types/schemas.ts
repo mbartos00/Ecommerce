@@ -3,4 +3,9 @@ export type LoginSchema = {
   password: string;
 };
 
-export type RegisterSchema = {};
+export type SignupSchema = {
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
+};

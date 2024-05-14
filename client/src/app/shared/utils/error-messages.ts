@@ -1,11 +1,12 @@
 export const validationErrorMessages = {
   required: 'Required',
-  minlength: 'Input is too short',
+  minlength: 'Input is to short',
   maxlength: 'Input is too long',
   email: 'Invalid email',
-  passwordMatch: 'Password do not match',
+  passwordMismatch: 'Password do not match',
   pattern: 'Invalid Pattern',
-  invalidPassword: 'Oops! Your Password Is Not Correct',
+  specialCharacters: 'Special characters are not allowed',
+  invalidPassword: 'Password requires 1 special character, and 1 number',
 } as const;
 
 type ErrorNames = keyof typeof validationErrorMessages;
