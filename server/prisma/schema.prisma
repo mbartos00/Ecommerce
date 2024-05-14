@@ -105,3 +105,21 @@ enum Size {
   xl
   xxl
 }
+
+model News {
+  id                String       @id @default(auto()) @map("_id") @db.ObjectId
+  title             String
+  imageUrl          String
+  description_short String
+  content           String
+  news_category_id  String       @db.ObjectId
+  category          NewsCategory @relation(fields: [news_category_id], references: [id])
+  author_full_name  String // later: change to user that created news in admin panel
+  createdAt         DateTime     @default(now())
+}
+
+model NewsCategory {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  news News[]
+}
