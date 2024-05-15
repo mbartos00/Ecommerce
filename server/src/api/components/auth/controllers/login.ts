@@ -1,10 +1,18 @@
 import type { Dependecies } from '@src/config/dependencies';
 import { HttpError } from '@src/errors';
 import type { LoginSchema } from '@src/schemas/auth';
-import type { Request, Response } from 'express';
+import type { ResponseFormat, ResponseUser } from '@src/types/response';
+import { generateTokens } from '@src/utils/tokens';
 import bcrypt from 'bcrypt';
-import { generateAccessToken } from '@src/utils/tokens';
-import type { ResponseFormat } from '@src/types/response';
+import type { Request, Response } from 'express';
+import { REFRESH_TOKEN_COOKIE_NAME } from '../constants';
+
+type LoginResponse = Response<
+  ResponseFormat & {
+    accessToken: string;
+    user: ResponseUser;
+  }
+>;
 
 export function login({ prisma }: Dependecies) {
   return async (
