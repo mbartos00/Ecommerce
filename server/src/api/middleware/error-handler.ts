@@ -8,7 +8,6 @@ export function errorHandler(
   res: Response<ErrorResponseFormat<any>>,
   _: NextFunction,
 ) {
-  console.log(err);
   if (err instanceof HttpError) {
     const { code, message, details } = err;
 

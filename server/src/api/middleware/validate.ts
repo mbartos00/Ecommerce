@@ -3,6 +3,7 @@ import type { NextFunction, Request, Response } from 'express';
 import type { Schema } from 'zod';
 
 type Detail = {
+  code: string;
   message: string;
   path: string;
 };
@@ -12,15 +13,16 @@ export default function validate<T>(schema: Schema<T>) {
     const output = schema.safeParse(req.body);
 
     if (!output.success) {
-      const details: Detail[] = output.error.issues.map((issue) => {
+      const details = output.error.issues.reduce<Detail[]>((acc, issue) => {
+        const { message, code } = issue;
         const path = issue.path.join('.');
-        const { message } = issue;
 
-        return {
-          path,
-          message,
-        };
-      });
+        if (path === '') {
+          return acc;
+        }
+
+        return [...acc, { path, message, code }];
+      }, []);
 
       throw new HttpError('Invalid request', 400, details);
     }
