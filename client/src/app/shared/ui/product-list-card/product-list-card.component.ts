@@ -1,19 +1,20 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { exampleProduct } from '../product-card/product-card.model';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
 import { lucideHeart, lucideShoppingCart } from '@ng-icons/lucide';
-import { Product } from '../../../../../../server/node_modules/@prisma/client';
+import { Product } from '@prisma/client';
 
 @Component({
-  selector: 'app-product-card',
+  selector: 'app-product-list-card',
   standalone: true,
-  templateUrl: './product-card.component.html',
+  templateUrl: './product-list-card.component.html',
   imports: [HlmIconComponent],
   providers: [provideIcons({ lucideHeart, lucideShoppingCart })],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductCardComponent {
-  @Input() product: Product = {} as Product;
+export class ProductListCardComponent {
+  @Input() product: Product = exampleProduct;
 
   getStarsArray(): number[] {
     const maxStars = 5;
