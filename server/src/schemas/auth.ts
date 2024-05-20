@@ -6,6 +6,7 @@ const nameValidation = z.string().min(3).max(30);
 
 export const registerSchema = z.object({
   name: nameValidation,
+  lastName: nameValidation,
   email: emailValidation,
   password: passwordValidation,
 });
