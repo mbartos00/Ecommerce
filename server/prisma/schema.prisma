@@ -123,3 +123,11 @@ model NewsCategory {
   name String
   news News[]
 }
+
+
+model ShippingCost {
+  id                         String       @id @default(auto()) @map("_id") @db.ObjectId
+  shipping_carrier           String
+  shipping_price             Float
+  shipping_carrier_image_url String
+}
