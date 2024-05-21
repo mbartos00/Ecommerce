@@ -2,16 +2,19 @@
   <app-top-header></app-top-header>
 </div>
 <header
-  class="fixed bottom-0 left-0 border-t-[1px] w-full border-blue-light lg:flex lg:items-center lg:static lg:py-6 lg:px-10 lg:justify-between">
+  class="fixed bottom-0 left-0 border-t-[1px] w-full border-blue-light lg:flex lg:items-center lg:static lg:py-6 lg:px-10 lg:justify-between"
+>
   <img class="hidden lg:block" src="../../../assets/logo.png" alt="App logo" />
   <nav>
     <ul
-      class="flex justify-between items-center mx-6 my-2 text-grey-neutral font-poppins text-xs lg:text-xl lg:gap-10 lg:text-black">
+      class="flex justify-between items-center mx-6 my-2 text-grey-neutral font-poppins text-xs lg:text-xl lg:gap-10 lg:text-black"
+    >
       <li>
         <a
           class="flex items-center flex-col"
           [routerLink]="['/']"
-          routerLinkActive="!text-blue">
+          routerLinkActive="!text-blue"
+        >
           <hlm-icon class="lg:hidden" size="base" name="lucideHome" />
           <span>Home</span>
         </a>
@@ -20,7 +23,8 @@
         <a
           [routerLink]="['/shop']"
           routerLinkActive="!text-blue"
-          class="flex items-center flex-col">
+          class="flex items-center flex-col"
+        >
           <hlm-icon class="lg:hidden" size="base" name="lucideShoppingBag" />
           <span>Shop</span>
         </a>
@@ -29,7 +33,8 @@
         <a
           class="flex items-center flex-col"
           [routerLink]="['/news']"
-          routerLinkActive="!text-blue">
+          routerLinkActive="!text-blue"
+        >
           <hlm-icon class="lg:hidden" size="base" name="lucideNewspaper" />
           <span>News</span>
         </a>
@@ -38,7 +43,8 @@
         <a
           class="flex items-center flex-col"
           [routerLink]="['/contact']"
-          routerLinkActive="!text-blue">
+          routerLinkActive="!text-blue"
+        >
           <hlm-icon class="lg:hidden" size="base" name="lucideContact" />
           <span>Contact</span>
         </a>
@@ -49,4 +55,4 @@
     </ul>
   </nav>
 </header>
-<app-breadcrumbs class="hidden lg:block"></app-breadcrumbs>
+<app-breadcrumbs></app-breadcrumbs>
