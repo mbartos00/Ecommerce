@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
 import { lucideHeart, lucideShoppingCart } from '@ng-icons/lucide';
-import { Product } from '../../../../../../server/node_modules/@prisma/client';
+import { Product } from '../../types/product.model';
 
 @Component({
   selector: 'app-product-card',
