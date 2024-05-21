@@ -125,6 +125,19 @@ model NewsCategory {
   news News[]
 }
 
+model Discount {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  code           String   @unique
+  discountAmount Float
+  discountType   DiscountType
+  createdAt      DateTime @default(now())
+  expiresAt      DateTime?
+}
+
+enum DiscountType {
+  percentage
+  fixed
+}
 
 model ShippingCost {
   id                         String       @id @default(auto()) @map("_id") @db.ObjectId
