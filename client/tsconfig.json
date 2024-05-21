@@ -46,7 +46,14 @@
       ],
       "@spartan-ng/ui-sonner-helm": [
         "./src/app/shared/ui/ui-sonner-helm/src/index.ts"
-      ]
+      ],
+      "@spartan-ng/ui-pagination-helm": [
+        "./src/app/shared/ui/ui-pagination-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-select-helm": [
+        "./src/app/shared/ui/ui-select-helm/src/index.ts"
+      ],
+      "@prisma/client": ["../server/node_modules/@prisma/client"]
     }
   },
   "angularCompilerOptions": {

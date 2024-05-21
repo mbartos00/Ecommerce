@@ -4,7 +4,7 @@ module.exports = {
   content: ['./src/**/*.{html,ts}'],
   theme: {
     colors: {
-      blue: 'hsl(var(--primary))',
+      primary: 'hsl(var(--primary))',
       blue: 'hsl(var(--blue))',
       'blue-light': 'hsl(var(--blue-light))',
       pink: 'hsl(var(--pink))',

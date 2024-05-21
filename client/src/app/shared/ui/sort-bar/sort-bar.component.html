@@ -1,0 +1,55 @@
+<div
+  class="bg-grey-light flex flex-col md:flex-row items-center justify-between py-4 px-6 rounded-sm">
+  <span>{{ totalProducts }} Items</span>
+  <div>
+    <span class="ml-10 mr-1">Sort By</span>
+    <select
+      id="sort"
+      name="sort"
+      (change)="updateSortCriteria($event)"
+      class="peer h-full w-30 rounded-[7px] border border-grey border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-light placeholder-shown:border-t-blue empty:!bg-grey-dark focus:border-2 focus:border-primary focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-grey-light">
+      <option value="name" active>Name</option>
+      <option value="price">Price</option>
+      <option value="rating">Rating</option>
+    </select>
+    <span class="ml-10 mr-1">Order</span>
+    <select
+      id="order"
+      name="order"
+      (change)="updateOrder($event)"
+      class="peer h-full w-30 rounded-[7px] border border-grey border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-light placeholder-shown:border-t-blue empty:!bg-grey-dark focus:border-2 focus:border-primary focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-grey-light">
+      >
+      <option value="asc" active>Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+
+    <span class="ml-10 mr-1">Show</span>
+    <select
+      id="limit-products"
+      name="limit-products"
+      (change)="updateLimit($event)"
+      class="peer h-full w-30 rounded-[7px] border border-grey border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-light placeholder-shown:border-t-blue empty:!bg-grey-dark focus:border-2 focus:border-primary focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-grey-light">
+      >
+      <option value="20" active>20</option>
+      <option value="10">10</option>
+      <option value="5">5</option>
+    </select>
+  </div>
+
+  <div class="buttons-section flex space-x-2">
+    <button
+      hlmBtn
+      type="button"
+      (click)="setViewType(true)"
+      class="flex items-center">
+      <hlm-icon size="base" name="lucideLayoutGrid" class="mr-1 text-primary" />
+    </button>
+    <button
+      hlmBtn
+      type="button"
+      (click)="setViewType(false)"
+      class="flex items-center">
+      <hlm-icon size="base" name="lucideList" class="mr-1 text-primary" />
+    </button>
+  </div>
+</div>
