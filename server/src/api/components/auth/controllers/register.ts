@@ -4,12 +4,12 @@ import { HttpError } from '@src/errors';
 import type { RegisterSchema } from '@src/schemas/auth';
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
+import { SALT_ROUNDS } from '../constants';
 
 export function register({ prisma }: Dependecies) {
   return async (req: Request<{}, {}, RegisterSchema>, res: Response) => {
     const { email, password, name, lastName } = req.body;
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
     await prisma.user
       .create({

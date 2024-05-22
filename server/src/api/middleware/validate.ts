@@ -10,12 +10,16 @@ type Detail = {
 
 export default function validate<T>(schema: Schema<T>) {
   return async function (req: Request, res: Response, next: NextFunction) {
+    if (!req.body) {
+      throw new HttpError('Request body is empty', 400);
+    }
+
     const output = schema.safeParse(req.body);
 
     if (!output.success) {
       const details = output.error.issues.reduce<Detail[]>((acc, issue) => {
         const { message, code } = issue;
-        const path = issue.path.join('.');
+        const path = issue.path.join(', ');
 
         if (path === '') {
           return acc;
