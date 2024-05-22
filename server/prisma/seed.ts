@@ -162,7 +162,7 @@ export async function seedNews() {
 
       return {
         title: faker.commerce.productName(),
-        content: fakePostDescription.replaceAll(' ', ''),
+        content: fakePostDescription,
         description_short: faker.lorem.sentence(20),
         author_full_name: faker.person.fullName(),
         imageUrl: faker.image.url(),
