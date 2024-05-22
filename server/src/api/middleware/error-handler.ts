@@ -21,7 +21,7 @@ export function errorHandler(
   if (err instanceof Error) {
     return res.status(500).json({
       status: 'error',
-      message: 'Something went wrong',
+      message: err.message ?? 'Something went wrong',
     });
   }
 

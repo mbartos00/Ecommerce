@@ -28,6 +28,7 @@ model User {
   createdAt DateTime @default(now())
 
   favorites_list Favorites?
+  paymentMethods PaymentMethod[]
 
   profile    Profile?
   OAuthToken OAuthToken[]
@@ -126,11 +127,11 @@ model NewsCategory {
 }
 
 model Discount {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  code           String   @unique
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  code           String       @unique
   discountAmount Float
   discountType   DiscountType
-  createdAt      DateTime @default(now())
+  createdAt      DateTime     @default(now())
   expiresAt      DateTime?
 }
 
@@ -140,8 +141,35 @@ enum DiscountType {
 }
 
 model ShippingCost {
-  id                         String       @id @default(auto()) @map("_id") @db.ObjectId
+  id                         String @id @default(auto()) @map("_id") @db.ObjectId
   shipping_carrier           String
   shipping_price             Float
   shipping_carrier_image_url String
+}
+
+model PaymentMethod {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  type           PaymentTypes
+  cardNumber     String?
+  expirationDate String?
+  securityCode   String?
+  cardHolder     String?
+
+  email       String?
+  phoneNumber String?
+
+  firstName     String?
+  lastName      String?
+  accountNumber String?
+  bankName      String?
+  address       String?
+
+  userId String? @db.ObjectId
+  user   User?   @relation(fields: [userId], references: [id])
+}
+
+enum PaymentTypes {
+  credit_card
+  paypal
+  bank_transfer
 }
