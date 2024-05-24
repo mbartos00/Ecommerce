@@ -1,0 +1,10 @@
+<select
+  [id]="selectId"
+  [name]="selectName"
+  class="h-full w-20 rounded-md border border-grey border-t-transparent bg-transparent px-3 py-1 text-sm font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-light placeholder-shown:border-t-blue empty:!bg-grey-dark focus:border-2 focus:border-primary focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-grey-light;"
+  (change)="onValueChange($event)"
+>
+  @for (value of values; track value) {
+    <option [value]="value">{{ value }}</option>
+  }
+</select>

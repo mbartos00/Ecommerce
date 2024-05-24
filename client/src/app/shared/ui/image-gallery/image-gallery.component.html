@@ -1,0 +1,29 @@
+<div class="flex items-center justify-center w-full p-2">
+  <button (click)="changeImagePrev()">
+    <hlm-icon
+      size="base"
+      name="lucideChevronLeft"
+      color="hsl(var(--blue))"
+    ></hlm-icon>
+  </button>
+  <img class="h-60 object-cover" [src]="currentImage" alt="Product image" />
+  <button (click)="changeImageNext()">
+    <hlm-icon
+      size="base"
+      name="lucideChevronRight"
+      color="hsl(var(--blue))"
+    ></hlm-icon>
+  </button>
+</div>
+<div class="mt-5 flex items-center justify-center">
+  @for (image of images; track image) {
+    <button (click)="changeImage(image)">
+      <img
+        class="h-20 object-cover border-2 border-grey mr-1"
+        [class]="{ 'border-primary': image === currentImage }"
+        [src]="image"
+        [alt]="image"
+      />
+    </button>
+  }
+</div>

@@ -1,0 +1,25 @@
+<div class="h-10 w-32">
+  <div
+    class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1"
+  >
+    <button
+      (click)="decrement()"
+      class="bg-grey-light text-grey-dark hover:text-grey-dark hover:bg-grey h-full w-20 rounded-l cursor-pointer outline-none"
+    >
+      <span class="m-auto text-2xl font-thin">−</span>
+    </button>
+    <input
+      type="number"
+      class="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none outline-none focus:outline-none text-center w-full bg-grey-light font-semibold text-md hover:text-black focus:text-black md:text-base cursor-default flex items-center text-grey-dark outline-none"
+      name="custom-input-number"
+      [value]="value"
+      (input)="validateValue()"
+    />
+    <button
+      (click)="increment()"
+      class="bg-grey-light text-grey-dark hover:text-grey-dark hover:bg-grey h-full w-20 rounded-r cursor-pointer"
+    >
+      <span class="m-auto text-2xl font-thin">+</span>
+    </button>
+  </div>
+</div>
