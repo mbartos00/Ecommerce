@@ -47,6 +47,9 @@
       "@spartan-ng/ui-sonner-helm": [
         "./src/app/shared/ui/ui-sonner-helm/src/index.ts"
       ],
+      "@spartan-ng/ui-tabs-helm": [
+        "./src/app/shared/ui/ui-tabs-helm/src/index.ts"
+      ],
       "@spartan-ng/ui-pagination-helm": [
         "./src/app/shared/ui/ui-pagination-helm/src/index.ts"
       ],
