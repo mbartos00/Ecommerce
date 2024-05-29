@@ -34,6 +34,7 @@ export function getUserData({ prisma }: Dependecies) {
         profile: true,
         paymentMethods: true,
         createdAt: true,
+        addresses: true,
       },
     });
 
