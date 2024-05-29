@@ -4,22 +4,24 @@
     (sortCriteriaChange)="onSortCriteriaChange($event)"
     (productsPerPageChange)="onProductsPerPageChange($event)"
     (orderChange)="onOrderChange($event)"
-    [totalProducts]="totalProducts"></app-sort-bar>
+    [totalProducts]="totalProducts"
+  ></app-sort-bar>
 </div>
 
 <div *ngIf="products$ | async as products" class="container my-7 mx-auto p-2">
   <div
     *ngIf="isGridView; else listView"
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6">
-    <ng-container *ngFor="let product of products.results">
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
+  >
+    <ng-container *ngFor="let product of products.data">
       <app-product-card
         [product]="product"
-        class="m-0 aspect-auto"></app-product-card>
+        class="m-0 aspect-auto"
+      ></app-product-card>
     </ng-container>
   </div>
   <ng-template #listView>
-    <!-- TODO There should be created a list view -->
-    <div *ngFor="let product of products.results">
+    <div *ngFor="let product of products.data">
       <app-product-card [product]="product"></app-product-card>
     </div>
   </ng-template>
@@ -34,7 +36,8 @@
       <button
         hlmPaginationLink
         (click)="gotoPage(page)"
-        [ngClass]="{ 'bg-primary': currentPage === page }">
+        [ngClass]="{ 'bg-primary': currentPage === page }"
+      >
         {{ page }}
       </button>
     </li>

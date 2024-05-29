@@ -17,6 +17,8 @@ import type {
   ProductList,
   QueryParams,
 } from '../../types/product.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-product-list',
@@ -45,13 +47,22 @@ export class ProductListComponent implements OnInit {
   itemsPerPage: string = '20';
   sortBy: string = 'name';
   order: Order = 'asc';
+  category: string | undefined = undefined;
   totalProducts: number = 10;
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.fetchProducts();
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      this.currentPage = 1;
+      this.category = params ? params['category'] : undefined;
+      this.fetchProducts();
+    });
   }
 
   ngOnDestroy(): void {
@@ -75,8 +86,8 @@ export class ProductListComponent implements OnInit {
     this.fetchProducts();
   }
 
-  onOrderChange(order: Order): void {
-    this.order = order;
+  onOrderChange(order: String): void {
+    this.order = order as Order;
     this.currentPage = 1;
     this.fetchProducts();
   }
@@ -110,15 +121,19 @@ export class ProductListComponent implements OnInit {
       perPage: this.itemsPerPage,
       sortBy: this.sortBy,
       order: this.order,
+      category: this.category,
     };
+
     this.products$ = this.http
-      .get<ProductList>('http://localhost:8080/api/products', { params })
+      .get<ProductList>(`${environment.API_URL}/products`, {
+        params,
+      })
       .pipe(takeUntil(this.destroy$));
 
     this.products$.subscribe(response => {
-      this.totalProducts = response.count;
+      this.totalProducts = response.paginationInfo.count;
       this.totalPages = Array.from(
-        { length: response.totalPages },
+        { length: response.paginationInfo.totalPages },
         (_, index) => index + 1
       );
     });

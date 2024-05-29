@@ -1,9 +1,7 @@
 export type ProductList = {
-  page: number;
-  perPage: number;
-  results: Product[];
-  count: number;
-  totalPages: number;
+  status: string;
+  paginationInfo: PaginationInfo;
+  data: Product[];
 };
 
 export type Product = {
@@ -64,4 +62,11 @@ export type Size = {
   l: 'l';
   xl: 'xl';
   xxl: 'xxl';
+};
+
+export type PaginationInfo = {
+  count: number;
+  page: number;
+  perPage: number;
+  totalPages: number;
 };
