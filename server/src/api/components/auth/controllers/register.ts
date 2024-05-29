@@ -10,7 +10,6 @@ export function register({ prisma }: Dependecies) {
   return async (req: Request<{}, {}, RegisterSchema>, res: Response) => {
     const { email, password, name, lastName } = req.body;
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-
     await prisma.user
       .create({
         data: {

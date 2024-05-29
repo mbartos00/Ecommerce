@@ -7,11 +7,17 @@ import {
   loginSchema,
   registerSchema,
   updateUserSchema,
+  addressSchema,
+  updateAddressSchema,
 } from '@src/schemas/auth';
 import { Router } from 'express';
-import { deleteUser } from './controllers/delete-user';
-import { getUserData } from './controllers/get-user-data';
-import { updateUser } from './controllers/update-user';
+import { deleteUser } from './controllers/user/delete-user';
+import { getUserData } from './controllers/user/get-user-data';
+import { updateUser } from './controllers/user/update-user';
+import { getAllAddresses } from './controllers/address/get-addresses';
+import { addAddress } from './controllers/address/add-address';
+import { removeAddress } from './controllers/address/remove-address';
+import { updateAddress } from './controllers/address/update-addres';
 
 export function authRouter(deps: Dependecies) {
   const router = Router();
@@ -25,6 +31,18 @@ export function authRouter(deps: Dependecies) {
     updateUser(deps),
   );
   router.delete('/user/delete', auth(deps), deleteUser(deps));
+  router.post(
+    '/user/addresses',
+    [auth(deps), validate(addressSchema)],
+    addAddress(deps),
+  );
+  router.get('/user/addresses', auth(deps), getAllAddresses(deps));
+  router.patch(
+    '/user/addresses/:id',
+    [auth(deps), validate(updateAddressSchema)],
+    updateAddress(deps),
+  );
+  router.delete('/user/addresses/:id', auth(deps), removeAddress(deps));
 
   return router;
 }
