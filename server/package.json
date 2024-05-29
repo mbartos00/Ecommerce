@@ -9,6 +9,9 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write ."
   },
+  "prisma": {
+    "seed": "bun run prisma/seed.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/cors": "^2.8.17",
@@ -27,7 +30,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@prisma/client": "^5.13.0",
+    "@prisma/client": "latest",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.7",
     "@types/jsonwebtoken": "^9.0.6",
@@ -36,7 +39,7 @@
     "cors": "^2.8.5",
     "express": ">=5.0.0-beta.1",
     "jsonwebtoken": "^9.0.2",
-    "prisma": "^5.13.0",
+    "prisma": "latest",
     "zod": "^3.23.0"
   }
 }

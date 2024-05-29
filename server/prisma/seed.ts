@@ -26,14 +26,14 @@ function getRandomDate(from: Date, to: Date) {
   return new Date(fromTime + Math.random() * (toTime - fromTime));
 }
 
+function getRandomSize() {
+  const sizeValues = Object.values(Size);
+  const randomIndex = Math.floor(Math.random() * sizeValues.length);
+
+  return sizeValues[randomIndex];
+}
+
 export async function seedProducts() {
-  function getRandomSize() {
-    const sizeValues = Object.values(Size);
-    const randomIndex = Math.floor(Math.random() * sizeValues.length);
-
-    return sizeValues[randomIndex];
-  }
-
   function getRandomCategoryIds(
     categoryIds: string[],
     min: number,
@@ -41,11 +41,13 @@ export async function seedProducts() {
   ) {
     const numCategories = getRandNum(min, max);
     const selectedIds = [];
+
     for (let i = 0; i < numCategories; i++) {
       const randomIndex = getRandNum(0, categoryIds.length - 1);
       selectedIds.push(categoryIds[randomIndex]);
       categoryIds.splice(randomIndex, 1);
     }
+
     return selectedIds;
   }
 
@@ -177,3 +179,38 @@ export async function seedNews() {
 
   console.log('Seeding news completed!');
 }
+
+export async function seedSoldProduct() {
+  await prisma.soldProduct.deleteMany();
+
+  const products = await prisma.product.findMany();
+
+  for (let i = 0; i < Math.ceil(products.length / 1.5); i++) {
+    await prisma.soldProduct.create({
+      data: {
+        quantity: getRandNum(1, 50),
+        productId: products[i].id,
+        saleDate: getRandomDate(
+          new Date('2020-02-12T01:57:45.271Z'),
+          new Date(Date.now()),
+        ),
+      },
+    });
+  }
+
+  console.log('Seeding sold products completed');
+}
+
+async function main() {
+  await Promise.all([seedNews(), seedProducts(), seedSoldProduct()]);
+}
+
+await main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });

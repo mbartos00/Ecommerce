@@ -32,7 +32,7 @@ model User {
 
   profile    Profile?
   OAuthToken OAuthToken[]
-  addresses  Address[] 
+  addresses  Address[]
 }
 
 model OAuthToken {
@@ -56,19 +56,20 @@ model Profile {
 }
 
 model Product {
-  id                String     @id @default(auto()) @map("_id") @db.ObjectId
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
   name              String
   brand             String
   description       String
   rating            Float
   price             Float
   images            String[]
-  categoryIds       String[]   @db.ObjectId
-  categories        Category[] @relation(fields: [categoryIds], references: [id])
-  favorites_list_id String?    @db.ObjectId
-  favorites_list    Favorites? @relation(fields: [favorites_list_id], references: [id])
+  categoryIds       String[]      @db.ObjectId
+  categories        Category[]    @relation(fields: [categoryIds], references: [id])
+  favorites_list_id String?       @db.ObjectId
+  favorites_list    Favorites?    @relation(fields: [favorites_list_id], references: [id])
   variants          Variant[]
-  createdAt         DateTime   @default(now())
+  soldProducts      SoldProduct[]
+  createdAt         DateTime      @default(now())
 }
 
 model Favorites {
@@ -176,9 +177,9 @@ enum PaymentTypes {
 }
 
 model Address {
-  id                    String       @id @default(auto()) @map("_id") @db.ObjectId
+  id                    String  @id @default(auto()) @map("_id") @db.ObjectId
   country               String
-  name                  String 
+  name                  String
   lastName              String
   street_address        String
   street_address_2      String?
@@ -187,6 +188,14 @@ model Address {
   zip_code              String
   phone_number          String
 
-  userId                String       @db.ObjectId 
-  user                  User         @relation(fields: [userId], references: [id], onDelete:Cascade)
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SoldProduct {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId String   @db.ObjectId
+  Product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  saleDate  DateTime @default(now())
 }
