@@ -1,0 +1,39 @@
+<div
+  (mouseenter)="showDropdown()"
+  (mouseleave)="hideDropdown()"
+  class="relative"
+>
+  <button
+    id="dropdownButton"
+    class="hover:text-primary"
+    type="button"
+    (click)="showDropdown()"
+  >
+    <ng-content></ng-content>
+  </button>
+
+  @if (isOpen) {
+    <div
+      id="dropdownMenu"
+      class="absolute top-full right-0 p-4 z-10 bg-white divide-y divide-gray rounded-lg shadow w-fit"
+    >
+      <ul
+        class="columns-1 md:columns-3 lg:columns-4 py-2 text-sm text-gray"
+        aria-labelledby="dropdownButton"
+      >
+        @for (item of menuItems; track item) {
+          <li>
+            <a
+              [routerLink]="['/products']"
+              routerLinkActive="!text-blue"
+              [queryParams]="{ category: item }"
+              class="block mx-auto px-4 py-2 hover:text-primary capitalize"
+            >
+              {{ item }}
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

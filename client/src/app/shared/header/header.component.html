@@ -21,12 +21,14 @@
       </li>
       <li>
         <a
-          [routerLink]="['/shop']"
+          [routerLink]="['/products']"
           routerLinkActive="!text-blue"
           class="flex items-center flex-col"
         >
           <hlm-icon class="lg:hidden" size="base" name="lucideShoppingBag" />
-          <span>Shop</span>
+          <app-dropdown-menu [menuItems]="(categories$ | async) ?? []"
+            >Shop</app-dropdown-menu
+          >
         </a>
       </li>
       <li>
