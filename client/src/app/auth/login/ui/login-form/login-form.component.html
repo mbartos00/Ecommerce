@@ -6,7 +6,7 @@
 <form
   class="w-full flex flex-col justify-center items-center"
   [formGroup]="loginForm"
-  (ngSubmit)="onSubmit($event)"
+  (ngSubmit)="onSubmit()"
 >
   <div class="flex flex-col gap-4 w-full">
     <app-form-input
@@ -44,5 +44,3 @@
     Register
   </button>
 </p>
-
-<hlm-toaster />

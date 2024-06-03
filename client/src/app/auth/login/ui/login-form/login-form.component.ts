@@ -15,7 +15,6 @@ import { FormInputComponent } from '@app/shared/ui/form-input/form-input.compone
 import { LogoComponent } from '@app/shared/ui/logo/logo.component';
 import { HlmButtonDirective } from '@app/shared/ui/ui-button-helm/src';
 import { toast } from 'ngx-sonner';
-import { HlmToasterComponent } from '@app/shared/ui/ui-sonner-helm/src';
 import { LoginStatus } from '../../data-access/login.service';
 
 @Component({
@@ -27,7 +26,6 @@ import { LoginStatus } from '../../data-access/login.service';
     HlmButtonDirective,
     LogoComponent,
     FormInputComponent,
-    HlmToasterComponent,
   ],
   templateUrl: './login-form.component.html',
   styles: `
@@ -54,7 +52,7 @@ export class LoginFormComponent implements OnChanges {
     }
   );
 
-  onSubmit($event: SubmitEvent): void {
+  onSubmit(): void {
     if (this.loginForm.invalid) return;
 
     this.login.emit(this.loginForm.getRawValue());
@@ -63,7 +61,7 @@ export class LoginFormComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['loginStatus']) {
       if (this.loginStatus === 'error' && this.message) {
-        toast(this.message);
+        toast.error(this.message);
       }
     }
   }
