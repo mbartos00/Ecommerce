@@ -8,21 +8,26 @@
   ></app-sort-bar>
 </div>
 
-<div *ngIf="products$ | async as products" class="container my-7 mx-auto p-2">
+<div
+  *ngIf="products$ | async as products"
+  class="container my-7 mx-auto p-2 {{
+    !isGridView ? 'flex flex-col gap-2 md:gap-6' : ''
+  }}"
+>
   <div
     *ngIf="isGridView; else listView"
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 place-items-center sm:place-items-baseline md:gap-6"
   >
     <ng-container *ngFor="let product of products.data">
       <app-product-card
         [product]="product"
-        class="m-0 aspect-auto"
+        class="m-0 aspect-auto h-full"
       ></app-product-card>
     </ng-container>
   </div>
   <ng-template #listView>
     <div *ngFor="let product of products.data">
-      <app-product-card [product]="product"></app-product-card>
+      <app-product-list-card [product]="product"></app-product-list-card>
     </div>
   </ng-template>
 </div>

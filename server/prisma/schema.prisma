@@ -56,20 +56,21 @@ model Profile {
 }
 
 model Product {
-  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  id                String           @id @default(auto()) @map("_id") @db.ObjectId
   name              String
   brand             String
   description       String
   rating            Float
   price             Float
   images            String[]
-  categoryIds       String[]      @db.ObjectId
-  categories        Category[]    @relation(fields: [categoryIds], references: [id])
-  favorites_list_id String?       @db.ObjectId
-  favorites_list    Favorites?    @relation(fields: [favorites_list_id], references: [id])
+  categoryIds       String[]         @db.ObjectId
+  categories        Category[]       @relation(fields: [categoryIds], references: [id])
+  favorites_list_id String?          @db.ObjectId
+  favorites_list    Favorites?       @relation(fields: [favorites_list_id], references: [id])
   variants          Variant[]
   soldProducts      SoldProduct[]
-  createdAt         DateTime      @default(now())
+  createdAt         DateTime         @default(now())
+  discount          ProductDiscount?
 }
 
 model Favorites {
@@ -137,6 +138,17 @@ model Discount {
   expiresAt      DateTime?
 }
 
+model ProductDiscount {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  productId String       @unique @db.ObjectId
+  product   Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  type      DiscountType
+  value     Float
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime     @default(now())
+}
+
 enum DiscountType {
   percentage
   fixed
@@ -195,7 +207,7 @@ model Address {
 model SoldProduct {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   productId String   @db.ObjectId
-  Product   Product  @relation(fields: [productId], references: [id])
+  Product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int
   saleDate  DateTime @default(now())
 }

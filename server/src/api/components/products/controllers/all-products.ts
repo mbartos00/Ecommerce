@@ -1,12 +1,13 @@
+import type { Product } from '@prisma/client';
+import type { QueryParams } from '@src/api/components/products/types';
 import type { Dependecies } from '@src/config/dependencies';
 import { DEFAULT_PAGE, DEFAULT_PER_PAGE } from '@src/constants';
 import { HttpError } from '@src/errors';
-import type { QueryParams } from '@src/api/components/products/types';
+import type { Pagination } from '@src/types/pagination';
 import type { ResponseFormat } from '@src/types/response';
 import type { Request, Response } from 'express';
-import type { Product } from '@prisma/client';
 import { buildProductsFilters } from '../utils/build-filters';
-import type { Pagination } from '@src/types/pagination';
+import { discountProductPrice } from '../utils/discount-product-price';
 
 export function getAllProducts({ prisma }: Dependecies) {
   return async (
@@ -52,8 +53,24 @@ export function getAllProducts({ prisma }: Dependecies) {
         variants: {
           where: whereClause.variants?.some,
         },
+        discount: {
+          where: {
+            AND: [
+              { endDate: { gte: new Date() } },
+              { startDate: { lte: new Date() } },
+            ],
+          },
+          select: {
+            type: true,
+            value: true,
+            startDate: true,
+            endDate: true,
+          },
+        },
       },
     });
+
+    const processedProducts = discountProductPrice(products);
 
     res.json({
       status: 'success',
@@ -63,7 +80,7 @@ export function getAllProducts({ prisma }: Dependecies) {
         perPage,
         totalPages: Math.ceil(Math.ceil(productCount / perPage)),
       },
-      data: products,
+      data: processedProducts,
     });
   };
 }

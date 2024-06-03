@@ -61,10 +61,35 @@ export function getBestsellers({ prisma }: Dependecies) {
         },
       },
       {
+        $lookup: {
+          from: 'ProductDiscount',
+          localField: '_id',
+          foreignField: 'productId',
+          as: 'discountDetails',
+        },
+      },
+      {
+        $addFields: {
+          discount: { $arrayElemAt: ['$discountDetails', 0] },
+        },
+      },
+      {
+        $unwind: {
+          path: '$discountDetails',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
         $project: {
           _id: 0,
           totalSales: 1,
           productDetails: 1,
+          discountDetails: {
+            type: '$discount.type',
+            value: '$discount.value',
+            startDate: '$discount.startDate',
+            endDate: '$discount.endDate',
+          },
         },
       },
     ];

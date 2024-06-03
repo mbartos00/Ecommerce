@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { exampleProduct } from '../product-card/product-card.model';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
 import { lucideHeart, lucideShoppingCart } from '@ng-icons/lucide';
@@ -14,7 +13,7 @@ import { Product } from '@prisma/client';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListCardComponent {
-  @Input() product: Product = exampleProduct;
+  @Input() product!: Omit<Product, 'favorites_list_id'>;
 
   getStarsArray(): number[] {
     const maxStars = 5;

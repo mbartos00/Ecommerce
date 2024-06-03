@@ -5,7 +5,9 @@ import { isAuthPayload } from '@src/utils/tokens';
 import type { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-export function auth({ prisma }: Dependecies) {
+type Role = 'admin' | 'user';
+
+export function auth({ prisma }: Dependecies, requiredRole?: Role) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     const token = authHeader?.split(' ')[1];
@@ -26,6 +28,14 @@ export function auth({ prisma }: Dependecies) {
           id: payload.id,
         },
       });
+
+      if (requiredRole && user?.role !== requiredRole) {
+        throw new HttpError(
+          `Access denied`,
+          403,
+          `User must be an ${requiredRole}`,
+        );
+      }
 
       req.user = user ?? undefined;
       next();

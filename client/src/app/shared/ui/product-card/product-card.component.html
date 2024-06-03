@@ -1,5 +1,5 @@
 <div
-  class="relative w-full max-w-xs overflow-hidden rounded-md bg-white shadow-md"
+  class="relative w-full max-w-xs h-full overflow-hidden rounded-md bg-white shadow-md"
 >
   <div class="relative group">
     <img
@@ -34,13 +34,15 @@
       </div>
     </div>
   </div>
-  <div
-    class="absolute top-0 left-0 w-16 h-9 pt-2 bg-pink text-center align-middle text-md text-white rounded-sm"
-  >
-    <span>HOT</span>
-  </div>
+  @if (product.discount && product.discount!.value > 50) {
+    <div
+      class="absolute top-0 left-0 w-16 h-9 pt-2 bg-pink text-center align-middle text-md text-white rounded-sm"
+    >
+      <span>HOT</span>
+    </div>
+  }
   <div class="mt-4 px-5 pb-5">
-    <h5 class="text-xl font-semibold tracking-tight text-center text-slate-900">
+    <h5 class="text-xl font-semibold tracking-tight text-center text-navy">
       {{ product.name }}
     </h5>
     <div class="mt-2.5 mb-5 flex items-center justify-center">
@@ -62,16 +64,31 @@
     </div>
     <div class="flex items-center justify-center gap-4">
       <span class="text-xl font-semibold text-primary text-slate-900"
-        >${{ product.price }}</span
+        >${{
+          product.discount
+            ? (product.discountedPrice | number: '0.0-1')
+            : product.price
+        }}</span
       >
-      <p class="flex gap-2">
-        <span class="text-sm text-slate-900 text-grey line-through"
-          >${{ product.price }}</span
-        >
-        <span class="text-sm font-semibold text-pink text-slate-90"
-          >24% Off</span
-        >
-      </p>
+      @if (product.discount) {
+        <p class="flex gap-2">
+          <span class="text-sm text-grey line-through"
+            >${{ product.price | number: '0.0-2' }}</span
+          >
+          @if (product.discount!.type === 'percentage') {
+            <span class="text-sm font-semibold text-pink text-slate-90"
+              >{{ product.discount.value }}% Off</span
+            >
+          } @else {
+            <span class="text-sm font-semibold text-pink text-slate-90"
+              >{{
+                (product.discount.value * 100) / product.price
+                  | number: '0.0-0'
+              }}% Off</span
+            >
+          }
+        </p>
+      }
     </div>
   </div>
 </div>

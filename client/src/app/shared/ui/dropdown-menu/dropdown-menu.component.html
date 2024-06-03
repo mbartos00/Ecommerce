@@ -24,10 +24,12 @@
         @for (item of menuItems; track item) {
           <li>
             <a
-              [routerLink]="['/products']"
-              routerLinkActive="!text-blue"
+              [routerLink]="['/shop']"
               [queryParams]="{ category: item }"
-              class="block mx-auto px-4 py-2 hover:text-primary capitalize"
+              [queryParamClass]="'text-blue'"
+              param="category"
+              [value]="item"
+              class="block mx-auto text-black px-4 py-2 hover:text-primary capitalize"
             >
               {{ item }}
             </a>
