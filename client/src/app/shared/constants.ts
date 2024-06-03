@@ -1,8 +1,6 @@
-import { FooterSection } from './footer/footer.component';
-
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
 
-export const FOOTER_SECTIONS: FooterSection[] = [
+export const FOOTER_SECTIONS = [
   {
     title: 'Information',
     links: [
@@ -11,5 +9,29 @@ export const FOOTER_SECTIONS: FooterSection[] = [
       { title: 'Our articles', url: '/link3' },
       { title: 'Your cart', url: '/link4' },
     ],
+  },
+];
+
+export const INFO_SECTION = [
+  {
+    title: 'Free shipping',
+    description:
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    img: '../../../assets/shipping.svg',
+    alt: 'Shipping',
+  },
+  {
+    title: '100% refund',
+    description:
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    img: '../../../assets/refund.svg',
+    alt: 'Refund',
+  },
+  {
+    title: 'Support 24/7',
+    description:
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    img: '../../../assets/support.svg',
+    alt: 'Support',
   },
 ];

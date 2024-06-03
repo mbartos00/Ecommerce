@@ -1,0 +1,11 @@
+<section class="max-w-screen-2xl m-auto text-black">
+  <ul
+    class="py-16 md:py-20 px-4 md:px-16 xl:px-24 flex flex-col lg:flex-row gap-10 justify-around items-center text-center"
+  >
+    <li *ngFor="let info of infoSection" class="max-w-56">
+      <img [src]="info.img" [alt]="info.alt" class="m-auto mb-10" />
+      <h3 class="pb-3 text-2xl font-medium uppercase">{{ info.title }}</h3>
+      <p class="font-proxima text-lg">{{ info.description }}</p>
+    </li>
+  </ul>
+</section>
