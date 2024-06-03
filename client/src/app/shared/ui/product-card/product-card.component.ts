@@ -3,12 +3,13 @@ import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
 import { lucideHeart, lucideShoppingCart } from '@ng-icons/lucide';
 import { Product } from '../../types/product.model';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
   templateUrl: './product-card.component.html',
-  imports: [HlmIconComponent],
+  imports: [HlmIconComponent, CurrencyPipe, DecimalPipe],
   providers: [provideIcons({ lucideHeart, lucideShoppingCart })],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

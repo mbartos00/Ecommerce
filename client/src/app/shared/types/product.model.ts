@@ -16,6 +16,23 @@ export type Product = {
   categories: Omit<Category, 'products' | 'productIds'>[];
   favorites_list_id?: string | null;
   variants: Omit<Variant, 'productId' | 'product'>[];
+  discount: ProductDiscount;
+  discountedPrice: string;
+  createdAt: Date;
+};
+
+export enum DiscountType {
+  percentage = 'percentage',
+  fixed = 'fixed',
+}
+
+export type ProductDiscount = {
+  id: string;
+  productId: string;
+  type: DiscountType;
+  value: number;
+  startDate: Date;
+  endDate: Date;
   createdAt: Date;
 };
 
@@ -55,14 +72,14 @@ export type QueryParams = {
 };
 
 export type Condition = 'new' | 'used';
-export type Size = {
-  xs: 'xs';
-  s: 's';
-  m: 'm';
-  l: 'l';
-  xl: 'xl';
-  xxl: 'xxl';
-};
+export enum Size {
+  xs = 'xs',
+  s = 's',
+  m = 'm',
+  l = 'l',
+  xl = 'xl',
+  xxl = 'xxl',
+}
 
 export type PaginationInfo = {
   count: number;

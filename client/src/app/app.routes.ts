@@ -11,6 +11,11 @@ export const routes: Routes = [
       import('./home/home.component').then(c => c.HomeComponent),
   },
   {
+    path: 'shop',
+    loadComponent: () =>
+      import('./shop/shop.component').then(c => c.ShopComponent),
+  },
+  {
     path: '**',
     redirectTo: 'auth',
     pathMatch: 'full',

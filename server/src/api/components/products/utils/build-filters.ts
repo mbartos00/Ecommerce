@@ -43,11 +43,11 @@ export function buildProductsFilters(
           if (typeof acc.price === 'object') {
             acc.price = {
               ...acc.price,
-              gte: parseFloat(queryParams.max_price!),
+              lte: parseFloat(queryParams.max_price!),
             };
           }
           acc.price = {
-            gte: parseFloat(queryParams.max_price!),
+            lte: parseFloat(queryParams.max_price!),
           };
           break;
         case QueryParam.search:

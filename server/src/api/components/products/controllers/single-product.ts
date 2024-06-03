@@ -22,6 +22,20 @@ export function getProductById({ prisma }: Dependecies) {
             },
           },
           variants: true,
+          discount: {
+            where: {
+              AND: [
+                { endDate: { gte: new Date() } },
+                { startDate: { lte: new Date() } },
+              ],
+            },
+            select: {
+              type: true,
+              value: true,
+              startDate: true,
+              endDate: true,
+            },
+          },
         },
       })
       .catch((error: unknown) => {

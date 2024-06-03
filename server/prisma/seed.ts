@@ -180,6 +180,36 @@ export async function seedNews() {
   console.log('Seeding news completed!');
 }
 
+export async function seedDiscountedProducts() {
+  await prisma.productDiscount.deleteMany();
+
+  const productIds = await prisma.product.findMany({
+    select: {
+      id: true,
+    },
+  });
+
+  for (let i = 0; i < productIds.length / 2; i++) {
+    await prisma.productDiscount.create({
+      data: {
+        productId: productIds[i].id,
+        type: faker.helpers.arrayElement(['percentage', 'fixed']),
+        value: getRandNum(1, 99),
+        startDate: faker.date.between({
+          from: '2024-04-01T00:00:00.000Z',
+          to: '2024-05-28T00:00:00.000Z',
+        }),
+        endDate: faker.date.between({
+          from: '2024-06-30T00:00:00.000Z',
+          to: '2024-07-30T00:00:00.000Z',
+        }),
+      },
+    });
+  }
+
+  console.log('Seeding discouted products completed');
+}
+
 export async function seedSoldProduct() {
   await prisma.soldProduct.deleteMany();
 
@@ -202,7 +232,12 @@ export async function seedSoldProduct() {
 }
 
 async function main() {
-  await Promise.all([seedNews(), seedProducts(), seedSoldProduct()]);
+  await Promise.all([
+    seedNews(),
+    seedProducts(),
+    seedSoldProduct(),
+    seedDiscountedProducts(),
+  ]);
 }
 
 await main()
