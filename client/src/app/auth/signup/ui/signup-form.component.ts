@@ -27,7 +27,6 @@ import { SignupSchema } from '@app/shared/types/schemas';
 import { LogoComponent } from '@app/shared/ui/logo/logo.component';
 import { FormInputComponent } from '@app/shared/ui/form-input/form-input.component';
 import { toast } from 'ngx-sonner';
-import { HlmToasterComponent } from '@app/shared/ui/ui-sonner-helm/src';
 
 @Component({
   selector: 'app-signup-form',
@@ -41,7 +40,6 @@ import { HlmToasterComponent } from '@app/shared/ui/ui-sonner-helm/src';
     RouterModule,
     LogoComponent,
     FormInputComponent,
-    HlmToasterComponent
   ],
   providers: [provideIcons({ lucideMail, lucideUser, lucideLock })],
   templateUrl: './signup-form.component.html',
@@ -79,7 +77,7 @@ export class SignupFormComponent implements OnInit {
     if (this.signupForm.invalid) return;
     this.createUser.emit(this.signupForm.getRawValue());
     this.signupForm.reset();
-    
-    toast('The account has been created.');
+
+    toast.success('The account has been created.');
   }
 }
