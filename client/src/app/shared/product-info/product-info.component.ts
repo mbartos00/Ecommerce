@@ -1,10 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
-import { Product } from '../types/product.model';
+import { Component, OnInit } from '@angular/core';
+import { Product, ProductInCart, Variant } from '../types/product.model';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
 import {
@@ -22,9 +17,27 @@ import {
   HlmTabsListComponent,
   HlmTabsTriggerDirective,
 } from '@spartan-ng/ui-tabs-helm';
+import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
+import { HlmSkeletonComponent } from '@spartan-ng/ui-skeleton-helm';
 import { ImageGalleryComponent } from '../ui/image-gallery/image-gallery.component';
 import { SelectComponent } from '../ui/ui-select/ui-select.component';
 import { getStarsArray } from '../utils/utils';
+import { ActivatedRoute } from '@angular/router';
+import { ProductService } from '../product/product.service';
+import { CommonModule } from '@angular/common';
+import { CartService } from '../cart/cart.service';
+import {
+  BehaviorSubject,
+  EMPTY,
+  Observable,
+  combineLatest,
+  map,
+  of,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
+
 @Component({
   selector: 'app-product-info',
   standalone: true,
@@ -37,6 +50,9 @@ import { getStarsArray } from '../utils/utils';
     HlmTabsListComponent,
     HlmTabsTriggerDirective,
     ImageGalleryComponent,
+    HlmSpinnerComponent,
+    HlmSkeletonComponent,
+    CommonModule,
   ],
   providers: [
     provideIcons({
@@ -49,70 +65,157 @@ import { getStarsArray } from '../utils/utils';
     }),
   ],
   templateUrl: './product-info.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductInfoComponent implements OnInit {
-  @Input() product: Product = {} as Product;
-
+  selectedProduct: ProductInCart = {} as ProductInCart;
+  product$: Observable<Product> = of();
+  sizes$: Observable<string[]> = of();
+  colors$: Observable<string[]> = of();
+  isLoading = true;
+  selectedSize$ = new BehaviorSubject<string>('');
+  selectedColor$ = new BehaviorSubject<string>('');
   selectedColorIndex: number = 0;
-  sizes: string[] = [];
-  colors: string[] = [];
-  selectedSize: string = '';
-  selectedColor: string = '';
-  availableQuantity: number = 0;
+  quantityToBuy: number = 1;
+
+  constructor(
+    private route: ActivatedRoute,
+    private productService: ProductService,
+    private cartService: CartService
+  ) {}
 
   ngOnInit(): void {
-    this.sizes = this.getUniqueSizes();
-    this.setSizeAndColor(this.sizes[0]);
+    this.initOptions();
+    this.isLoading = false;
   }
 
-  getUniqueSizes(): string[] {
-    const sizesSet = new Set(
-      this.product.variants.map(variant => variant.size)
+  initOptions(): void {
+    this.product$ = this.route.params.pipe(
+      map(params => params['id']),
+      switchMap(productId => this.productService.getProductById(productId))
     );
 
-    return Array.from(sizesSet);
-  }
-
-  onSizeChanged(event: Event): void {
-    const selectedElement = event.target as HTMLSelectElement;
-    const newSize = selectedElement.value;
-    this.setSizeAndColor(newSize);
-  }
-
-  setSizeAndColor(size: string): void {
-    this.selectedSize = size;
-    this.updateAvailableColors();
-    this.selectedColor = this.colors[0];
-    this.updateAvailableQuantity();
-  }
-
-  updateAvailableColors(): void {
-    const colorSet = new Set(
-      this.product.variants
-        .filter(variant => variant.size === this.selectedSize)
-        .map(variant => variant.color)
+    this.sizes$ = this.product$.pipe(
+      map(product => {
+        const sizes = Array.from(
+          new Set(product.variants.map(variant => variant.size))
+        );
+        const defaultSize = sizes[0];
+        this.selectedSize$.next(defaultSize);
+        return sizes;
+      })
     );
-    this.colors = Array.from(colorSet);
+
+    this.colors$ = combineLatest([this.product$, this.selectedSize$]).pipe(
+      map(([product, selectedSize]) =>
+        Array.from(
+          new Set(
+            product.variants
+              .filter(variant => variant.size === selectedSize)
+              .map(variant => variant.color)
+          )
+        )
+      )
+    );
+  }
+
+  addToCart(): void {
+    this.getVariant()
+      .pipe(
+        switchMap(variant => {
+          if (!variant) {
+            return EMPTY;
+          }
+          return this.product$.pipe(
+            tap(product => {
+              if (product) {
+                this.selectedProduct = {
+                  id: product.id,
+                  name: product.name,
+                  brand: product.brand,
+                  price: product.price,
+                  images: product.images,
+                  variantId: variant.id,
+                  color: variant.color,
+                  condition: variant.condition,
+                  size: variant.size,
+                  availableQuantity: variant.quantity,
+                  quantityToBuy: this.quantityToBuy,
+                };
+                this.cartService.addToCart(this.selectedProduct);
+              } else {
+                console.error('Product not found.');
+              }
+            })
+          );
+        })
+      )
+      .subscribe();
+  }
+
+  setSizeAndColor(size: string, color: string = ''): void {
+    this.selectedProduct.size = size;
+    this.selectedSize$.next(size);
+
+    this.colors$
+      .pipe(
+        take(1),
+        tap(colors => {
+          const newColor = color || colors[0];
+          this.selectedColor$.next(newColor);
+          this.selectedProduct.color = newColor;
+          this.selectedColorIndex = colors.indexOf(newColor);
+          this.updateAvailableQuantity();
+        })
+      )
+      .subscribe();
+  }
+
+  onQuantityChange(newQuantity: number): void {
+    this.quantityToBuy = newQuantity;
   }
 
   updateAvailableQuantity(): void {
-    const variant = this.product.variants.find(
-      variant =>
-        variant.size === this.selectedSize &&
-        variant.color === this.selectedColor
-    );
-    this.availableQuantity = variant ? variant.quantity : 0;
+    this.getVariant()
+      .pipe(
+        take(1),
+        tap(variant => {
+          this.selectedProduct.availableQuantity = variant
+            ? variant.quantity
+            : 0;
+        })
+      )
+      .subscribe();
   }
 
   selectColorVariant(index: number): void {
-    const color = this.colors[index];
+    this.colors$
+      .pipe(
+        take(1),
+        tap(colors => {
+          this.selectedColorIndex = index;
+          const newColor = colors[index];
+          this.selectedColor$.next(newColor);
+          this.selectedProduct.color = newColor;
+          this.updateAvailableQuantity();
+        })
+      )
+      .subscribe();
+  }
 
-    if (this.colors.includes(color)) {
-      this.selectedColorIndex = index;
-      this.selectedColor = color;
-      this.updateAvailableQuantity();
-    }
+  getVariant(): Observable<Variant | undefined> {
+    return combineLatest([
+      this.product$,
+      this.selectedSize$,
+      this.selectedColor$,
+    ]).pipe(
+      map(([product, selectedSize, selectedColor]) =>
+        product.variants.find(
+          variant =>
+            variant.size.toString() === selectedSize &&
+            variant.color === selectedColor
+        )
+      )
+    );
   }
 
   getStarsArray(): number[] {

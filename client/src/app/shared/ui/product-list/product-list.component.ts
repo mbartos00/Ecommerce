@@ -26,6 +26,15 @@ import { HlmPaginationLinkDirective } from '../ui-pagination-helm/src/lib/hlm-pa
 import { HlmPaginationNextComponent } from '../ui-pagination-helm/src/lib/hlm-pagination-next.componet';
 import { HlmPaginationPreviousComponent } from '../ui-pagination-helm/src/lib/hlm-pagination-previous.componet';
 import { HlmPaginationDirective } from '../ui-pagination-helm/src/lib/hlm-pagination.directive';
+import { SortBarComponent } from '../sort-bar/sort-bar.component';
+import { FormsModule } from '@angular/forms';
+import type {
+  Order,
+  ProductList,
+  QueryParams,
+} from '../../types/product.model';
+import { ProductListCardComponent } from '../product-list-card/product-list-card.component';
+import { HlmSpinnerComponent } from '../ui-spinner-helm/src';
 
 @Component({
   selector: 'app-product-list',
@@ -44,7 +53,9 @@ import { HlmPaginationDirective } from '../ui-pagination-helm/src/lib/hlm-pagina
     HlmPaginationLinkDirective,
     HlmPaginationNextComponent,
     HlmPaginationPreviousComponent,
+    HlmSpinnerComponent,
     SortBarComponent,
+    ProductListCardComponent,
   ],
 })
 export class ProductListComponent implements OnInit, OnDestroy {

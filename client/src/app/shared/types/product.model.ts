@@ -34,6 +34,7 @@ export type ProductDiscount = {
   startDate: Date;
   endDate: Date;
   createdAt: Date;
+  quantity?: number;
 };
 
 export type Category = {
@@ -47,7 +48,7 @@ export type Variant = {
   id: string;
   color: string;
   condition: Condition;
-  size: Size;
+  size: string;
   quantity: number;
   productId?: string;
   product?: Product;
@@ -72,6 +73,7 @@ export type QueryParams = {
 };
 
 export type Condition = 'new' | 'used';
+
 export enum Size {
   xs = 'xs',
   s = 's',
@@ -86,4 +88,18 @@ export type PaginationInfo = {
   page: number;
   perPage: number;
   totalPages: number;
+};
+
+export type ProductInCart = {
+  id: string;
+  name: string;
+  brand: string;
+  price: number;
+  images: string[];
+  variantId: string;
+  color: string;
+  condition: Condition;
+  size: string;
+  availableQuantity: number;
+  quantityToBuy: number;
 };
