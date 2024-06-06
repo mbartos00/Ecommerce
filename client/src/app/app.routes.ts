@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { CartComponent } from './shared/cart/cart.component';
+import { ProductListComponent } from './shared/ui/product-list/product-list.component';
+import { ProductInfoComponent } from './shared/product-info/product-info.component';
 
 export const routes: Routes = [
   {
@@ -10,6 +13,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./home/home.component').then(c => c.HomeComponent),
   },
+  { path: 'cart', component: CartComponent },
+  { path: 'shop', component: ProductListComponent },
+  { path: 'product/:id', component: ProductInfoComponent },
   {
     path: 'shop',
     loadComponent: () =>
