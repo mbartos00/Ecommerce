@@ -6,19 +6,11 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from '@app/shared/localstorage/localstorage.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import type {
-  Order,
-  ProductList,
-  QueryParams,
-} from '../../types/product.model';
 import { ProductCardComponent } from '../product-card/product-card.component';
-import { ProductListCardComponent } from '../product-list-card/product-list-card.component';
-import { SortBarComponent } from '../sort-bar/sort-bar.component';
 import { HlmPaginationContentDirective } from '../ui-pagination-helm/src/lib/hlm-pagination-content.directive';
 import { HlmPaginationEllipsisComponent } from '../ui-pagination-helm/src/lib/hlm-pagination-ellipsis.componet';
 import { HlmPaginationItemDirective } from '../ui-pagination-helm/src/lib/hlm-pagination-item.directive';
