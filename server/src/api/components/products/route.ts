@@ -8,6 +8,7 @@ import validate from '@src/api/middleware/validate';
 import { addDiscountSchema } from '@src/schemas/products';
 import { auth } from '@src/api/middleware/auth';
 import { getBestsellers } from './controllers/bestsellers';
+import { getAllDiscountedProducts } from './controllers/all-products-on-sale';
 
 export function productsRouter(deps: Dependecies) {
   const router = Router();
@@ -15,6 +16,7 @@ export function productsRouter(deps: Dependecies) {
   router.get('/', getAllProducts(deps));
   router.get('/categories', getAllCategories(deps));
   router.get('/bestsellers', getBestsellers(deps));
+  router.get('/sale', getAllDiscountedProducts(deps));
   router.get('/:id', getProductById(deps));
   router.post(
     '/discount',

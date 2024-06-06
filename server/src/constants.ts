@@ -1,7 +1,7 @@
 import type { PaymentTypes } from '@prisma/client';
 
 export const SIGNALS = ['SIGINT', 'SIGTERM', 'SIGQUIT'] as const;
-
+export const SALE_PERCENTAGE = 50;
 export const DEFAULT_PAGE = '1';
 export const DEFAULT_PER_PAGE = '20';
 
