@@ -9,7 +9,7 @@ import {
   inject,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { LoginSchema } from '@app/shared/types/schemas';
 import { FormInputComponent } from '@app/shared/ui/form-input/form-input.component';
 import { LogoComponent } from '@app/shared/ui/logo/logo.component';
@@ -39,9 +39,10 @@ export class LoginFormComponent implements OnChanges {
   @Input({ required: true }) loginStatus!: LoginStatus;
   @Input() message?: string;
   @Output() login = new EventEmitter<LoginSchema>();
-
+  private router = inject(Router);
   private fb = inject(FormBuilder);
 
+  //eslint-disable-next-line
   loginForm = this.fb.nonNullable.group(
     {
       email: ['', [Validators.required, Validators.email]],
@@ -56,6 +57,10 @@ export class LoginFormComponent implements OnChanges {
     if (this.loginForm.invalid) return;
 
     this.login.emit(this.loginForm.getRawValue());
+    this.loginForm.reset();
+    this.router.navigate(['/']).then(() => {
+      toast.success('Logged In');
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

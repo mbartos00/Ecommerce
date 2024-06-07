@@ -9,7 +9,7 @@ import { User } from '../types/user';
 import { getAccessToken, saveAccessToken } from '../utils/tokens';
 
 type LoginResponse = ResponseFormat & {
-  accessToken: string;
+  token: string;
   user: User;
 };
 
@@ -41,7 +41,7 @@ export class AuthService {
       });
 
       this.http
-        .get<UserResponse>(`${environment.API_URL}/auth/user`, { headers })
+        .get<UserResponse>(`${environment.API_URL}/user`, { headers })
         .subscribe({
           next: ({ user }) => {
             this.authState.update(state => ({ ...state, user }));
@@ -55,10 +55,10 @@ export class AuthService {
 
   login(credentials: LoginSchema): Observable<LoginResponse> {
     return this.http
-      .post<LoginResponse>(`${environment.API_URL}/auth/login`, credentials)
+      .post<LoginResponse>(`${environment.API_URL}/login`, credentials)
       .pipe(
-        tap(({ accessToken, user }) => {
-          saveAccessToken(accessToken);
+        tap(({ token, user }) => {
+          saveAccessToken(token);
 
           this.authState.update(state => ({
             ...state,

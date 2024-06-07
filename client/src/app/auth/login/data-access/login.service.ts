@@ -17,7 +17,7 @@ export class LoginService {
   private loginState = signal<LoginState>({
     status: 'pending',
   });
-
+  /*eslint-disable*/
   status = computed(() => this.loginState().status);
 
   error$ = new Subject<string>();
