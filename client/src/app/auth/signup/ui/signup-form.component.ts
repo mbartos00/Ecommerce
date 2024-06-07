@@ -4,9 +4,10 @@ import {
   ChangeDetectionStrategy,
   EventEmitter,
   Output,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HlmButtonDirective } from '@app/shared/ui/ui-button-helm/src';
 import { HlmInputDirective } from '@app/shared/ui/ui-input-helm/src';
 import { HlmIconComponent } from '@app/shared/ui/ui-icon-helm/src';
@@ -47,11 +48,10 @@ import { toast } from 'ngx-sonner';
 })
 export class SignupFormComponent implements OnInit {
   @Output() createUser = new EventEmitter<SignupSchema>();
-
   signup = false;
   passwordMismatch = false;
-
   signupForm!: FormGroup;
+  private router = inject(Router);
 
   constructor(private fb: FormBuilder) {}
 
@@ -77,7 +77,8 @@ export class SignupFormComponent implements OnInit {
     if (this.signupForm.invalid) return;
     this.createUser.emit(this.signupForm.getRawValue());
     this.signupForm.reset();
-
-    toast.success('The account has been created.');
+    this.router.navigate(['/login']).then(() => {
+      toast.success('The account has been created, you can log in');
+    });
   }
 }
