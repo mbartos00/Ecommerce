@@ -1,0 +1,49 @@
+<div class="flex flex-col justify-center items-center">
+  <h2 class="text-3xl font-bold">BEST SELLER</h2>
+  <div>
+    <div class="relative">
+      <div class="flex space-x-10">
+        <button
+          *ngFor="let category of categories; let idx = index"
+          class="pt-2 tab-button"
+          [ngClass]="{
+            'text-primary border-b-4 border-b-primary': idx === activeTabIndex
+          }"
+          (click)="setActiveTabIndex(idx)"
+        >
+          {{ category.name | uppercase }}
+        </button>
+      </div>
+      <span
+        class="absolute bottom-0 block h-1 bg-teal-500 transition-all duration-300"
+        [style.left]="'0px'"
+        [style.width]="'0px'"
+      ></span>
+    </div>
+  </div>
+
+  <div
+    class="container my-7 mx-auto p-2"
+    *ngIf="products$ | async as products; else loading"
+  >
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
+    >
+      <ng-container *ngFor="let product of products.data">
+        <app-product-card
+          [product]="product.productDetails"
+          class="m-0 aspect-auto"
+        ></app-product-card>
+      </ng-container>
+    </div>
+  </div>
+  <ng-template #loading>
+    <hlm-spinner></hlm-spinner>
+  </ng-template>
+  <button
+    class="text-primary font-xl border-b-2 border-primary"
+    (click)="onLoadMore()"
+  >
+    LOAD MORE
+  </button>
+</div>

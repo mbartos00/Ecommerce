@@ -4,6 +4,16 @@ export type ProductList = {
   data: Product[];
 };
 
+export type BestSellerList = {
+  status: string;
+  data: ProductWithSales[];
+};
+
+export type ProductWithSales = {
+  totalSales: number;
+  productDetails: Product;
+};
+
 export type Product = {
   id: string;
   name: string;
