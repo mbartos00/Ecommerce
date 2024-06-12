@@ -20,7 +20,7 @@ export class ProductCardComponent {
 
   constructor(private router: Router) {}
 
-  goToProduct(productId: string) {
+  goToProduct(productId: string): void {
     this.router.navigate(['/product', productId]);
   }
 
