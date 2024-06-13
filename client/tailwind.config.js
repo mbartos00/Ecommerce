@@ -22,6 +22,12 @@ module.exports = {
       poppins: ['Poppins', 'sans-serif'],
       proxima: ['Proxima Nova', 'sans-serif'],
     },
+    container: {
+      screens: {
+        '2xl': '1920px',
+      },
+      center: true,
+    },
     extend: {},
   },
   plugins: [],
