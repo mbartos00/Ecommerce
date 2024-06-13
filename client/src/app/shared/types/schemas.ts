@@ -9,3 +9,10 @@ export type SignupSchema = {
   email: string;
   password: string;
 };
+
+export type ContactFormSchema = {
+  name: string;
+  email: string;
+  message: string;
+  subject?: string;
+};

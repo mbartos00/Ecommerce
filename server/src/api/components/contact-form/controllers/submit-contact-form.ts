@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import mailjet, { PostResource } from 'node-mailjet';
-import type { Dependencies } from '@src/config/dependencies';
-import type { ResponseFormat } from '../types/response';
+import type { Dependecies } from '@src/config/dependencies';
+import type { ResponseFormat } from '@src/types/response';
 import { HttpError } from '@src/errors';
 
-export function submitContactForm({ prisma }: Dependencies) {
+export function submitContactForm({ prisma }: Dependecies) {
   return async (
     req: Request,
     res: Response<ResponseFormat & { code?: string }>,
