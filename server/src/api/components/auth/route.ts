@@ -9,6 +9,7 @@ import {
   updateUserSchema,
   addressSchema,
   updateAddressSchema,
+  addFavoriteSchema,
 } from '@src/schemas/auth';
 import { Router } from 'express';
 import { deleteUser } from './controllers/user/delete-user';
@@ -18,6 +19,9 @@ import { getAllAddresses } from './controllers/address/get-addresses';
 import { addAddress } from './controllers/address/add-address';
 import { removeAddress } from './controllers/address/remove-address';
 import { updateAddress } from './controllers/address/update-addres';
+import { getFavorites } from './controllers/favorites/get-favorites';
+import { addFavorite } from './controllers/favorites/add-favorites';
+import { removeFavorite } from './controllers/favorites/remove-favorites';
 
 export function authRouter(deps: Dependecies) {
   const router = Router();
@@ -43,6 +47,13 @@ export function authRouter(deps: Dependecies) {
     updateAddress(deps),
   );
   router.delete('/user/addresses/:id', auth(deps), removeAddress(deps));
+  router.post(
+    '/user/favorites',
+    [auth(deps), validate(addFavoriteSchema)],
+    addFavorite(deps),
+  );
+  router.get('/user/favorites', auth(deps), getFavorites(deps));
+  router.delete('/user/favorites/:id', auth(deps), removeFavorite(deps));
 
   return router;
 }
