@@ -10,6 +10,7 @@ const zipcodeValidation = z
 const phoneValidation = z
   .string()
   .refine((value) => /^\(?\d{3}\)?[- .]?\d{3}[- .]?\d{3}$/.test(value));
+const idValidation = z.string().length(24);
 
 export const registerSchema = z.object({
   name: nameValidation,
@@ -140,3 +141,9 @@ export const updateAddressSchema = z
   });
 
 export type UpdateAddressSchema = z.infer<typeof updateAddressSchema>;
+
+export const addFavoriteSchema = z.object({
+  productId: idValidation,
+});
+
+export type AddFavoriteSchema = z.infer<typeof addFavoriteSchema>;
