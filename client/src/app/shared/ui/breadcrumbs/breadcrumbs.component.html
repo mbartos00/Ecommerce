@@ -1,46 +1,39 @@
-<nav
-  aria-label="breadcrumb"
-  *ngIf="(breadcrumbs$ | async)!.length > 1"
-  class="hidden lg:flex bg-grey-light py-2 px-4 items-center justify-center"
->
-  <ol class="breadcrumb flex space-x-2">
-    <ng-container
-      *ngFor="let breadcrumb of breadcrumbs$ | async; let last = last"
+@if ((breadcrumbs$ | async)!; as breadcrumbs) {
+  @if (breadcrumbs.length > 0) {
+    <nav
+      aria-label="breadcrumb"
+      class="hidden lg:flex bg-grey-light py-2 px-4 items-center justify-center"
     >
-      <li>
-        <a
-          class="mx-2 text-lg font-thin hover:underline hover:text-blue-light transition-all"
-          [ngClass]="last ? 'text-black' : 'text-blue'"
-          [href]="breadcrumb.url"
-        >
-          {{ breadcrumb.label }}
-        </a>
-        <span *ngIf="!last" class="text-grey text-sm font-thin">/</span>
-      </li>
-    </ng-container>
-  </ol>
-</nav>
-<nav
-  aria-label="breadcrumb"
-  *ngIf="(breadcrumbs$ | async)!.length > 1"
-  class="flex lg:hidden p-4 gap-3"
->
-  <ng-container
-    *ngFor="
-      let breadcrumb of breadcrumbs$ | async;
-      let i = index;
-      let last = last
-    "
-  >
-    <ng-container *ngIf="last">
-      <span class="font-semibold text-xl capitalize">{{
-        breadcrumb.label
-      }}</span>
-    </ng-container>
-    <ng-container *ngIf="!last && i === (breadcrumbs$ | async)!.length - 2">
-      <a [href]="breadcrumb.url">
-        <hlm-icon size="base" name="lucideChevronLeft" />
-      </a>
-    </ng-container>
-  </ng-container>
-</nav>
+      <ol class="breadcrumb flex space-x-2">
+        <ng-container *ngFor="let breadcrumb of breadcrumbs; let last = last">
+          <li>
+            <a
+              class="mx-2 text-lg font-thin hover:underline hover:text-blue-light transition-all"
+              [ngClass]="!last ? 'text-black' : 'text-blue'"
+              [href]="breadcrumb.url"
+            >
+              {{ breadcrumb.label }}
+            </a>
+            <span *ngIf="!last" class="text-grey text-sm font-thin">/</span>
+          </li>
+        </ng-container>
+      </ol>
+    </nav>
+    <nav aria-label="breadcrumb" class="flex lg:hidden p-4 gap-3">
+      <ng-container
+        *ngFor="let breadcrumb of breadcrumbs; let i = index; let last = last"
+      >
+        <ng-container *ngIf="last">
+          <span class="font-semibold text-xl capitalize">{{
+            breadcrumb.label
+          }}</span>
+        </ng-container>
+        <ng-container *ngIf="!last && i === (breadcrumbs$ | async)!.length - 2">
+          <a [href]="breadcrumb.url">
+            <hlm-icon size="base" name="lucideChevronLeft" />
+          </a>
+        </ng-container>
+      </ng-container>
+    </nav>
+  }
+}
