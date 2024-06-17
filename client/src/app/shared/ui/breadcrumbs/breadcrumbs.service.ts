@@ -1,7 +1,7 @@
-import { BehaviorSubject, filter } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { Breadcrumb } from './breadcrumbs.model';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { Breadcrumb } from './breadcrumbs.model';
 })
 export class BreadcrumbService {
   private breadcrumbsSubject$ = new BehaviorSubject<Breadcrumb[]>([]);
-
+  //eslint-disable-next-line
   breadcrumbs$ = this.breadcrumbsSubject$.asObservable();
 
   constructor(private router: Router) {
@@ -28,29 +28,49 @@ export class BreadcrumbService {
 
   private createBreadcrumbs(
     route: ActivatedRouteSnapshot | null,
-    parentUrl: string[] = []
+    parentUrl: string[] = [],
+    breadcrumbs: Breadcrumb[] = []
   ): Breadcrumb[] {
     if (!route) {
-      return [];
+      return breadcrumbs;
     }
 
     const routeUrl = [...parentUrl, ...route.url.map(url => url.path)];
-    const breadcrumbs: Breadcrumb[] = [];
+    const breadcrumbUrl = '/' + routeUrl.join('/');
 
     if (route.data && route.data['breadcrumb']) {
+      let label = route.data['breadcrumb'];
+
+      if (route.params && Object.keys(route.params).length) {
+        for (const key of Object.keys(route.params)) {
+          label = label.replace(`:${key}`, route.params[key]);
+        }
+      }
+
       const breadcrumb: Breadcrumb = {
-        label: route.data['breadcrumb'],
-        url: '/' + routeUrl.join('/'),
+        label: label,
+        url: breadcrumbUrl,
       };
       breadcrumbs.push(breadcrumb);
     }
 
-    return breadcrumbs.concat(
-      this.createBreadcrumbs(route.firstChild, routeUrl)
+    return this.createBreadcrumbs(
+      route.firstChild,
+      routeUrl,
+      this.getDistinctBreadcrumbs(breadcrumbs)
     );
   }
 
   private updateBreadcrumbs(breadcrumbs: Breadcrumb[]): void {
     this.breadcrumbsSubject$.next(breadcrumbs);
+  }
+
+  private getDistinctBreadcrumbs(breadcrumbs: Breadcrumb[]): Breadcrumb[] {
+    const seen = new Set();
+    return breadcrumbs.filter(breadcrumb => {
+      const duplicate = seen.has(breadcrumb.label + breadcrumb.url);
+      seen.add(breadcrumb.label + breadcrumb.url);
+      return !duplicate;
+    });
   }
 }

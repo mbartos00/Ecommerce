@@ -4,6 +4,7 @@ import { provideIcons } from '@ng-icons/core';
 import { lucideHeart, lucideShoppingCart } from '@ng-icons/lucide';
 import { Product } from '../../types/product.model';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SkeletonCardComponent } from '../skeleton-card/skeleton-card.component';
