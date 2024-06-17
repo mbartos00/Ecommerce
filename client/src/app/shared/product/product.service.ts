@@ -5,9 +5,9 @@ import { catchError, map } from 'rxjs/operators';
 import { Product, ProductList, QueryParams } from '../types/product.model';
 import { environment } from '../../../environments/environment';
 
-interface ApiResponse {
+interface ApiResponse<T extends Product | Product[]> {
   status: string;
-  data: Product;
+  data: T;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -27,8 +27,16 @@ export class ProductService {
   getProductById(productId: string): Observable<Product> {
     const url = `${this.apiUrl}/${productId}`;
 
-    return this.http.get<ApiResponse>(url).pipe(
+    return this.http.get<ApiResponse<Product>>(url).pipe(
       map(response => response.data),
+      catchError(this.handleError)
+    );
+  }
+
+  getProductsOnSale(): Observable<Product[]> {
+    const url = `${this.apiUrl}/sale`;
+    return this.http.get<ApiResponse<Product[]>>(url).pipe(
+      map(response => response.data.slice(0, 3)),
       catchError(this.handleError)
     );
   }

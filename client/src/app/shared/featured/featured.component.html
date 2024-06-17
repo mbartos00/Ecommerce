@@ -42,11 +42,11 @@
             </div>
 
             <div class="flex items-center gap-4 pr-4">
-              <span class="text-xl font-medium text-pink text-slate-900">
-                {{ product.price - product.discount.value | currency: 'USD' }}
+              <span class="text-xl font-medium text-pink">
+                {{ product.price - product.discount!.value | currency: 'USD' }}
               </span>
               <p class="flex gap-2">
-                <span class="text-sm text-slate-900 text-grey line-through">
+                <span class="text-sm text-grey line-through">
                   {{ product.price | currency: 'USD' }}
                 </span>
               </p>

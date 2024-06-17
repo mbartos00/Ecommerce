@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BestSellerList } from '@app/shared/types/product.model';
+import { BestSellerList, Product } from '@app/shared/types/product.model';
 import { getStarsArray } from '@app/shared/utils/utils';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { HlmSkeletonComponent } from '../ui-skeleton-helm/src/lib/hlm-skeleton.component';
 import { BestsellerService } from '@app/shared/bestseller-section/bestseller.service';
 import { RouterModule } from '@angular/router';
+import calculateDiscountedPrice from '@app/shared/utils/calculate-discounted-price';
 
 @Component({
   selector: 'app-bestseller-card',
@@ -16,6 +17,7 @@ import { RouterModule } from '@angular/router';
 export class BestsellerCardComponent implements OnInit, OnDestroy {
   products$: Observable<BestSellerList> = new Observable<BestSellerList>();
   currentProductIndex = 0;
+  calculateDiscountedPrice!: (product: Product) => number;
 
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -23,6 +25,7 @@ export class BestsellerCardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fetchProducts();
+    this.calculateDiscountedPrice = calculateDiscountedPrice;
   }
 
   fetchProducts(): void {

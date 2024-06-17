@@ -26,8 +26,8 @@ export type Product = {
   categories: Omit<Category, 'products' | 'productIds'>[];
   favorites_list_id?: string | null;
   variants: Omit<Variant, 'productId' | 'product'>[];
-  discount: ProductDiscount;
-  discountedPrice: string;
+  discount: ProductDiscount | null;
+  discountedPrice?: string;
   createdAt: Date;
 };
 

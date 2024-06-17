@@ -44,7 +44,6 @@ export function getAllProducts({ prisma }: Dependecies) {
       orderBy,
       include: {
         categories: {
-          where: whereClause.categories?.every,
           select: {
             id: true,
             name: true,

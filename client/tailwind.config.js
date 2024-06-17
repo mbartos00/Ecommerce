@@ -28,7 +28,11 @@ module.exports = {
       },
       center: true,
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'sales-background': "url('/assets/salesImage.jpg')",
+      },
+    },
   },
   plugins: [],
 };

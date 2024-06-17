@@ -1,6 +1,11 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import { type Express, json, urlencoded } from 'express';
+import {
+  type Express,
+  json,
+  urlencoded,
+  static as expressStatic,
+} from 'express';
 
 export function setupMiddlewares(app: Express) {
   app.use(
@@ -12,4 +17,5 @@ export function setupMiddlewares(app: Express) {
   app.use(json());
   app.use(cookieParser());
   app.use(urlencoded({ extended: false }));
+  app.use(expressStatic('public'));
 }

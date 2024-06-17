@@ -37,6 +37,7 @@ import {
   tap,
 } from 'rxjs';
 import { BestsellerCardComponent } from '../ui/bestseller-card/bestseller-card.component';
+import calculateDiscountedPrice from '../utils/calculate-discounted-price';
 
 @Component({
   selector: 'app-product-info',
@@ -76,6 +77,7 @@ export class ProductInfoComponent implements OnInit {
   selectedColor$ = new BehaviorSubject<string>('');
   selectedColorIndex: number = 0;
   quantityToBuy: number = 1;
+  calculateDiscountedPrice!: (product: Product) => number;
 
   constructor(
     private route: ActivatedRoute,
@@ -86,6 +88,7 @@ export class ProductInfoComponent implements OnInit {
   ngOnInit(): void {
     this.initOptions();
     this.isLoading = false;
+    this.calculateDiscountedPrice = calculateDiscountedPrice;
   }
 
   initOptions(): void {

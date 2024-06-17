@@ -55,7 +55,7 @@ export function getBestsellers({ prisma }: Dependecies) {
       },
       {
         $addFields: {
-          'productDetails._id': {
+          'productDetails.id': {
             $toString: '$productDetails._id',
           },
         },
@@ -83,12 +83,20 @@ export function getBestsellers({ prisma }: Dependecies) {
         $project: {
           _id: 0,
           totalSales: 1,
-          productDetails: 1,
-          discountDetails: {
-            type: '$discount.type',
-            value: '$discount.value',
-            startDate: '$discount.startDate',
-            endDate: '$discount.endDate',
+          productDetails: {
+            _id: 1,
+            name: 1,
+            categoryIds: 1,
+            images: 1,
+            rating: 1,
+            price: 1,
+            id: 1,
+            discount: {
+              type: '$discount.type',
+              value: '$discount.value',
+              startDate: '$discount.startDate',
+              endDate: '$discount.endDate',
+            },
           },
         },
       },

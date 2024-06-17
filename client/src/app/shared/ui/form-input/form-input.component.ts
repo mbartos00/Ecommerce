@@ -33,7 +33,7 @@ import { HlmIconComponent } from '../ui-icon-helm/src';
       {{ label }}
       <input
         hlmInput
-        [error]="(control.invalid && control.touched)"
+        [error]="control.invalid && control.touched"
         ngDefaultControl
         class="w-full"
         [ngClass]="{ 'pl-11': icon }"
@@ -41,7 +41,7 @@ import { HlmIconComponent } from '../ui-icon-helm/src';
         [type]="type"
       />
     </label>
-    @if ((control.invalid && control.touched)) {
+    @if (control.invalid && control.touched) {
       <p class="text-xs text-destructive">{{ getMessage() }}</p>
     }
   `,
@@ -59,7 +59,7 @@ export class FormInputComponent implements ControlValueAccessor {
     this.control.valueAccessor = this;
   }
 
-  getMessage() {
+  getMessage(): string | undefined {
     const errors = this.control.errors;
 
     if (!errors) return;
@@ -69,16 +69,19 @@ export class FormInputComponent implements ControlValueAccessor {
     return getValidationErrorMessage(firstErrorName);
   }
 
-  setDisabledState(d: boolean) {
+  setDisabledState(d: boolean): void {
     this.dva.setDisabledState(d);
   }
-  writeValue(value: string) {
+
+  writeValue(value: string): void {
     this.dva.writeValue(value);
   }
-  registerOnChange(fn: OnChange<string>) {
+
+  registerOnChange(fn: OnChange<string>): void {
     this.dva.registerOnChange(fn);
   }
-  registerOnTouched(fn: OnTouch) {
+
+  registerOnTouched(fn: OnTouch): void {
     this.dva.registerOnTouched(fn);
   }
 }

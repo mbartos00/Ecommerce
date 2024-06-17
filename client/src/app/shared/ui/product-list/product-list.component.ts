@@ -22,6 +22,10 @@ import { HlmSpinnerComponent } from '../ui-spinner-helm/src';
 import { SkeletonCardComponent } from '../skeleton-card/skeleton-card.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { ProductService } from '@app/shared/product/product.service';
+import {
+  HlmPaginationNextComponent,
+  HlmPaginationPreviousComponent,
+} from '../ui-pagination-helm/src';
 
 @Component({
   selector: 'app-product-list',
@@ -38,6 +42,8 @@ import { ProductService } from '@app/shared/product/product.service';
     ProductListCardComponent,
     SkeletonCardComponent,
     PaginationComponent,
+    HlmPaginationNextComponent,
+    HlmPaginationPreviousComponent,
   ],
 })
 export class ProductListComponent implements OnInit, OnDestroy {
