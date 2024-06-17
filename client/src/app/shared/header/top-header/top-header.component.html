@@ -1,5 +1,5 @@
-<div class="container flex flex-col-reverse lg:flex-row lg:px-2">
-  <nav class="lg:w-full">
+<div class="flex flex-col-reverse lg:flex-row">
+  <nav class="lg:w-full 2xl:container">
     <ul class="grid grid-cols-3 grid-rows-2 lg:grid-rows-1 lg:grid-cols-8">
       <li
         class="lg:place-self-center z-[1] {{
@@ -25,12 +25,22 @@
         }}"
       >
         <a
-          class="flex items-center flex-col text-black lg:flex-row gap-2"
+          class="relative flex items-center flex-col text-black lg:flex-row gap-4"
           [routerLink]="['/cart']"
           routerLinkActive="text-blue"
         >
-          <hlm-icon size="base" name="lucideShoppingCart" />
-          <span class="text-xs font-poppins text-grey">$0.00</span>
+          <div class="grid place-items-center relative">
+            <hlm-icon size="base" name="lucideShoppingCart" class="relative" />
+            <div
+              hlmBadge
+              class="absolute -top-2 -right-3 bg-pink hover:bg-pink border-none rounded-full py-0.5 px-1.5"
+            >
+              {{ cartCount }}
+            </div>
+          </div>
+          <span class="text-xs font-poppins text-grey">{{
+            cartTotal | currency
+          }}</span>
         </a>
       </li>
       <li class="lg:place-self-center lg:col-start-8">
@@ -41,7 +51,6 @@
           (click)="toggleSearchbarOpen()"
         >
           <hlm-icon size="base" name="lucideSearch" />
-          <span class="text-xs font-poppins">Search</span>
         </button>
       </li>
       <li
@@ -50,11 +59,11 @@
         }}"
       >
         <form
-          class="{{ isSearchbarOpen ? 'w-full' : '' }}"
+          class="flex gap-2 {{ isSearchbarOpen ? 'w-full' : '' }}"
           (submit)="searchProducts($event)"
         >
           <input
-            class="max-w-70 mx-auto my-2 transition-all ease-in-out duration-200  {{
+            class="mx-auto my-2 transition-all ease-in-out duration-200  {{
               isSearchbarOpen ? 'opacity-100 w-full' : 'opacity-0 w-0'
             }}"
             hlmInput
@@ -62,6 +71,13 @@
             type="text"
             [formControl]="searchbar"
           />
+          <button
+            type="submit"
+            class="text-xs font-poppins shadow px-6 py-3 rounded-sm h-fit self-center
+          {{ isSearchbarOpen ? 'opacity-100' : 'opacity-0 w-0' }}"
+          >
+            Search
+          </button>
         </form>
       </li>
       <li

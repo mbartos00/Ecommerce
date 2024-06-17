@@ -28,6 +28,14 @@ export class CartService {
     return this.cartSubject.asObservable();
   }
 
+  get cartItemsCount(): number {
+    return this.cartSubject
+      .getValue()
+      .reduce((acc: number, curr: ProductInCart): number => {
+        return acc + curr.quantityToBuy;
+      }, 0);
+  }
+
   addToCart(product: ProductInCart): void {
     const existingProduct = this.productsInCart.find(
       p => p.variantId === product.variantId
@@ -95,7 +103,7 @@ export class CartService {
     return this.discount;
   }
 
-  // observable, map 
+  // observable, map
   getTotal(): number {
     const subtotal = this.cartSubject
       .getValue()

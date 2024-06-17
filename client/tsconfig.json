@@ -62,6 +62,9 @@
       ],
       "@spartan-ng/ui-skeleton-helm": [
         "./src/app/shared/ui/ui-skeleton-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-badge-helm": [
+        "./src/app/shared/ui/ui-badge-helm/src/index.ts"
       ]
     }
   },
