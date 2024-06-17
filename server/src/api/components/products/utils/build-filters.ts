@@ -29,24 +29,23 @@ export function buildProductsFilters(
           };
           break;
         case QueryParam.min_price:
-          if (typeof acc.price === 'object') {
-            acc.price = {
-              ...acc.price,
-              gte: parseFloat(queryParams.min_price!),
-            };
+          if (typeof acc.price !== 'object') {
+            acc.price = {};
           }
+
           acc.price = {
+            ...acc.price,
             gte: parseFloat(queryParams.min_price!),
           };
+
           break;
         case QueryParam.max_price:
-          if (typeof acc.price === 'object') {
-            acc.price = {
-              ...acc.price,
-              lte: parseFloat(queryParams.max_price!),
-            };
+          if (typeof acc.price !== 'object') {
+            acc.price = {};
           }
+
           acc.price = {
+            ...acc.price,
             lte: parseFloat(queryParams.max_price!),
           };
           break;

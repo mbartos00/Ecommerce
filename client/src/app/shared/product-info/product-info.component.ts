@@ -121,11 +121,13 @@ export class ProductInfoComponent implements OnInit {
   addToCart(): void {
     this.getVariant()
       .pipe(
+        take(1),
         switchMap(variant => {
           if (!variant) {
             return EMPTY;
           }
           return this.product$.pipe(
+            take(1),
             tap(product => {
               if (product) {
                 this.selectedProduct = {

@@ -6,7 +6,8 @@ import { HeaderComponent } from './shared/header/header.component';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, NgxSonnerToaster, HeaderComponent],
-  template: `<router-outlet><app-header></app-header></router-outlet>
+  template: `<app-header></app-header>
+    <router-outlet></router-outlet>
     <ngx-sonner-toaster
       visibleToasts="5"
       [toastOptions]="{

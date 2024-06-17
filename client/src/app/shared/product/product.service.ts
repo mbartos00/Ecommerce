@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Product } from '../types/product.model';
+import { Product, ProductList, QueryParams } from '../types/product.model';
 import { environment } from '../../../environments/environment';
 
 interface ApiResponse {
@@ -15,6 +15,14 @@ export class ProductService {
   private apiUrl = environment.API_URL + '/products';
 
   constructor(private http: HttpClient) {}
+
+  getAllProducts(params: QueryParams): Observable<ProductList> {
+    return this.http
+      .get<ProductList>(`${environment.API_URL}/products`, {
+        params: this.removeEmptyPropsFromObj(params),
+      })
+      .pipe(catchError(this.handleError));
+  }
 
   getProductById(productId: string): Observable<Product> {
     const url = `${this.apiUrl}/${productId}`;
@@ -29,5 +37,11 @@ export class ProductService {
     console.error('An error occurred:', error);
 
     throw error;
+  }
+
+  private removeEmptyPropsFromObj<T extends object>(obj: T): T {
+    return Object.fromEntries(
+      Object.entries(obj).filter(([, v]) => v != null)
+    ) as T;
   }
 }

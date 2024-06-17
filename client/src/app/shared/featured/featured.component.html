@@ -11,7 +11,7 @@
       <ng-container *ngFor="let product of products.data">
         <a
           class="flex gap-6 py-4 my-4 flex-col items-center px-2 sm:flex-row sm:p-0 transition-shadow duration-300 rounded cursor-pointer hover:shadow-lg hover:shadow-gray-dark"
-          [routerLink]="['/product', product.id]"
+          [routerLink]="['/shop', product.id]"
         >
           <div class="bg-grey-light w-[152px] h-[152px]">
             <img [src]="product.images[0]" [alt]="product.name" />

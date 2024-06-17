@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -9,7 +9,6 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from '@app/shared/localstorage/localstorage.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { SortBarComponent } from '../sort-bar/sort-bar.component';
 import { FormsModule } from '@angular/forms';
@@ -22,6 +21,7 @@ import { ProductListCardComponent } from '../product-list-card/product-list-card
 import { HlmSpinnerComponent } from '../ui-spinner-helm/src';
 import { SkeletonCardComponent } from '../skeleton-card/skeleton-card.component';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { ProductService } from '@app/shared/product/product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -49,21 +49,25 @@ export class ProductListComponent implements OnInit, OnDestroy {
   sortBy: string = 'name';
   order: Order = 'asc';
   category: string | undefined = undefined;
+  searchbarValue: string | undefined;
   totalProducts: number = 10;
   isLoading: boolean = false;
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-    private http: HttpClient,
+    private productService: ProductService,
     private route: ActivatedRoute,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       this.currentPage = 1;
-      this.category = params ? params['category'] : undefined;
+      this.category = params['category'];
+      this.searchbarValue = params['search'];
       this.fetchProducts();
+      this.cdr.detectChanges();
     });
 
     if (this.localStorageService.getItem('productView') !== null) {
@@ -130,15 +134,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
       sortBy: this.sortBy,
       order: this.order,
       category: this.category,
+      search: this.searchbarValue,
     };
 
-    this.products$ = this.http
-      .get<ProductList>(`${environment.API_URL}/products`, {
-        params,
-      })
-      .pipe(takeUntil(this.destroy$));
+    this.products$ = this.productService.getAllProducts(params);
 
-    this.products$.subscribe(response => {
+    this.products$.pipe(takeUntil(this.destroy$)).subscribe(response => {
       this.totalProducts = response.paginationInfo.count;
       this.totalPages = Array.from(
         { length: response.paginationInfo.totalPages },
