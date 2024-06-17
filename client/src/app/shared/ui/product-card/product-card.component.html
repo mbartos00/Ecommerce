@@ -1,6 +1,6 @@
-<button
-  class="relative grid auto-rows-fr items-center overflow-hidden rounded-md bg-white shadow-md transition-shadow duration-300 cursor-pointer hover:shadow-2xl hover:shadow-gray-dark"
-  (click)="goToProduct(product.id)"
+<a
+  class="relative w-full h-full grid auto-rows-fr items-center overflow-hidden rounded-md bg-white shadow-md transition-shadow duration-300 cursor-pointer hover:shadow-2xl hover:shadow-gray-dark"
+  [routerLink]="['/product', product.id]"
 >
   <div class="relative group">
     <img
@@ -83,4 +83,4 @@
       }
     </div>
   </div>
-</button>
+</a>

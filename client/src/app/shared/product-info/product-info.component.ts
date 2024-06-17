@@ -18,7 +18,6 @@ import {
   HlmTabsTriggerDirective,
 } from '@spartan-ng/ui-tabs-helm';
 import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
-import { HlmSkeletonComponent } from '@spartan-ng/ui-skeleton-helm';
 import { ImageGalleryComponent } from '../ui/image-gallery/image-gallery.component';
 import { SelectComponent } from '../ui/ui-select/ui-select.component';
 import { getStarsArray } from '../utils/utils';
@@ -63,7 +62,6 @@ import { BestsellerCardComponent } from '../ui/bestseller-card/bestseller-card.c
     HlmTabsTriggerDirective,
     ImageGalleryComponent,
     HlmSpinnerComponent,
-    HlmSkeletonComponent,
     CommonModule,
     BestsellerCardComponent,
   ],

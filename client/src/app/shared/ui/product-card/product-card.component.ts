@@ -4,25 +4,27 @@ import { provideIcons } from '@ng-icons/core';
 import { lucideHeart, lucideShoppingCart } from '@ng-icons/lucide';
 import { Product } from '../../types/product.model';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { SkeletonCardComponent } from '../skeleton-card/skeleton-card.component';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
   templateUrl: './product-card.component.html',
-  imports: [HlmIconComponent, CurrencyPipe, DecimalPipe, CommonModule],
+  imports: [
+    HlmIconComponent,
+    CurrencyPipe,
+    DecimalPipe,
+    CommonModule,
+    RouterModule,
+    SkeletonCardComponent,
+  ],
   providers: [provideIcons({ lucideHeart, lucideShoppingCart })],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCardComponent {
   @Input() product: Product = {} as Product;
-
-  constructor(private router: Router) {}
-
-  goToProduct(productId: string): void {
-    this.router.navigate(['/product', productId]);
-  }
 
   getStarsArray(): number[] {
     const maxStars = 5;

@@ -11,13 +11,6 @@ import { LocalStorageService } from '@app/shared/localstorage/localstorage.servi
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ProductCardComponent } from '../product-card/product-card.component';
-import { HlmPaginationContentDirective } from '../ui-pagination-helm/src/lib/hlm-pagination-content.directive';
-import { HlmPaginationEllipsisComponent } from '../ui-pagination-helm/src/lib/hlm-pagination-ellipsis.componet';
-import { HlmPaginationItemDirective } from '../ui-pagination-helm/src/lib/hlm-pagination-item.directive';
-import { HlmPaginationLinkDirective } from '../ui-pagination-helm/src/lib/hlm-pagination-link.directive';
-import { HlmPaginationNextComponent } from '../ui-pagination-helm/src/lib/hlm-pagination-next.componet';
-import { HlmPaginationPreviousComponent } from '../ui-pagination-helm/src/lib/hlm-pagination-previous.componet';
-import { HlmPaginationDirective } from '../ui-pagination-helm/src/lib/hlm-pagination.directive';
 import { SortBarComponent } from '../sort-bar/sort-bar.component';
 import { FormsModule } from '@angular/forms';
 import type {
@@ -27,6 +20,8 @@ import type {
 } from '../../types/product.model';
 import { ProductListCardComponent } from '../product-list-card/product-list-card.component';
 import { HlmSpinnerComponent } from '../ui-spinner-helm/src';
+import { SkeletonCardComponent } from '../skeleton-card/skeleton-card.component';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 @Component({
   selector: 'app-product-list',
@@ -38,16 +33,11 @@ import { HlmSpinnerComponent } from '../ui-spinner-helm/src';
     ProductCardComponent,
     ProductListCardComponent,
     CommonModule,
-    HlmPaginationContentDirective,
-    HlmPaginationDirective,
-    HlmPaginationEllipsisComponent,
-    HlmPaginationItemDirective,
-    HlmPaginationLinkDirective,
-    HlmPaginationNextComponent,
-    HlmPaginationPreviousComponent,
     HlmSpinnerComponent,
     SortBarComponent,
     ProductListCardComponent,
+    SkeletonCardComponent,
+    PaginationComponent,
   ],
 })
 export class ProductListComponent implements OnInit, OnDestroy {
@@ -60,6 +50,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   order: Order = 'asc';
   category: string | undefined = undefined;
   totalProducts: number = 10;
+  isLoading: boolean = false;
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -132,6 +123,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   fetchProducts(): void {
+    this.isLoading = true;
     const params: QueryParams = {
       page: this.currentPage.toString(),
       perPage: this.itemsPerPage,
@@ -153,5 +145,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
         (_, index) => index + 1
       );
     });
+    this.isLoading = false;
   }
 }

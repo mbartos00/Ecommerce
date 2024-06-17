@@ -9,7 +9,7 @@
 </div>
 
 @if (products$ | async; as products) {
-  <div *ngIf="products$ | async as products" class="container my-7 mx-auto p-2">
+  <div class="container my-7 mx-auto p-2">
     <div
       *ngIf="isGridView; else listView"
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
@@ -28,27 +28,27 @@
     </ng-template>
   </div>
 } @else {
-  <div class="flex w-full h-60 justify-center items-center">
-    <hlm-spinner />
+  <div class="container my-7 mx-auto p-2">
+    <div
+      *ngIf="isGridView; else listSkeletons"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
+    >
+      <ng-container *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7, 8]">
+        <app-skeleton-card class="m-0 aspect-auto"></app-skeleton-card>
+      </ng-container>
+    </div>
+    <ng-template #listSkeletons>
+      <div *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7, 8]">
+        <app-skeleton-card class="m-2"></app-skeleton-card>
+      </div>
+    </ng-template>
   </div>
 }
 
-<nav hlmPagination>
-  <ul hlmPaginationContent>
-    <li hlmPaginationItem>
-      <hlm-pagination-previous (click)="prevPage()" />
-    </li>
-    <li *ngFor="let page of totalPages" hlmPaginationItem>
-      <button
-        hlmPaginationLink
-        (click)="gotoPage(page)"
-        [ngClass]="{ 'bg-primary': currentPage === page }"
-      >
-        {{ page }}
-      </button>
-    </li>
-    <li hlmPaginationItem>
-      <hlm-pagination-next (click)="nextPage()" />
-    </li>
-  </ul>
-</nav>
+<div class="mb-40">
+  <app-pagination
+    [totalPages]="totalPages"
+    [currentPage]="currentPage"
+    (pageChange)="gotoPage($event)"
+  ></app-pagination>
+</div>
