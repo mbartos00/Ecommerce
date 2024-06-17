@@ -37,10 +37,22 @@ import {
   take,
   tap,
 } from 'rxjs';
+import { BestsellerCardComponent } from '../ui/bestseller-card/bestseller-card.component';
 
 @Component({
   selector: 'app-product-info',
   standalone: true,
+  providers: [
+    provideIcons({
+      lucideHeart,
+      lucideShoppingCart,
+      lucideFacebook,
+      lucideTwitter,
+      lucideChevronRight,
+      lucideChevronLeft,
+    }),
+  ],
+  templateUrl: './product-info.component.html',
   imports: [
     HlmIconComponent,
     CounterInputComponent,
@@ -53,18 +65,8 @@ import {
     HlmSpinnerComponent,
     HlmSkeletonComponent,
     CommonModule,
+    BestsellerCardComponent,
   ],
-  providers: [
-    provideIcons({
-      lucideHeart,
-      lucideShoppingCart,
-      lucideFacebook,
-      lucideTwitter,
-      lucideChevronRight,
-      lucideChevronLeft,
-    }),
-  ],
-  templateUrl: './product-info.component.html',
 })
 export class ProductInfoComponent implements OnInit {
   selectedProduct: ProductInCart = {} as ProductInCart;

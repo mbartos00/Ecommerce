@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductCardComponent } from '../ui/product-card/product-card.component';
 import { BestSellerList, Category } from '../types/product.model';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment.development';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { HlmSpinnerComponent } from '../ui/ui-spinner-helm/src';
 import { Router } from '@angular/router';
 import { CategoryService } from '../data-access/category.service';
 import { map } from 'rxjs/operators';
+import { BestsellerService } from './bestseller.service';
 
 @Component({
   selector: 'app-bestseller-section',
@@ -17,17 +16,16 @@ import { map } from 'rxjs/operators';
   templateUrl: './bestseller-section.component.html',
 })
 export class BestsellerSectionComponent implements OnInit, OnDestroy {
+  products$: Observable<BestSellerList> = new Observable<BestSellerList>();
   categories: Category[] = [];
   activeTabIndex: number = 0;
-  productsSubject = new BehaviorSubject<BestSellerList | null>(null);
-  products$ = this.productsSubject.asObservable();
 
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-    private http: HttpClient,
     private router: Router,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private bestsellerService: BestsellerService
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +53,6 @@ export class BestsellerSectionComponent implements OnInit, OnDestroy {
       )
       .subscribe(categories => {
         this.categories = [{ id: 'all', name: 'All' }, ...categories];
-        console.log(this.categories);
       });
   }
 
@@ -69,15 +66,8 @@ export class BestsellerSectionComponent implements OnInit, OnDestroy {
       selectedCategory = this.categories[categoryIndex]?.id || 'all';
     }
 
-    const url =
-      selectedCategory === 'all'
-        ? `${environment.API_URL}/products/bestsellers`
-        : `${environment.API_URL}/products/bestsellers?category=${selectedCategory}`;
-
-    console.log(selectedCategory);
-
-    this.products$ = this.http
-      .get<BestSellerList>(url)
+    this.products$ = this.bestsellerService
+      .getBestSellersByCategory(selectedCategory)
       .pipe(takeUntil(this.destroy$));
   }
 
