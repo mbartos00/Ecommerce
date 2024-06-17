@@ -20,7 +20,7 @@ export function buildProductsFilters(
       switch (key) {
         case QueryParam.category:
           acc.categories = {
-            every: {
+            some: {
               name: {
                 contains: queryParams[key]?.toLowerCase(),
                 mode: 'insensitive',

@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 const productDefaults = {
   numOfCategories: 10,
-  numOfProducts: 20,
+  numOfProducts: 60,
   numOfVariantsPerProduct: 3,
   maxQuantity: 100,
   maxRating: 5,
@@ -32,8 +32,21 @@ function getRandomSize() {
 
   return sizeValues[randomIndex];
 }
-
 export async function seedProducts() {
+  const baseURL = `${process.env.DOMAIN}:${process.env.PORT}/productsImages/`;
+  const productImages = [
+    'bag1.png',
+    'bag2.png',
+    'bag3.png',
+    'shoe1.png',
+    'shoe2.png',
+    'shoe3.png',
+    'shoe4.png',
+    'shoe5.png',
+    'shoe6.png',
+    'shoe7.png',
+  ];
+
   function getRandomCategoryIds(
     categoryIds: string[],
     min: number,
@@ -49,6 +62,12 @@ export async function seedProducts() {
     }
 
     return selectedIds;
+  }
+
+  function getRandomImageURLs(imageList: string[], numImages: number) {
+    const shuffled = imageList.sort(() => 0.5 - Math.random());
+    const selectedImages = shuffled.slice(0, numImages);
+    return selectedImages.map((image) => `${baseURL}${image}`);
   }
 
   await prisma.product.deleteMany();
@@ -72,18 +91,14 @@ export async function seedProducts() {
 
   await prisma.product.createMany({
     data: Array.from({ length: productDefaults.numOfProducts }).map(() => ({
-      name: faker.commerce.productName(),
+      name: faker.commerce.product(),
       brand: faker.company.name(),
       description: faker.commerce.productDescription(),
       price: parseFloat(faker.commerce.price()),
       rating: getRandNum(0, productDefaults.maxRating),
-      images: Array.from({ length: productDefaults.imagesPerProduct }).map(() =>
-        faker.image.url(),
-      ),
-      categoryIds: getRandomCategoryIds(
-        categories.map((cat) => cat.id),
-        1,
-        3,
+      images: getRandomImageURLs(
+        productImages,
+        productDefaults.imagesPerProduct,
       ),
       createdAt: new Date(),
     })),
@@ -91,6 +106,24 @@ export async function seedProducts() {
 
   const products = await prisma.product.findMany();
   for (const product of products) {
+    const randomCategoryIds = getRandomCategoryIds(
+      categories.map((cat) => cat.id),
+      1,
+      3,
+    );
+
+    for (const categoryId of randomCategoryIds) {
+      await prisma.category.update({
+        where: {
+          id: categoryId,
+        },
+        data: {
+          products: {
+            connect: { id: product.id },
+          },
+        },
+      });
+    }
     await prisma.variant.createMany({
       data: Array.from({ length: productDefaults.numOfVariantsPerProduct }).map(
         () => ({
@@ -232,12 +265,9 @@ export async function seedSoldProduct() {
 }
 
 async function main() {
-  await Promise.all([
-    seedNews(),
-    seedProducts(),
-    seedSoldProduct(),
-    seedDiscountedProducts(),
-  ]);
+  await Promise.all([seedNews(), seedProducts()]).then(async () => {
+    await Promise.all([seedDiscountedProducts(), seedSoldProduct()]);
+  });
 }
 
 await main()

@@ -45,10 +45,22 @@
   </div>
 }
 
-<div class="mb-40">
-  <app-pagination
-    [totalPages]="totalPages"
-    [currentPage]="currentPage"
-    (pageChange)="gotoPage($event)"
-  ></app-pagination>
-</div>
+<nav hlmPagination class="mb-16">
+  <ul hlmPaginationContent>
+    <li hlmPaginationItem>
+      <hlm-pagination-previous (click)="prevPage()" />
+    </li>
+    <li *ngFor="let page of totalPages" hlmPaginationItem>
+      <button
+        hlmPaginationLink
+        (click)="gotoPage(page)"
+        [ngClass]="{ 'bg-primary': currentPage === page }"
+      >
+        {{ page }}
+      </button>
+    </li>
+    <li hlmPaginationItem>
+      <hlm-pagination-next (click)="nextPage()" />
+    </li>
+  </ul>
+</nav>

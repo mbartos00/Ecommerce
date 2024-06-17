@@ -1,0 +1,32 @@
+<a
+  [routerLink]="['/shop', product.id]"
+  [ngStyle]="{ '--image-url': 'url(' + product.images[0] + ')' }"
+  class="flex flex-col justify-between xl:max-w-full min-h-[300px] px-10 py-4 bg-grey-light hover:bg-grey bg-contain bg-no-repeat bg-center bg-[image:var(--image-url)]"
+>
+  <h1
+    class="text-navy text-center text-lg font-bold font-poppins tracking-wide"
+  >
+    {{ product.name }}
+  </h1>
+  <div class="flex flex-row-reverse items-center justify-center gap-4">
+    <span class="text-xl font-semibold text-primary text-slate-900"
+      >${{ product.discountedPrice | number: '0.0-1' }}</span
+    >
+    <p class="flex gap-2">
+      <span class="text-sm text-grey line-through"
+        >${{ product.price | number: '0.0-2' }}</span
+      >
+      @if (product.discount!.type === 'percentage') {
+        <span class="text-sm font-semibold text-pink text-slate-90"
+          >{{ product.discount!.value }}% Off</span
+        >
+      } @else {
+        <span class="text-sm font-semibold text-pink text-slate-90"
+          >{{
+            (product.discount!.value * 100) / product.price | number: '0.0-0'
+          }}% Off</span
+        >
+      }
+    </p>
+  </div>
+</a>

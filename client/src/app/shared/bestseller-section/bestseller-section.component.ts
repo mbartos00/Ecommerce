@@ -72,7 +72,7 @@ export class BestsellerSectionComponent implements OnInit, OnDestroy {
   }
 
   onLoadMore(): void {
-    this.router.navigate(['/products']);
+    this.router.navigate(['/shop']);
   }
 
   ngOnDestroy(): void {

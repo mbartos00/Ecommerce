@@ -16,7 +16,7 @@
     </button>
     <a
       [routerLink]="[
-        '/product',
+        '/shop',
         products.data[currentProductIndex].productDetails.id
       ]"
     >
@@ -49,15 +49,20 @@
           </div>
 
           <div class="flex items-center justify-center gap-4">
-            <span class="text-xl font-semibold text-primary text-slate-900"
-              >${{
-                products.data[currentProductIndex].productDetails.discount
-                  ? (products.data[currentProductIndex].productDetails
-                      .discountedPrice | number: '0.0-1')
-                  : products.data[currentProductIndex].productDetails.price
-              }}</span
-            >
             @if (products.data[currentProductIndex].productDetails.discount) {
+              <span class="text-xl font-semibold text-primary">
+                {{
+                  calculateDiscountedPrice(
+                    products.data[currentProductIndex].productDetails
+                  ) | currency: 'USD'
+                }}
+              </span>
+            }
+            @if (
+              products.data[
+                currentProductIndex
+              ].productDetails.discount!.hasOwnProperty('value')
+            ) {
               <p class="flex gap-2">
                 <span class="text-sm text-grey line-through"
                   >${{
@@ -69,24 +74,31 @@
                   products.data[currentProductIndex].productDetails.discount!
                     .type === 'percentage'
                 ) {
-                  <span class="text-sm font-semibold text-pink text-slate-90"
+                  <span class="text-sm font-semibold text-pink"
                     >{{
-                      products.data[currentProductIndex].productDetails.discount
-                        .value
+                      products.data[currentProductIndex].productDetails
+                        .discount!.value
                     }}% Off</span
                   >
                 } @else {
-                  <span class="text-sm font-semibold text-pink text-slate-90"
+                  <span class="text-sm font-semibold text-pink"
                     >{{
                       (products.data[currentProductIndex].productDetails
-                        .discount.value *
+                        .discount!.value *
                         100) /
                         products.data[currentProductIndex].productDetails.price
-                        | number: '0.0-0'
+                        | number: '0.0-2'
                     }}% Off</span
                   >
                 }
               </p>
+            } @else {
+              <span class="text-xl font-semibold text-primary -ml-4"
+                >${{
+                  products.data[currentProductIndex].productDetails.price
+                    | number: '0.0-0'
+                }}</span
+              >
             }
           </div>
         </div>

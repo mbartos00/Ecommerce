@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   lucideContact,
@@ -12,9 +12,8 @@ import { HamburgerMenuComponent } from '../ui/hamburger-menu/hamburger-menu.comp
 import { TopHeaderComponent } from './top-header/top-header.component';
 import { BreadcrumbsComponent } from '../ui/breadcrumbs/breadcrumbs.component';
 import { DropdownMenuComponent } from '../ui/dropdown-menu/dropdown-menu.component';
-import { Category } from '../types/product.model';
 import { CategoryService } from '../data-access/category.service';
-import { Observable, map } from 'rxjs';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-header',

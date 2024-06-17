@@ -1,0 +1,24 @@
+<div
+  class="grid grid-rows-10 lg:grid-rows-8 grid-cols-1 justify-center lg:justify-normal pb-8"
+>
+  <div
+    class="flex flex-col items-center lg:items-start lg:justify-center bg-sales-background bg-center bg-cover bg-no-repeat row-start-1 lg:row-start-1 row-span-3 lg:row-span-6 col-span-full"
+  >
+    <h1
+      class="font-poppins font-bold text-3xl md:text-4xl mt-10 lg:mt-0 lg:text-6xl text-white lg:ml-[10%]"
+    >
+      Super Flash Sale
+      <span
+        class="block border-b border-white w-fit mx-auto lg:mx-0 lg:pr-20 mt-2 md:mt-8 text-center lg:text-left"
+        >50% Off</span
+      >
+    </h1>
+  </div>
+  <div
+    class="grid !w-[80%] mx-auto col-span-full row-span-8 lg:row-span-3 lg:row-end-9 row-end-11 lg:grid-cols-3 items-center gap-1 lg:gap-0 lg:shadow lg:mx-auto 2xl:container"
+  >
+    @for (product of products$ | async; track product) {
+      <app-sales-card [product]="product"></app-sales-card>
+    }
+  </div>
+</div>
