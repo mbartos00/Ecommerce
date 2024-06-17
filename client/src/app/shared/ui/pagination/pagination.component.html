@@ -1,0 +1,83 @@
+<nav hlmPagination class="flex justify-center items-center my-4">
+  <ul hlmPaginationContent class="flex list-none p-0">
+    <li hlmPaginationItem>
+      <hlm-pagination-previous
+        class="mx-1 p-2 cursor-pointer"
+        (click)="prevPage()"
+      />
+    </li>
+
+    @if (totalPages.length > 0) {
+      <li hlmPaginationItem class="hidden sm:block">
+        <button
+          hlmPaginationLink
+          (click)="gotoPage(1)"
+          [ngClass]="{
+            'bg-primary text-white': currentPage === 1,
+            'mx-1 p-2': true
+          }"
+          class="mx-1 p-2 rounded bg-grey-light hover:bg-grey"
+        >
+          1
+        </button>
+      </li>
+    }
+    @if (shouldShowLeftEllipsis) {
+      <li hlmPaginationItem class="hidden sm:block mx-1 p-2">
+        <hlm-pagination-ellipsis />
+      </li>
+    }
+
+    @for (page of getVisiblePages(); track $index) {
+      <li hlmPaginationItem class="hidden sm:block">
+        <button
+          hlmPaginationLink
+          (click)="gotoPage(page)"
+          [ngClass]="{
+            'bg-primary text-white': currentPage === page,
+            'mx-1 p-2': true
+          }"
+          class="mx-1 p-2 rounded bg-grey-light hover:bg-gray"
+        >
+          {{ page }}
+        </button>
+      </li>
+    }
+
+    @if (shouldShowRightEllipsis) {
+      <li hlmPaginationItem class="hidden sm:block mx-1 p-2">
+        <hlm-pagination-ellipsis />
+      </li>
+    }
+
+    <li
+      hlmPaginationItem
+      class="block mx-1 p-2 rounded bg-primary text-white sm:hidden"
+    >
+      {{ currentPage }}
+    </li>
+
+    @if (totalPages.length > 1) {
+      <li hlmPaginationItem class="hidden sm:block">
+        <button
+          hlmPaginationLink
+          (click)="gotoPage(totalPages.length)"
+          [ngClass]="{
+            'bg-primary text-white': currentPage === totalPages.length,
+            'mx-1 p-2': true
+          }"
+          class="mx-1 p-2 rounded bg-grey-light hover:bg-gray"
+        >
+          {{ totalPages.length }}
+        </button>
+      </li>
+    }
+
+    <li hlmPaginationItem>
+      <hlm-pagination-next
+        class="mx-1 p-2 cursor-pointer"
+        (click)="nextPage()"
+      />
+    </li>
+  </ul>
+</nav>

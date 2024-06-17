@@ -1,6 +1,6 @@
-<button
+<a
   class="flex py-4 my-4 flex-col items-center px-2 sm:flex-row sm:p-0 transition-shadow duration-300 cursor-pointer hover:shadow-lg hover:shadow-gray-dark"
-  (click)="goToProduct(product.id)"
+  [routerLink]="['/product', product.id]"
 >
   <img
     class="m-4 w-70 h-40 lg:w-140 lg:h-80 rounded-lg"
@@ -65,5 +65,5 @@
       </button>
     </div>
   </div>
-</button>
+</a>
 <hr class="h-0.5 my-4 bg-grey-light border-0" />
