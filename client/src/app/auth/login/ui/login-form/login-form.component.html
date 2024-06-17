@@ -1,26 +1,44 @@
-<a [routerLink]="['/']">
-  <app-logo class="mb-4" />
-</a>
-<h1 class="text-navy font-semibold my-2">Welcome to E-com</h1>
-<p class="font-thin text-muted-foreground text-sm mb-5">Sign in to continue</p>
-<form
-  class="w-full flex flex-col justify-center items-center"
-  [formGroup]="loginForm"
-  (ngSubmit)="onSubmit()"
+<section
+  class="grid justify-items-center font-poppins text-grey-neutral py-16 md:py-20 px-4 md:px-16 xl:px-24"
 >
-  <div class="flex flex-col gap-4 w-full">
-    <app-form-input
-      label="Email"
-      formControlName="email"
-      placeholder="Your Email"
-      type="email"
-    ></app-form-input>
-    <app-form-input
-      label="Password"
-      formControlName="password"
-      placeholder="Password"
-      type="password"
-    ></app-form-input>
+  <a [routerLink]="['/']">
+    <app-logo class="mb-4" />
+  </a>
+  <h1 class="text-navy font-bold my-2">Welcome to E-com</h1>
+  <p class="font-thin text-xs mb-5">Sign in to continue</p>
+  <form
+    class="grid gap-2 max-w-lg w-full m-7"
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="relative">
+      <hlm-icon
+        size="sm"
+        name="lucideMail"
+        class="absolute top-4 left-4"
+      ></hlm-icon>
+      <app-form-input
+        formControlName="email"
+        placeholder="Email"
+        type="email"
+        [icon]="true"
+      ></app-form-input>
+    </div>
+
+    <div class="relative">
+      <hlm-icon
+        size="sm"
+        name="lucideLock"
+        class="absolute top-4 left-4"
+      ></hlm-icon>
+      <app-form-input
+        formControlName="password"
+        placeholder="Password"
+        type="password"
+        [icon]="true"
+      ></app-form-input>
+    </div>
+
     <button
       hlmBtn
       type="submit"
@@ -29,18 +47,17 @@
     >
       Sign In
     </button>
-  </div>
-  <p class="my-4 text-muted-foreground uppercase text-sm">or</p>
-</form>
-<button hlmBtn variant="link" class="text-xs p-0">Forget password?</button>
-<p class="text-muted-foreground text-xs mt-2">
-  Don't have an account?
-  <button
-    hlmBtn
-    [routerLink]="['/auth', 'register']"
-    variant="link"
-    class="p-0 text-xs"
-  >
-    Register
-  </button>
-</p>
+  </form>
+  <button hlmBtn variant="link" class="text-xs p-0">Forget password?</button>
+  <p class="text-xs mt-2">
+    Don't have an account?
+    <button
+      hlmBtn
+      [routerLink]="['/auth', 'register']"
+      variant="link"
+      class="p-0 text-xs"
+    >
+      Register
+    </button>
+  </p>
+</section>

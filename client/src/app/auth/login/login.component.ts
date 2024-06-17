@@ -22,11 +22,6 @@ import { CommonModule } from '@angular/common';
   </app-login-form>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [LoginService],
-  styles: `
-    :host {
-      @apply min-h-screen flex justify-center items-center;
-    }
-  `,
 })
 export class LoginComponent {
   private authService = inject(AuthService);

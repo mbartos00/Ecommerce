@@ -16,6 +16,9 @@ import { LogoComponent } from '@app/shared/ui/logo/logo.component';
 import { HlmButtonDirective } from '@app/shared/ui/ui-button-helm/src';
 import { toast } from 'ngx-sonner';
 import { LoginStatus } from '../../data-access/login.service';
+import { HlmIconComponent } from '@app/shared/ui/ui-icon-helm/src';
+import { provideIcons } from '@ng-icons/core';
+import { lucideMail, lucideUser, lucideLock } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-login-form',
@@ -26,13 +29,10 @@ import { LoginStatus } from '../../data-access/login.service';
     HlmButtonDirective,
     LogoComponent,
     FormInputComponent,
+    HlmIconComponent,
   ],
+  providers: [provideIcons({ lucideMail, lucideUser, lucideLock })],
   templateUrl: './login-form.component.html',
-  styles: `
-    :host {
-      @apply px-1 w-full flex flex-col justify-center items-center mx-auto max-w-xs;
-    }
-  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent implements OnChanges {
