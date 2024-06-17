@@ -5,7 +5,7 @@ import { lucideHeart, lucideShoppingCart } from '@ng-icons/lucide';
 import { Product } from '../../types/product.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HlmSkeletonComponent } from '../../../../../ui-skeleton-helm/src/lib/hlm-skeleton.component';
+import { HlmSkeletonComponent } from '../ui-skeleton-helm/src/lib/hlm-skeleton.component';
 
 @Component({
   selector: 'app-product-list-card',
