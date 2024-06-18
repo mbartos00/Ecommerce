@@ -12,11 +12,21 @@ const phoneValidation = z
   .refine((value) => /^\(?\d{3}\)?[- .]?\d{3}[- .]?\d{3}$/.test(value));
 const idValidation = z.string().length(24);
 
+enum Gender {
+  male = 'male',
+  female = 'female',
+  ohter = 'other',
+}
+
 export const registerSchema = z.object({
   name: nameValidation,
   lastName: nameValidation,
   email: emailValidation,
   password: passwordValidation,
+  gender: z.nativeEnum(Gender),
+  birthday: z.string().date('Date should be in YYYY-MM-DD format'),
+  phone_number: phoneValidation,
+  profile_photo_url: z.string().url().optional(),
 });
 
 export type RegisterSchema = z.infer<typeof registerSchema>;
@@ -28,19 +38,6 @@ export const loginSchema = z.object({
 
 export type LoginSchema = z.infer<typeof loginSchema>;
 
-enum Gender {
-  male = 'male',
-  female = 'female',
-  ohter = 'other',
-}
-
-const profileSchema = z.object({
-  gender: z.nativeEnum(Gender).optional(),
-  birthday: z.string().date().optional(),
-  phone_number: phoneValidation.optional(),
-  profile_photo_url: z.string().url().optional(),
-});
-
 export const updateUserSchema = z
   .object({
     name: nameValidation.optional(),
@@ -49,14 +46,29 @@ export const updateUserSchema = z
     oldPassword: passwordValidation.optional(),
     newPassword: passwordValidation.optional(),
     repeatPassword: passwordValidation.optional(),
-    profile: profileSchema.optional(),
+    gender: z.nativeEnum(Gender).optional(),
+    birthday: z.string().date().optional(),
+    phone_number: phoneValidation.optional(),
+    profile_photo_url: z.string().url().optional(),
   })
   .superRefine((data, ctx) => {
-    if (Object.keys(data).length === 0) {
+    if (Object.keys(data).length === 1 && data.profile_photo_url) {
+      return;
+    }
+
+    if (Object.keys(data).length === 0 && !data.profile_photo_url) {
       ctx.addIssue({
         code: 'custom',
         message: 'At least one field must be provided for update',
-        path: ['name', 'lastName', 'email', 'password', 'profile'],
+        path: [
+          'name',
+          'lastName',
+          'email',
+          'password',
+          'gender',
+          'birthday',
+          'phoneNumber',
+        ],
       });
     }
 
@@ -81,13 +93,6 @@ export const updateUserSchema = z
         code: 'custom',
         message: 'The passwords did not match',
         path: ['password', 'repeatPassword'],
-      });
-    }
-    if (data.profile && Object.keys(data.profile).length === 0) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['gender', 'birthday', 'profilePhotoUrl', 'phoneNumber'],
-        message: 'At least one field must be provided for update',
       });
     }
   });

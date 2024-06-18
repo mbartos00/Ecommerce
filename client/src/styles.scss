@@ -43,3 +43,17 @@
   --radius: 0.45rem;
   --radius: 0.5rem;
 }
+
+::-webkit-file-upload-button {
+  @apply sr-only;
+}
+
+input[type='date']::-webkit-inner-spin-button,
+input[type='date']::-webkit-calendar-picker-indicator {
+  position: absolute;
+  left: 0.9rem;
+  top: 0.9rem;
+  width: 16px;
+  height: 16px;
+  filter: invert(100%) brightness(60%);
+}

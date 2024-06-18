@@ -1,5 +1,3 @@
-import type { Product } from '@prisma/client';
-import type { JsonObject } from '@prisma/client/runtime/library';
 import type { Dependecies } from '@src/config/dependencies';
 import { DEFAULT_PAGE } from '@src/constants';
 import { HttpError } from '@src/errors';
@@ -9,6 +7,7 @@ import type { Request, Response } from 'express';
 type QueryParams = {
   page: string;
   category: string | undefined;
+  limit?: string;
 };
 
 const DEFAULT_BESTSELLERS_COUNT = 8;
@@ -20,6 +19,7 @@ export function getBestsellers({ prisma }: Dependecies) {
   ) => {
     const page = parseInt(req.query.page ?? DEFAULT_PAGE);
     const categoryId = req.query.category;
+    const limit = parseInt(req.query.limit!);
 
     const pipeline = [
       {
@@ -35,7 +35,7 @@ export function getBestsellers({ prisma }: Dependecies) {
         $skip: (page - 1) * DEFAULT_BESTSELLERS_COUNT,
       },
       {
-        $limit: DEFAULT_BESTSELLERS_COUNT,
+        $limit: limit || DEFAULT_BESTSELLERS_COUNT,
       },
       {
         $lookup: {
@@ -103,7 +103,11 @@ export function getBestsellers({ prisma }: Dependecies) {
     ];
 
     try {
-      const bestsellers = await prisma.soldProduct.aggregateRaw({ pipeline });
+      const bestsellers = await prisma.soldProduct
+        .aggregateRaw({ pipeline })
+        .catch((e) => {
+          console.log(e);
+        });
 
       res.json({
         status: 'success',

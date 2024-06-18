@@ -12,10 +12,10 @@ import {
   NgControl,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
-import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { getValidationErrorMessage } from '@app/shared/utils/error-messages';
 import { OnChange, OnTouch } from '@shared/types/control-value-ancessor';
+import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
+import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
 import { HlmIconComponent } from '../ui-icon-helm/src';
 
 @Component({
@@ -39,6 +39,10 @@ import { HlmIconComponent } from '../ui-icon-helm/src';
         [ngClass]="{ 'pl-11': icon }"
         [placeholder]="placeholder"
         [type]="type"
+        [accept]="accept"
+        (change)="onChange($event)"
+        [min]="dateRange && dateRange[0]"
+        [max]="dateRange && dateRange[1]"
       />
     </label>
     @if (control.invalid && control.touched) {
@@ -52,11 +56,22 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() type: string = 'text';
   @Input() placeholder?: string;
   @Input() icon?: boolean = false;
+  @Input() accept?: string = '';
+  @Input() dateRange?: [string, string];
 
   @ViewChild(DefaultValueAccessor, { static: true }) dva!: DefaultValueAccessor;
 
   constructor(@Self() public control: NgControl) {
     this.control.valueAccessor = this;
+  }
+
+  onChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value: unknown = input.value;
+    if (this.type === 'file' && input.files) {
+      value = input.files[0];
+    }
+    this.dva.onChange(value);
   }
 
   getMessage(): string | undefined {
@@ -74,7 +89,9 @@ export class FormInputComponent implements ControlValueAccessor {
   }
 
   writeValue(value: string): void {
-    this.dva.writeValue(value);
+    if (this.type !== 'file') {
+      this.dva.writeValue(value);
+    }
   }
 
   registerOnChange(fn: OnChange<string>): void {

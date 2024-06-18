@@ -74,8 +74,16 @@ export class AuthService {
   }
 
   createAccount(credentials: SignupSchema): Observable<ResponseFormat> {
+    const formData = new FormData();
+    const headers = new HttpHeaders({ enctype: 'multipart/form-data' });
+    for (const key in credentials) {
+      formData.append(key, credentials[key as keyof typeof credentials]);
+    }
+
     return this.http
-      .post<ResponseFormat>(`${environment.API_URL}/register`, credentials)
+      .post<ResponseFormat>(`${environment.API_URL}/register`, formData, {
+        headers,
+      })
       .pipe(
         tap(({ status }) => {
           console.log(status);

@@ -1,33 +1,47 @@
+import { CommonModule, formatDate } from '@angular/common';
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
+  Component,
   EventEmitter,
+  OnInit,
   Output,
   inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
-import { HlmButtonDirective } from '@app/shared/ui/ui-button-helm/src';
-import { HlmInputDirective } from '@app/shared/ui/ui-input-helm/src';
-import { HlmIconComponent } from '@app/shared/ui/ui-icon-helm/src';
-import { provideIcons } from '@ng-icons/core';
-import { lucideMail, lucideUser, lucideLock } from '@ng-icons/lucide';
 import {
-  ReactiveFormsModule,
-  Validators,
   FormBuilder,
   FormGroup,
+  ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
-import {
-  passwordMatchesValidator,
-  nameValidator,
-  passwordValidator,
-} from '../utils/validators';
+import { Router, RouterModule } from '@angular/router';
+import { SelectValueAccessorDirective } from '@app/shared/directives/selectValueAccessor.directive';
 import { SignupSchema } from '@app/shared/types/schemas';
-import { LogoComponent } from '@app/shared/ui/logo/logo.component';
 import { FormInputComponent } from '@app/shared/ui/form-input/form-input.component';
+import { LogoComponent } from '@app/shared/ui/logo/logo.component';
+import { HlmButtonDirective } from '@app/shared/ui/ui-button-helm/src';
+import { HlmIconComponent } from '@app/shared/ui/ui-icon-helm/src';
+import { HlmInputDirective } from '@app/shared/ui/ui-input-helm/src';
+import { SelectComponent } from '@app/shared/ui/ui-select/ui-select.component';
+import { provideIcons } from '@ng-icons/core';
+import {
+  lucideCalendar,
+  lucideFileImage,
+  lucideLock,
+  lucideMail,
+  lucidePhone,
+  lucideUser,
+  lucideUserCircle,
+} from '@ng-icons/lucide';
 import { toast } from 'ngx-sonner';
+import {
+  avatarValidator,
+  dateValidator,
+  genderValidator,
+  nameValidator,
+  passwordMatchesValidator,
+  passwordValidator,
+  phoneValidator,
+} from '../utils/validators';
 
 @Component({
   selector: 'app-signup-form',
@@ -41,8 +55,20 @@ import { toast } from 'ngx-sonner';
     RouterModule,
     LogoComponent,
     FormInputComponent,
+    SelectComponent,
+    SelectValueAccessorDirective,
   ],
-  providers: [provideIcons({ lucideMail, lucideUser, lucideLock })],
+  providers: [
+    provideIcons({
+      lucideMail,
+      lucideUser,
+      lucideLock,
+      lucidePhone,
+      lucideCalendar,
+      lucideFileImage,
+      lucideUserCircle,
+    }),
+  ],
   templateUrl: './signup-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -51,6 +77,11 @@ export class SignupFormComponent implements OnInit {
   signup = false;
   passwordMismatch = false;
   signupForm!: FormGroup;
+  genders = ['male', 'female', 'other'];
+  birthdayDateRange: [string, string] = [
+    '1920-01-01',
+    formatDate(new Date(), 'yyyy-MM-dd', 'en-US'),
+  ];
   private router = inject(Router);
 
   constructor(private fb: FormBuilder) {}
@@ -61,6 +92,10 @@ export class SignupFormComponent implements OnInit {
         name: ['', [Validators.required, nameValidator]],
         lastName: ['', [Validators.required, nameValidator]],
         email: ['', [Validators.email, Validators.required]],
+        phone_number: ['', [Validators.required, phoneValidator]],
+        birthday: ['', [Validators.required, dateValidator]],
+        gender: [this.genders[0], [Validators.required, genderValidator]],
+        avatar: [null, avatarValidator],
         password: [
           '',
           [Validators.minLength(8), Validators.required, passwordValidator],
@@ -73,8 +108,18 @@ export class SignupFormComponent implements OnInit {
     );
   }
 
+  onFileSelected(e: Event): void {
+    const file = (e.target as HTMLInputElement).files![0];
+    if (file) {
+      this.signupForm.patchValue({
+        avatarImage: file,
+      });
+    }
+  }
+
   onSubmit(): void {
     if (this.signupForm.invalid) return;
+
     this.createUser.emit(this.signupForm.getRawValue());
     this.signupForm.reset();
     this.router.navigate(['/login']).then(() => {
