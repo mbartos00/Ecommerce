@@ -11,7 +11,10 @@ type UserResponse = Prisma.UserGetPayload<{
     name: true;
     lastName: true;
     favorites_list: true;
-    profile: true;
+    gender: true;
+    birthday: true;
+    phone_number: true;
+    profile_photo_url: true;
     paymentMethods: true;
     createdAt: true;
   };
@@ -21,26 +24,21 @@ export function getUserData({ prisma }: Dependecies) {
   return async (req: Request, res: Response<ResponseFormat<UserResponse>>) => {
     const { id } = req.user!;
 
-    const foundUser = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: id,
       },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        lastName: true,
+      include: {
         favorites_list: true,
-        profile: true,
         paymentMethods: true,
-        createdAt: true,
-        addresses: true,
       },
     });
 
-    if (!foundUser) {
+    if (!user) {
       throw new HttpError('User not found', 404);
     }
+
+    const { password, role, ...foundUser } = user;
 
     res.json({
       status: 'success',

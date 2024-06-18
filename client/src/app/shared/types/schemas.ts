@@ -8,6 +8,10 @@ export type SignupSchema = {
   lastName: string;
   email: string;
   password: string;
+  phoneNumber: string;
+  birthDate: string;
+  gender: string;
+  avatarImage: File;
 };
 
 export type ContactFormSchema = {

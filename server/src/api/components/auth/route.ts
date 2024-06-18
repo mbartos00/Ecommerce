@@ -22,19 +22,27 @@ import { updateAddress } from './controllers/address/update-addres';
 import { getFavorites } from './controllers/favorites/get-favorites';
 import { addFavorite } from './controllers/favorites/add-favorites';
 import { removeFavorite } from './controllers/favorites/remove-favorites';
+import upload from '@src/config/multer';
 
 export function authRouter(deps: Dependecies) {
   const router = Router();
+  const uploadFile = upload();
+
+  router.post(
+    '/register',
+    [uploadFile.single('avatar'), validate(registerSchema)],
+    register(deps),
+  );
+  router.post('/login', validate(loginSchema), login(deps));
 
   router.get('/user', auth(deps), getUserData(deps));
-  router.post('/register', validate(registerSchema), register(deps));
-  router.post('/login', validate(loginSchema), login(deps));
   router.patch(
     '/user/update',
-    [auth(deps), validate(updateUserSchema)],
+    [auth(deps), uploadFile.single('avatar'), validate(updateUserSchema)],
     updateUser(deps),
   );
   router.delete('/user/delete', auth(deps), deleteUser(deps));
+
   router.post(
     '/user/addresses',
     [auth(deps), validate(addressSchema)],

@@ -19,18 +19,22 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
-  name      String
-  lastName  String
-  password  String?
-  role      Role?    @default(user)
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  email             String   @unique
+  name              String
+  lastName          String
+  password          String
+  role              Role?    @default(user)
+  gender            Gender
+  birthday          DateTime
+  phone_number      String
+  profile_photo_url String?
+
   createdAt DateTime @default(now())
 
   favorites_list Favorites?
   paymentMethods PaymentMethod[]
 
-  profile    Profile?
   OAuthToken OAuthToken[]
   addresses  Address[]
 }
@@ -42,17 +46,6 @@ model OAuthToken {
 
   user   User   @relation(fields: [userId], references: [id])
   userId String @db.ObjectId
-}
-
-model Profile {
-  id                String    @id @default(auto()) @map("_id") @db.ObjectId
-  gender            Gender?
-  birthday          DateTime?
-  phone_number      String?
-  profile_photo_url String?
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique @db.ObjectId
 }
 
 model Product {
@@ -213,7 +206,7 @@ model SoldProduct {
 }
 
 model ContactSubmission {
-  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   email     String
   subject   String

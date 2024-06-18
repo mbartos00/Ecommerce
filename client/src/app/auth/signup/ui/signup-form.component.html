@@ -9,34 +9,74 @@
     (ngSubmit)="onSubmit()"
     class="grid gap-2 max-w-lg w-full m-7"
   >
-    <div class="relative">
-      <hlm-icon
-        size="sm"
-        name="lucideUser"
-        class="absolute top-4 left-4"
-      ></hlm-icon>
-      <app-form-input
-        formControlName="name"
-        placeholder="Name"
-        type="text"
-        [icon]="true"
-      ></app-form-input>
+    <div class="flex gap-4 w-full">
+      <div class="relative w-full">
+        <hlm-icon
+          size="sm"
+          name="lucideUser"
+          class="absolute top-4 left-4"
+        ></hlm-icon>
+        <app-form-input
+          formControlName="name"
+          placeholder="Name"
+          type="text"
+          [icon]="true"
+        ></app-form-input>
+      </div>
+
+      <div class="relative w-full">
+        <hlm-icon
+          size="sm"
+          name="lucideUser"
+          class="absolute top-4 left-4"
+        ></hlm-icon>
+        <app-form-input
+          formControlName="lastName"
+          placeholder="Last name"
+          type="text"
+          [icon]="true"
+        ></app-form-input>
+      </div>
     </div>
 
     <div class="relative">
       <hlm-icon
         size="sm"
-        name="lucideUser"
+        name="lucidePhone"
         class="absolute top-4 left-4"
       ></hlm-icon>
       <app-form-input
-        formControlName="lastName"
-        placeholder="Last name"
+        formControlName="phone_number"
+        placeholder="Phone number"
         type="text"
         [icon]="true"
       ></app-form-input>
     </div>
-
+    <div class="flex gap-4 w-full">
+      <div class="relative w-full">
+        <app-form-input
+          class="calendar-picker"
+          formControlName="birthday"
+          placeholder="Birthday"
+          type="date"
+          [icon]="true"
+          [dateRange]="birthdayDateRange"
+        ></app-form-input>
+      </div>
+      <div class="relative w-full my-1">
+        <hlm-icon
+          size="sm"
+          name="lucideUserCircle"
+          class="absolute top-3 left-4"
+        ></hlm-icon>
+        <app-ui-select
+          formControlName="gender"
+          id="gender"
+          selectName="gender"
+          [values]="genders"
+        ></app-ui-select>
+      </div>
+    </div>
     <div class="relative">
       <hlm-icon
         size="sm"
@@ -78,7 +118,21 @@
         [icon]="true"
       ></app-form-input>
     </div>
-
+    <div class="relative">
+      <hlm-icon
+        size="sm"
+        name="lucideFileImage"
+        class="absolute top-4 left-4"
+      ></hlm-icon>
+      <app-form-input
+        formControlName="avatar"
+        placeholder="Upload file"
+        type="file"
+        [icon]="true"
+        accept=".jpeg,.png,.jpg"
+        (change)="onFileSelected($event)"
+      ></app-form-input>
+    </div>
     <button hlmBtn size="lg" class="mt-2">Sign up</button>
   </form>
   <p class="text-xs">
