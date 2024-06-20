@@ -1,5 +1,5 @@
 @if (products$ | async; as products) {
-  <div class="relative max-w-80 group">
+  <div class="relative max-w-80 group mb-20">
     <button
       (click)="prevProduct($event)"
       class="flex justify-center items-center absolute text-white bg-primary m-2 p-3 rounded-full inset-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -107,7 +107,7 @@
         @for (product of products.data; track product; let i = $index) {
           <button (click)="setCurrentProduct(i)">
             <div
-              class="w-8 h-1 rounded-sm"
+              class="w-6 sm:w-8 h-1 rounded-sm"
               [class]="
                 currentProductIndex === i ? 'bg-primary' : 'bg-grey-light'
               "

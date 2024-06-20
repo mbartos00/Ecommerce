@@ -1,16 +1,22 @@
-<div class="flex justify-around">
-  <div class="flex flex-col">
+<div
+  class="container flex flex-col xl:flex-row gap-10 justify-around items-center text-black"
+>
+  <div class="flex flex-col mt-10">
     @if (!isLoading && (product$ | async); as product) {
-      <div class="flex">
+      <div class="flex flex-col md:flex-row">
         <div class="ml-5">
           <app-image-gallery [images]="product.images"></app-image-gallery>
         </div>
 
-        <div class="ml-10 w-full">
+        <div class="mx-10 md:w-[18rem] lg:w-[31rem]">
           <div class="flex flex-col justify-between">
             <div>
-              <h1 class="text-xl font-medium">{{ product.name }}</h1>
-              <div class="mt-2.5 mb-5 flex items-center">
+              <h1 class="text-2xl font-medium text-center md:text-start">
+                {{ product.name }}
+              </h1>
+              <div
+                class="mt-2.5 mb-5 flex items-center justify-center md:justify-start"
+              >
                 @for (star of getStarsArray(); track star) {
                   <svg
                     class="w-3 h-3"
@@ -63,7 +69,7 @@
                   </p>
                 }
               </div>
-              <div>
+              <div class="grid gap-6 mt-6 text-sm">
                 <p>
                   Availability:
                   <span class="ml-2">
@@ -83,7 +89,7 @@
                 <p>Free shipping</p>
               </div>
               <hr class="h-0.5 my-4 bg-grey-light border-0" />
-              <div>
+              <div class="grid gap-6">
                 <p class="flex items-center">
                   <span class="mr-3">Select Color:</span>
                   @for (color of colors$ | async; track color; let i = $index) {
@@ -98,21 +104,24 @@
                     </button>
                   }
                 </p>
-                Size:
-                <app-ui-select
-                  [selectId]="'productSize'"
-                  [selectName]="'productSize'"
-                  [values]="(sizes$ | async)!"
-                  [(selectedValue)]="selectedProduct.size"
-                  (selectedValueChange)="setSizeAndColor($event)"
-                ></app-ui-select>
+                <div class="flex gap-10 items-center">
+                  Size:
+                  <app-ui-select
+                    [selectId]="'productSize'"
+                    [selectName]="'productSize'"
+                    [values]="(sizes$ | async)!"
+                    [(selectedValue)]="selectedProduct.size"
+                    (selectedValueChange)="setSizeAndColor($event)"
+                  ></app-ui-select>
+                </div>
               </div>
               <div class="available-quantity">
-                Available Quantity:
                 {{ selectedProduct.availableQuantity }}
               </div>
               <hr class="h-0.5 my-4 bg-grey-light border-0" />
-              <div class="flex justify-between align-middle">
+              <div
+                class="flex flex-row md:flex-col lg:flex-row gap-2 justify-between align-middle"
+              >
                 <app-counter-input
                   [min]="0"
                   [max]="selectedProduct.availableQuantity"
@@ -122,7 +131,7 @@
 
                 <div class="flex gap-4">
                   <button
-                    class="text-white bg-blue-light hover:bg-primary focus:ring-1 focus:outline-none focus:ring-blue font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2"
+                    class="text-white bg-baby-blue hover:bg-blue-light focus:ring-1 focus:outline-none focus:ring-blue font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2"
                     (click)="addToCart()"
                   >
                     <hlm-icon
@@ -133,7 +142,7 @@
                     <span class="ml-1 text-blue text-sm">Add To Cart</span>
                   </button>
                   <button
-                    class="text-white bg-blue-light hover:bg-primary focus:ring-1 focus:outline-none focus:ring-blue font-medium rounded-md text-sm px-2.5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2"
+                    class="text-white bg-baby-blue hover:bg-blue-light focus:ring-1 focus:outline-none focus:ring-blue font-medium rounded-md text-sm px-2.5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2"
                   >
                     <hlm-icon
                       size="base"
@@ -144,10 +153,12 @@
                 </div>
               </div>
               <hr class="h-0.5 my-4 bg-grey-light border-0" />
-              <div class="flex justify-around">
+              <div
+                class="flex flex-col lg:flex-row justify-between items-center"
+              >
                 <button
                   type="button"
-                  class="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-1 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 me-2 mb-2"
+                  class="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-1 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-md text-sm px-6 py-2.5 text-center inline-flex items-center justify-center dark:focus:ring-[#3b5998]/55 me-2 mb-2 w-full"
                 >
                   <hlm-icon
                     size="base"
@@ -159,7 +170,7 @@
                 </button>
                 <button
                   type="button"
-                  class="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-1 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
+                  class="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-1 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-md text-sm px-6 py-2.5 text-center inline-flex items-center justify-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2 w-full"
                 >
                   <hlm-icon
                     size="base"
@@ -175,25 +186,28 @@
         </div>
       </div>
 
-      <hlm-tabs tab="productInfo" class="w-full">
-        <hlm-tabs-list class="w-full" aria-label="tabs example">
+      <hlm-tabs tab="productInfo" class="w-full mt-12">
+        <hlm-tabs-list
+          class="w-full bg-primary-foreground"
+          aria-label="tabs example"
+        >
           <button hlmTabsTrigger="productInfo">Product Information</button>
           <button hlmTabsTrigger="reviews">Reviews</button>
           <button hlmTabsTrigger="anotherTab">Another tab</button>
         </hlm-tabs-list>
-        <div hlmTabsContent="productInfo">
+        <div hlmTabsContent="productInfo" class="bg-primary-foreground">
           <section hlmCard>
             <p hlmCardContent>
               {{ product.description }}
             </p>
           </section>
         </div>
-        <div hlmTabsContent="reviews">
+        <div hlmTabsContent="reviews" class="bg-primary-foreground">
           <section hlmCard>
             <p hlmCardContent>product review</p>
           </section>
         </div>
-        <div hlmTabsContent="anotherTab">
+        <div hlmTabsContent="anotherTab" class="bg-primary-foreground">
           <section hlmCard>
             <p hlmCardContent>Yes it is another tab</p>
           </section>
