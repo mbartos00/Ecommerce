@@ -1,5 +1,5 @@
 <div class="flex items-center justify-center w-full p-2">
-  <button (click)="changeImagePrev()">
+  <button (click)="changeImagePrev()" class="relative -right-[20px] sm:right-0">
     <hlm-icon
       size="base"
       name="lucideChevronLeft"
@@ -7,11 +7,11 @@
     ></hlm-icon>
   </button>
   <img
-    class="h-full w-full h-60 min-w-80 object-contain bg-primary-foreground"
+    class="md:h-full sm:min-w-80 object-contain bg-primary-foreground"
     [src]="currentImage"
     alt="Product image"
   />
-  <button (click)="changeImageNext()">
+  <button (click)="changeImageNext()" class="relative -left-[20px] sm:left-0">
     <hlm-icon
       size="base"
       name="lucideChevronRight"

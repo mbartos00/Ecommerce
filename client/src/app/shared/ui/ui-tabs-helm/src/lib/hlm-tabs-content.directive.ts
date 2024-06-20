@@ -24,7 +24,7 @@ export class HlmTabsContentDirective {
   public readonly userClass = input<ClassValue>('', { alias: 'class' });
   protected _computedClass = computed(() =>
     hlm(
-      'p-5 bg-grey-light text-grey-neutral font-light ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+      'p-5 bg-grey-light text-grey-neutral text-xs sm:text-base font-light ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
       this.userClass()
     )
   );

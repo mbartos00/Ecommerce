@@ -107,7 +107,7 @@
         @for (product of products.data; track product; let i = $index) {
           <button (click)="setCurrentProduct(i)">
             <div
-              class="w-6 sm:w-8 h-1 rounded-sm"
+              class="w-3 sm:w-8 h-1 rounded-sm"
               [class]="
                 currentProductIndex === i ? 'bg-primary' : 'bg-grey-light'
               "
