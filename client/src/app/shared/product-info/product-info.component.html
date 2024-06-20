@@ -1,14 +1,14 @@
 <div
-  class="container flex flex-col xl:flex-row gap-10 justify-around items-center text-black"
+  class="container flex flex-col xl:flex-row flex-wrap gap-10 justify-around items-center text-black"
 >
   <div class="flex flex-col mt-10">
     @if (!isLoading && (product$ | async); as product) {
       <div class="flex flex-col md:flex-row">
-        <div class="ml-5">
+        <div>
           <app-image-gallery [images]="product.images"></app-image-gallery>
         </div>
 
-        <div class="mx-10 md:w-[18rem] lg:w-[31rem]">
+        <div class="mx-5 sm:mx-10 md:w-[18rem] lg:w-[31rem]">
           <div class="flex flex-col justify-between">
             <div>
               <h1 class="text-2xl font-medium text-center md:text-start">
@@ -120,7 +120,7 @@
               </div>
               <hr class="h-0.5 my-4 bg-grey-light border-0" />
               <div
-                class="flex flex-row md:flex-col lg:flex-row gap-2 justify-between align-middle"
+                class="flex flex-row flex-wrap md:flex-col lg:flex-row gap-2 justify-between align-middle"
               >
                 <app-counter-input
                   [min]="0"
@@ -131,7 +131,7 @@
 
                 <div class="flex gap-4">
                   <button
-                    class="text-white bg-baby-blue hover:bg-blue-light focus:ring-1 focus:outline-none focus:ring-blue font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2"
+                    class="text-white bg-baby-blue hover:bg-blue-light focus:ring-1 focus:outline-none focus:ring-blue font-medium rounded-md text-xs sm:text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2"
                     (click)="addToCart()"
                   >
                     <hlm-icon
@@ -191,7 +191,9 @@
           class="w-full bg-primary-foreground"
           aria-label="tabs example"
         >
-          <button hlmTabsTrigger="productInfo">Product Information</button>
+          <button hlmTabsTrigger="productInfo" class="font-xs">
+            Product Information
+          </button>
           <button hlmTabsTrigger="reviews">Reviews</button>
           <button hlmTabsTrigger="anotherTab">Another tab</button>
         </hlm-tabs-list>
