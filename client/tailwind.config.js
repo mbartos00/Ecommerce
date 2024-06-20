@@ -6,6 +6,7 @@ module.exports = {
     colors: {
       primary: 'hsl(var(--primary))',
       blue: 'hsl(var(--blue))',
+      'baby-blue': 'hsl(var(--baby-blue))',
       'blue-light': 'hsl(var(--blue-light))',
       pink: 'hsl(var(--pink))',
       'pink-light': 'hsl(var(--pink-light))',
