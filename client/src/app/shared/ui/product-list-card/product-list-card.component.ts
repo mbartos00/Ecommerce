@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
+import { getStarsArray } from '@app/shared/utils/utils';
 import { lucideHeart, lucideShoppingCart } from '@ng-icons/lucide';
 import { Product } from '../../types/product.model';
 import { RouterModule } from '@angular/router';
@@ -19,9 +20,6 @@ export class ProductListCardComponent {
   @Input() product!: Omit<Product, 'favorites_list_id'>;
 
   getStarsArray(): number[] {
-    const maxStars = 5;
-    return Array(maxStars)
-      .fill(0)
-      .map((_, i) => (i < maxStars ? i + 1 : 0));
+    return getStarsArray();
   }
 }

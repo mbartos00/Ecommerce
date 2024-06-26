@@ -114,19 +114,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.fetchProducts();
   }
 
-  nextPage(): void {
-    if (this.currentPage < this.totalPages.length) {
-      this.currentPage++;
-      this.fetchProducts();
-    }
-  }
-
-  prevPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.fetchProducts();
-    }
-  }
   gotoPage(page: number): void {
     this.currentPage = page;
     this.fetchProducts();
@@ -152,6 +139,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
         (_, index) => index + 1
       );
     });
+
     this.isLoading = false;
+    this.cdr.detectChanges();
   }
 }
