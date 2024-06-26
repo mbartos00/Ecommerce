@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Product, ProductList, QueryParams } from '../types/product.model';
 import { environment } from '../../../environments/environment';
@@ -18,10 +18,23 @@ export class ProductService {
 
   getAllProducts(params: QueryParams): Observable<ProductList> {
     return this.http
-      .get<ProductList>(`${environment.API_URL}/products`, {
+      .get<ProductList>(this.apiUrl, {
         params: this.removeEmptyPropsFromObj(params),
       })
-      .pipe(catchError(this.handleError));
+      .pipe(
+        catchError(error =>
+          this.handleError<ProductList>(error, {
+            status: 'error',
+            paginationInfo: {
+              count: 0,
+              page: 0,
+              perPage: 0,
+              totalPages: 0,
+            },
+            data: [],
+          })
+        )
+      );
   }
 
   getProductById(productId: string): Observable<Product> {
@@ -29,7 +42,7 @@ export class ProductService {
 
     return this.http.get<ApiResponse<Product>>(url).pipe(
       map(response => response.data),
-      catchError(this.handleError)
+      catchError(error => this.handleError<Product>(error, {} as Product))
     );
   }
 
@@ -37,14 +50,20 @@ export class ProductService {
     const url = `${this.apiUrl}/sale`;
     return this.http.get<ApiResponse<Product[]>>(url).pipe(
       map(response => response.data.slice(0, 3)),
-      catchError(this.handleError)
+      catchError(error => this.handleError<Product[]>(error, []))
     );
   }
 
-  private handleError(error: Error): Observable<never> {
+  private handleError<T>(error: HttpErrorResponse, result: T): Observable<T> {
+    if (
+      error.status === 404 &&
+      error.error?.status === 'error' &&
+      error.error?.message === 'No products found'
+    ) {
+      return of(result);
+    }
     console.error('An error occurred:', error);
-
-    throw error;
+    return throwError(() => new Error('An unexpected error occurred.'));
   }
 
   private removeEmptyPropsFromObj<T extends object>(obj: T): T {

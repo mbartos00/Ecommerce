@@ -9,24 +9,30 @@
 </div>
 
 @if (products$ | async; as products) {
-  <div class="container my-7 mx-auto p-2">
-    <div
-      *ngIf="isGridView; else listView"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
-    >
-      <ng-container *ngFor="let product of products.data">
-        <app-product-card
-          [product]="product"
-          class="m-0 aspect-auto"
-        ></app-product-card>
-      </ng-container>
-    </div>
-    <ng-template #listView>
-      <div *ngFor="let product of products.data">
-        <app-product-list-card [product]="product"></app-product-list-card>
+  @if (totalProducts > 0) {
+    <div class="container my-7 mx-auto p-2">
+      <div
+        *ngIf="isGridView; else listView"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
+      >
+        <ng-container *ngFor="let product of products.data">
+          <app-product-card
+            [product]="product"
+            class="m-0 aspect-auto"
+          ></app-product-card>
+        </ng-container>
       </div>
-    </ng-template>
-  </div>
+      <ng-template #listView>
+        <div *ngFor="let product of products.data">
+          <app-product-list-card [product]="product"></app-product-list-card>
+        </div>
+      </ng-template>
+    </div>
+  } @else {
+    <div class="flex justify-center py-10 text-2xl">
+      <p>No Products Found</p>
+    </div>
+  }
 } @else {
   <div class="container my-7 mx-auto p-2">
     <div
@@ -45,22 +51,12 @@
   </div>
 }
 
-<nav hlmPagination class="mb-16">
-  <ul hlmPaginationContent>
-    <li hlmPaginationItem>
-      <hlm-pagination-previous (click)="prevPage()" />
-    </li>
-    <li *ngFor="let page of totalPages" hlmPaginationItem>
-      <button
-        hlmPaginationLink
-        (click)="gotoPage(page)"
-        [ngClass]="{ 'bg-primary': currentPage === page }"
-      >
-        {{ page }}
-      </button>
-    </li>
-    <li hlmPaginationItem>
-      <hlm-pagination-next (click)="nextPage()" />
-    </li>
-  </ul>
-</nav>
+@if (totalProducts > +itemsPerPage) {
+  <div class="mb-40">
+    <app-pagination
+      [totalPages]="totalPages"
+      [currentPage]="currentPage"
+      (pageChange)="gotoPage($event)"
+    ></app-pagination>
+  </div>
+}
