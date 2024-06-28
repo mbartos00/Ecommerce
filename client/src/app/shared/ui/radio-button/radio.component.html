@@ -1,0 +1,27 @@
+<span class="relative flex items-center p-3 rounded-full cursor-pointer">
+  <input
+    type="radio"
+    [value]="value"
+    [name]="name"
+    [id]="id"
+    (change)="updateValue(value)"
+    [checked]="value === selectedValue"
+    class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border border-grey bg-grey-light p-0 text-grey transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-grey-dark before:opacity-0 before:transition-opacity checked:border-grey checked:before:bg-grey hover:before:opacity-0"
+  />
+  <span
+    class="absolute text-blue transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      class="w-full h-full scale-105"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+        clip-rule="evenodd"
+      ></path>
+    </svg>
+  </span>
+</span>

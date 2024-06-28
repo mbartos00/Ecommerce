@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { Discount } from '../types/discount';
+import { Shipping } from '../types/shipping';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class CartService {
     discount_type: '',
     message: '',
   };
+  private selectedShippingOption: Shipping | null = null;
   private cartSubject: BehaviorSubject<ProductInCart[]> = new BehaviorSubject<
     ProductInCart[]
   >(this.productsInCart);
@@ -103,18 +105,37 @@ export class CartService {
     return this.discount;
   }
 
-  // observable, map
+  getShippingOptions(): Observable<Shipping[]> {
+    return this.http
+      .get<{
+        status: string;
+        data: Shipping[];
+      }>(environment.API_URL + '/cart/shipping')
+      .pipe(map(response => response.data));
+  }
+
+  setSelectedShippingOption(shipping: Shipping): void {
+    this.selectedShippingOption = shipping;
+  }
+
   getTotal(): number {
     const subtotal = this.cartSubject
       .getValue()
       .reduce((acc, product) => acc + product.price * product.quantityToBuy, 0);
 
+    let total = subtotal;
+
     if (this.discount.discount_type === 'percentage') {
-      return (
-        subtotal - Math.floor((subtotal * this.discount.discount_amount) / 100)
-      );
+      total -= Math.floor((subtotal * this.discount.discount_amount) / 100);
+    } else {
+      total -= this.discount.discount_amount;
     }
-    return subtotal - this.discount.discount_amount;
+
+    if (this.selectedShippingOption) {
+      total += this.selectedShippingOption.shipping_price;
+    }
+
+    return total;
   }
 
   private saveCart(): void {

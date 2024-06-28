@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
 import { ProductInCart } from '../types/product.model';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
@@ -9,17 +9,29 @@ import { CommonModule } from '@angular/common';
 import { CounterInputComponent } from '../ui/counter-input/counter-input.component';
 import { FormsModule } from '@angular/forms';
 import { Discount } from '../types/discount';
+import { Shipping } from '../types/shipping';
+import { RadioComponent } from '../ui/radio-button/radio.component';
+import { HlmButtonDirective } from '../ui/ui-button-helm/src';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   templateUrl: './cart.component.html',
   providers: [provideIcons({ lucideX })],
-  imports: [HlmIconComponent, CommonModule, CounterInputComponent, FormsModule],
+  imports: [
+    HlmIconComponent,
+    CommonModule,
+    CounterInputComponent,
+    FormsModule,
+    RadioComponent,
+    HlmButtonDirective,
+  ],
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
   productsInCart$: Observable<ProductInCart[]> = this.cartService.cart$;
   subtotal$: Observable<number> = this.cartService.getSubtotal();
+  shippingOptions$: Observable<Shipping[]> = new Observable<Shipping[]>();
+  selectedShippingOption: Shipping | null = null;
   discount: Discount = {
     code: '',
     discount_amount: 0,
@@ -29,12 +41,21 @@ export class CartComponent {
 
   constructor(private cartService: CartService) {}
 
+  ngOnInit() {
+    this.shippingOptions$ = this.cartService.getShippingOptions();
+  }
+
   onDeleteProductFromCart(product: ProductInCart): void {
     this.cartService.removeProductFromCart(product);
   }
 
   onQuantityChange(product: ProductInCart, quantity: number): void {
     this.cartService.updateProductQuantity(product, quantity);
+  }
+
+  onShippingOptionChange(option: Shipping): void {
+    this.selectedShippingOption = option;
+    this.cartService.setSelectedShippingOption(option);
   }
 
   onApplyDiscount(): void {

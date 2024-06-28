@@ -1,4 +1,4 @@
-<div class="p-1 lg:p-10 relative overflow-x-auto mb-16 lg:mb-0">
+<div class="p-4 lg:p-10 relative overflow-x-auto mb-16 lg:mb-0">
   <table
     class="hidden lg:table mb-4 md:mb-20 w-full text-sm text-left rtl:text-right"
   >
@@ -139,8 +139,7 @@
       <p class="flex justify-between">
         Subtotal <span>{{ subtotal$ | async | currency: 'USD' }}</span>
       </p>
-      <!-- TODO get shipping cost -->
-      <p class="flex justify-between">Shipping fee <span>$998</span></p>
+
       <p class="flex justify-between">
         @if (discount.discount_amount) {
           Coupon
@@ -151,16 +150,46 @@
           <span> No Coupon Applied </span>
         }
       </p>
-      <hr class="h-0.5 my-4 bg-grey-light border-0" />
 
-      <p class="flex justify-between text-xl font-bold">
-        Total <span>{{ getTotal() | currency: 'USD' }}</span>
-      </p>
-      <button
-        class="text-white bg-blue h-full hover:bg-primary active:ring-2 active:outline-none active:ring-primary font-medium rounded-sm text-sm px-4 py-2"
-      >
-        Check out
-      </button>
+      <div class="mt-6">
+        <p>Shipping fee</p>
+        <div class="flex flex-col gap-4">
+          <ng-container *ngFor="let shipping of shippingOptions$ | async">
+            <div class="flex items-center gap-2">
+              <app-radio
+                [value]="shipping"
+                [(ngModel)]="selectedShippingOption"
+                [name]="'shippingOption'"
+                [id]="shipping.id"
+                (change)="onShippingOptionChange(shipping)"
+              ></app-radio>
+              <div class="flex justify-between place-items-center w-full">
+                <img
+                  class="h-7 shadow rounded p-px hover:shadow-md"
+                  [src]="shipping.shipping_carrier_image_url"
+                  [alt]="shipping.shipping_carrier"
+                />
+                <label [for]="shipping.id">
+                  {{ shipping.shipping_price | currency: 'USD' }}
+                </label>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <hr class="h-0.5 my-4 bg-grey-light border-0" />
+
+        <p class="flex justify-between text-xl font-bold">
+          Total <span>{{ getTotal() | currency: 'USD' }}</span>
+        </p>
+        <button
+          hlmBtn
+          [disabled]="!selectedShippingOption"
+          class="text-white bg-blue active:ring-2 active:outline-none font-medium rounded-sm text-sm px-4 py-2 mt-4 w-full"
+        >
+          Check out
+        </button>
+      </div>
     </div>
   </div>
 </div>
