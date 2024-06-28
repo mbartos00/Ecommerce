@@ -137,7 +137,9 @@ export class ProductInfoComponent implements OnInit {
                   id: product.id,
                   name: product.name,
                   brand: product.brand,
-                  price: product.price,
+                  price: product.discount
+                    ? calculateDiscountedPrice(product)
+                    : product.price,
                   images: product.images,
                   variantId: variant.id,
                   color: variant.color,
