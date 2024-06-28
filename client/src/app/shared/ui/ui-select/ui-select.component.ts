@@ -11,6 +11,7 @@ export class SelectComponent {
   @Input() selectName: string = 'select-name';
   @Input() values: string[] = [];
   @Input() selectedValue: string = '';
+  @Input() withIcon = false;
   @Output() selectedValueChange: EventEmitter<string> =
     new EventEmitter<string>();
 

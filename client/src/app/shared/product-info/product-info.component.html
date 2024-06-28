@@ -115,9 +115,12 @@
                   ></app-ui-select>
                 </div>
               </div>
-              <div class="available-quantity">
-                {{ selectedProduct.availableQuantity }}
-              </div>
+              @if (selectedProduct.availableQuantity) {
+                <div class="mt-2">
+                  Available quantity:
+                  {{ selectedProduct.availableQuantity }}
+                </div>
+              }
               <hr class="h-0.5 my-4 bg-grey-light border-0" />
               <div
                 class="flex flex-row flex-wrap md:flex-col lg:flex-row gap-2 justify-between align-middle"
