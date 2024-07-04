@@ -1,0 +1,31 @@
+<section
+  class="container pb-10 md:pt-10 xl:pb-24 px-4 sm:px-16 xl:px-24 md:pl-28 text-navy"
+>
+  <h1 class="hidden lg:block font-bold sm:text-2xl px-4">Account</h1>
+  <hr class="h-0.5 my-4 bg-grey-light border-0" />
+  <ul>
+    <app-profile-list-item
+      icon="lucideUser"
+      label="Profile"
+      [link]="'/account/profile'"
+    ></app-profile-list-item>
+
+    <app-profile-list-item
+      icon="lucideShoppingBag"
+      label="Order"
+      [link]=""
+    ></app-profile-list-item>
+
+    <app-profile-list-item
+      icon="lucideMapPin"
+      label="Address"
+      [link]=""
+    ></app-profile-list-item>
+
+    <app-profile-list-item
+      icon="lucideCreditCard"
+      label="Payment"
+      [link]=""
+    ></app-profile-list-item>
+  </ul>
+</section>

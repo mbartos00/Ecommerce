@@ -24,13 +24,13 @@
         *ngFor="let breadcrumb of breadcrumbs; let i = index; let last = last"
       >
         <ng-container *ngIf="last">
-          <span class="font-semibold text-xl capitalize">{{
+          <span class="font-semibold text-xl capitalize text-navy">{{
             breadcrumb.label
           }}</span>
         </ng-container>
         <ng-container *ngIf="!last && i === (breadcrumbs$ | async)!.length - 2">
           <a [href]="breadcrumb.url">
-            <hlm-icon size="base" name="lucideChevronLeft" />
+            <hlm-icon size="base" name="lucideChevronLeft" class="text-navy" />
           </a>
         </ng-container>
       </ng-container>

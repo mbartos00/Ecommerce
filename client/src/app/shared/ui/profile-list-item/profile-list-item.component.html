@@ -1,0 +1,28 @@
+<li>
+  <a
+    class="flex items-center flex-row gap-4 px-4 py-5 hover:bg-grey-light transition"
+    [routerLink]="[link]"
+  >
+    <div
+      class="flex items-center flex-row justify-between sm:justify-evenly gap-4 w-full"
+    >
+      <div class="flex items-center flex-row gap-4 sm:min-w-48">
+        <hlm-icon [size]="'base'" [name]="icon" class="text-primary"></hlm-icon>
+        <span class="text-xs sm:text-base font-semibold">{{ label }}</span>
+      </div>
+
+      <ng-container *ngIf="profileInfo === true">
+        <div class="flex items-center flex-row gap-4">
+          <span class="text-xs sm:text-base text-grey sm:min-w-44 text-end">{{
+            value
+          }}</span>
+          <hlm-icon
+            size="base"
+            name="lucideChevronRight"
+            class="text-grey-neutral font-bold"
+          ></hlm-icon>
+        </div>
+      </ng-container>
+    </div>
+  </a>
+</li>

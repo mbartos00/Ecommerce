@@ -27,6 +27,11 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'account',
+    data: { breadcrumb: 'Account' },
+    loadChildren: () => import('./account/account.routes').then(m => m.routes),
+  },
+  {
     path: '**',
     redirectTo: 'auth',
     pathMatch: 'full',
