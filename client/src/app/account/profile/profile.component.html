@@ -1,0 +1,56 @@
+<section
+  class="container pb-10 md:pt-10 xl:pb-24 px-4 sm:px-16 xl:px-24 md:pl-28 text-navy"
+>
+  <hr class="h-0.5 my-4 bg-grey-light border-0" />
+  <ng-container *ngIf="profile$ | async as profile">
+    <div class="flex mb-8 md:mb-[initial]">
+      <img
+        class="size-[4.5rem] sm:size-40 rounded-full object-cover"
+        [src]="profile.profile_photo_url"
+      />
+      <div class="mt-2 sm:mt-5 ml-4">
+        <h3 class="text-sm sm:text-base font-semibold mb-2">
+          {{ profile.name }} {{ profile.lastName }}
+        </h3>
+        <p class="text-sm sm:text-base text-grey">{{ profile.email }}</p>
+      </div>
+    </div>
+    <ul>
+      <app-profile-list-item
+        icon="lucideCircle"
+        label="Gender"
+        [value]="profile.gender"
+        [link]=""
+        [profileInfo]="true"
+      ></app-profile-list-item>
+      <app-profile-list-item
+        icon="lucideCalendar"
+        label="Birthday"
+        [value]="profile.birthday | date: 'dd-MM-yyyy'"
+        [link]=""
+        [profileInfo]="true"
+      ></app-profile-list-item>
+      <app-profile-list-item
+        icon="lucideMail"
+        label="Email"
+        [value]="profile.email"
+        [link]=""
+        [profileInfo]="true"
+      ></app-profile-list-item>
+      <app-profile-list-item
+        icon="lucidePhone"
+        label="Phone Number"
+        [value]="profile.phone_number"
+        [link]=""
+        [profileInfo]="true"
+      ></app-profile-list-item>
+      <app-profile-list-item
+        icon="lucideLock"
+        label="Change Password"
+        [value]="'•'.repeat(15)"
+        [link]=""
+        [profileInfo]="true"
+      ></app-profile-list-item>
+    </ul>
+  </ng-container>
+</section>
