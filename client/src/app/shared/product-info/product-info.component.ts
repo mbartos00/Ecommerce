@@ -1,30 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { Product, ProductInCart, Variant } from '../types/product.model';
-import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
 import {
-  lucideHeart,
-  lucideShoppingCart,
-  lucideFacebook,
-  lucideTwitter,
   lucideChevronLeft,
   lucideChevronRight,
+  lucideFacebook,
+  lucideHeart,
+  lucideShoppingCart,
+  lucideTwitter,
 } from '@ng-icons/lucide';
-import { CounterInputComponent } from '../ui/counter-input/counter-input.component';
+import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
+import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 import {
   HlmTabsComponent,
   HlmTabsContentDirective,
   HlmTabsListComponent,
   HlmTabsTriggerDirective,
 } from '@spartan-ng/ui-tabs-helm';
-import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
-import { ImageGalleryComponent } from '../ui/image-gallery/image-gallery.component';
-import { SelectComponent } from '../ui/ui-select/ui-select.component';
-import { getStarsArray } from '../utils/utils';
-import { ActivatedRoute } from '@angular/router';
-import { ProductService } from '../product/product.service';
-import { CommonModule } from '@angular/common';
-import { CartService } from '../cart/cart.service';
 import {
   BehaviorSubject,
   EMPTY,
@@ -36,8 +29,16 @@ import {
   take,
   tap,
 } from 'rxjs';
+import { CartService } from '../cart/cart.service';
+import { ProductService } from '../product/product.service';
+import { Product, ProductInCart, Variant } from '../types/product.model';
 import { BestsellerCardComponent } from '../ui/bestseller-card/bestseller-card.component';
+import { CounterInputComponent } from '../ui/counter-input/counter-input.component';
+import { ImageGalleryComponent } from '../ui/image-gallery/image-gallery.component';
+import { ProductCardComponent } from '../ui/product-card/product-card.component';
+import { SelectComponent } from '../ui/ui-select/ui-select.component';
 import calculateDiscountedPrice from '../utils/calculate-discounted-price';
+import { getStarsArray } from '../utils/utils';
 
 @Component({
   selector: 'app-product-info',
@@ -65,7 +66,9 @@ import calculateDiscountedPrice from '../utils/calculate-discounted-price';
     HlmSpinnerComponent,
     CommonModule,
     BestsellerCardComponent,
+    ProductCardComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductInfoComponent implements OnInit {
   selectedProduct: ProductInCart = {} as ProductInCart;
@@ -77,7 +80,9 @@ export class ProductInfoComponent implements OnInit {
   selectedColor$ = new BehaviorSubject<string>('');
   selectedColorIndex: number = 0;
   quantityToBuy: number = 1;
+  relatedProducts!: Product[];
   calculateDiscountedPrice!: (product: Product) => number;
+  private DEFAULT_RELATED_PRODUCTS_LIMIT = 4;
 
   constructor(
     private route: ActivatedRoute,
@@ -89,6 +94,9 @@ export class ProductInfoComponent implements OnInit {
     this.initOptions();
     this.isLoading = false;
     this.calculateDiscountedPrice = calculateDiscountedPrice;
+    this.getRelatedProducts().subscribe(d => {
+      this.relatedProducts = d;
+    });
   }
 
   initOptions(): void {
@@ -118,6 +126,21 @@ export class ProductInfoComponent implements OnInit {
           )
         )
       )
+    );
+  }
+
+  getRelatedProducts(): Observable<Product[]> {
+    return this.product$.pipe(
+      map(d => d.categories[0]),
+      take(1),
+      switchMap(data => {
+        return this.productService
+          .getAllProducts({
+            category: data.name,
+            perPage: String(this.DEFAULT_RELATED_PRODUCTS_LIMIT),
+          })
+          .pipe(map(d => d.data));
+      })
     );
   }
 
