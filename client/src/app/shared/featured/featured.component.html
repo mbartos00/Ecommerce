@@ -5,12 +5,14 @@
     Featured Products
   </h2>
   <div
-    class="flex flex-col lg:flex-row justify-between items-center text-center"
+    class="flex flex-col lg:flex-row lg:flex-wrap xl:flex-nowrap justify-between items-center text-center"
   >
     @if (products$ | async; as products) {
-      <ng-container *ngFor="let product of products.data">
+      <ng-container *ngFor="let product of products.data; index as i">
         <a
-          class="flex gap-6 py-4 my-4 flex-col items-center px-2 sm:flex-row sm:p-0 transition-shadow duration-300 rounded cursor-pointer hover:shadow-lg hover:shadow-gray-dark"
+          class="flex gap-6 py-4 my-4 flex-col items-center {{
+            i === products.data.length - 1 ? 'lg:mx-auto min-[1130px]:mx-0' : ''
+          }} px-2 sm:flex-row sm:p-0 transition-shadow duration-300 rounded cursor-pointer hover:shadow-lg hover:shadow-gray-dark"
           [routerLink]="['/shop', product.id]"
         >
           <div class="bg-grey-light w-[152px] h-[152px]">
