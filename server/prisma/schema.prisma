@@ -37,6 +37,7 @@ model User {
 
   OAuthToken OAuthToken[]
   addresses  Address[]
+  orders     Order[]
 }
 
 model OAuthToken {
@@ -64,6 +65,9 @@ model Product {
   soldProducts      SoldProduct[]
   createdAt         DateTime         @default(now())
   discount          ProductDiscount?
+
+  orderIds String[] @db.ObjectId
+  order    Order[]  @relation(fields: [orderIds], references: [id])
 }
 
 model Favorites {
@@ -152,6 +156,8 @@ model ShippingCost {
   shipping_carrier           String
   shipping_price             Float
   shipping_carrier_image_url String
+
+  Order Order[]
 }
 
 model PaymentMethod {
@@ -173,6 +179,8 @@ model PaymentMethod {
 
   userId String? @db.ObjectId
   user   User?   @relation(fields: [userId], references: [id])
+
+  Order Order[]
 }
 
 enum PaymentTypes {
@@ -195,6 +203,8 @@ model Address {
 
   userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  Order Order[]
 }
 
 model SoldProduct {
@@ -211,5 +221,28 @@ model ContactSubmission {
   email     String
   subject   String
   message   String
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  productIds String[]  @db.ObjectId
+  products   Product[] @relation(fields: [productIds], references: [id])
+
+  shippingMethodId String       @db.ObjectId
+  shippingMethod   ShippingCost @relation(fields: [shippingMethodId], references: [id], onDelete: Cascade)
+
+  addressId String  @db.ObjectId
+  address   Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
+
+  paymentMethodId String        @db.ObjectId
+  paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
+
+  orderPrice Float
+
   createdAt DateTime @default(now())
 }

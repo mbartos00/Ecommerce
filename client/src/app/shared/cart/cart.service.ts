@@ -123,19 +123,12 @@ export class CartService {
       .getValue()
       .reduce((acc, product) => acc + product.price * product.quantityToBuy, 0);
 
-    let total = subtotal;
-
     if (this.discount.discount_type === 'percentage') {
-      total -= Math.floor((subtotal * this.discount.discount_amount) / 100);
-    } else {
-      total -= this.discount.discount_amount;
+      return parseFloat(
+        (subtotal - (subtotal * this.discount.discount_amount) / 100).toFixed(2)
+      );
     }
-
-    if (this.selectedShippingOption) {
-      total += this.selectedShippingOption.shipping_price;
-    }
-
-    return total;
+    return subtotal - this.discount.discount_amount;
   }
 
   private saveCart(): void {
