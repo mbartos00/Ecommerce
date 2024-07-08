@@ -6,6 +6,8 @@ import { paymentMethodsRouter } from '@src/api/components/payment-methods/route'
 import type { Express } from 'express';
 import type { Dependecies } from '../../config/dependencies';
 import { contactRouter } from '../components/contact-form/route';
+import { checkoutRouter } from '../components/checkout/route';
+import { ordersRouter } from '../components/orders/route';
 
 export function setupRoutes(app: Express, deps: Dependecies, prefix = '/api') {
   app.use(prefix, authRouter(deps));
@@ -14,4 +16,6 @@ export function setupRoutes(app: Express, deps: Dependecies, prefix = '/api') {
   app.use(`${prefix}/cart`, cartRouter(deps));
   app.use(`${prefix}/payment-methods`, paymentMethodsRouter(deps));
   app.use(`${prefix}/contact`, contactRouter(deps));
+  app.use(`${prefix}/checkout`, checkoutRouter(deps));
+  app.use(`${prefix}/orders`, ordersRouter(deps));
 }
