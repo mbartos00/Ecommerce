@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgxSonnerToaster } from 'ngx-sonner';
 import { HeaderComponent } from './shared/header/header.component';
-import { UserService } from './shared/data-access/user.service';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -25,8 +24,4 @@ import { UserService } from './shared/data-access/user.service';
       }"
     />`,
 })
-export class AppComponent {
-  constructor(private userService: UserService) {
-    this.userService.initializeUser();
-  }
-}
+export class AppComponent {}

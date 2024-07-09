@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { CartComponent } from './shared/cart/cart.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
-import { AuthGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -31,8 +30,6 @@ export const routes: Routes = [
   {
     path: 'account',
     data: { breadcrumb: 'Account' },
-    canActivate: [AuthGuard],
-    canActivateChild: [AuthGuard],
     loadChildren: () => import('./account/account.routes').then(m => m.routes),
   },
   { path: '404', component: NotFoundComponent },

@@ -10,7 +10,6 @@ export const routes: Route[] = [
   {
     path: 'profile',
     data: { breadcrumb: 'Profile' },
-    loadComponent: () =>
-      import('./profile/profile.component').then(c => c.ProfileComponent),
+    loadChildren: () => import('./profile/profile.routes').then(m => m.routes),
   },
 ];

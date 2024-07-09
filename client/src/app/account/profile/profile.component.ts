@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HlmIconComponent } from '@app/shared/ui/ui-icon-helm/src';
@@ -32,7 +32,6 @@ import { ProfileListItemComponent } from '@app/shared/ui/profile-list-item/profi
     ProfileListItemComponent,
   ],
   providers: [
-    ProfileService,
     provideIcons({
       lucideCalendar,
       lucideMail,

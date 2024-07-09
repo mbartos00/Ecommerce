@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const emailValidation = z.string().min(6).email();
+export const emailValidation = z.string().min(6).email();
 const passwordValidation = z.string().min(6).max(30);
 const nameValidation = z.string().min(3).max(30);
 const addressPartValidation = z.string().min(2).max(100);

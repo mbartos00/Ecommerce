@@ -9,6 +9,7 @@ import { routes } from './app.routes';
 import { JwtModule } from '@auth0/angular-jwt';
 import { getAccessToken } from './shared/utils/tokens';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { appInitializerProvider } from './app-initializer.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
         },
       })
     ),
+    appInitializerProvider,
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(withInterceptors([AuthInterceptor])),
   ],

@@ -10,6 +10,7 @@ import {
   addressSchema,
   updateAddressSchema,
   addFavoriteSchema,
+  emailValidation,
 } from '@src/schemas/auth';
 import { Router } from 'express';
 import { deleteUser } from './controllers/user/delete-user';
@@ -25,6 +26,8 @@ import { removeFavorite } from './controllers/favorites/remove-favorites';
 import upload from '@src/config/multer';
 import { refreshToken } from './controllers/refresh-token';
 import { logout } from './controllers/logout';
+import { changeEmailRequest } from './controllers/user/change-email';
+import { verifyEmail } from './controllers/user/verify-email';
 
 export function authRouter(deps: Dependecies) {
   const router = Router();
@@ -41,6 +44,10 @@ export function authRouter(deps: Dependecies) {
   router.get('/logout', logout(deps));
 
   router.get('/user', auth(deps), getUserData(deps));
+
+  router.post('/user/email/change', auth(deps), changeEmailRequest(deps));
+  router.get('/user/email/verify', [auth(deps)], verifyEmail(deps));
+
   router.patch(
     '/user/update',
     [auth(deps), uploadFile.single('avatar'), validate(updateUserSchema)],
