@@ -1,5 +1,5 @@
 <div
-  class="bg-grey-light font-proxima text-black flex flex-col md:flex-row items-center justify-between py-4 px-6 rounded-sm"
+  class="2xl:container bg-grey-light font-proxima text-black flex flex-col md:flex-row items-center justify-between py-4 px-6 rounded-sm"
 >
   <span>{{ totalProducts }} Items</span>
   <div>
@@ -40,7 +40,7 @@
     </select>
   </div>
 
-  <div class="buttons-section flex space-x-2">
+  <div class="flex space-x-2 mt-2 md:mt-0">
     <button
       hlmBtn
       type="button"
@@ -56,6 +56,14 @@
       class="flex items-center"
     >
       <hlm-icon size="base" name="lucideList" class="mr-1 text-primary" />
+    </button>
+    <button
+      hlmBtn
+      type="button"
+      (click)="openDrawer()"
+      class="flex items-center xl:hidden"
+    >
+      <hlm-icon size="base" name="lucideFilter" class="mr-1 text-primary" />
     </button>
   </div>
 </div>

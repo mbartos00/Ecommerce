@@ -52,6 +52,9 @@ export function buildProductsFilters(
         case QueryParam.search:
           acc.name = { contains: queryParams[key], mode: 'insensitive' };
           break;
+        case QueryParam.brand:
+          acc.brand = { contains: queryParams[key], mode: 'insensitive' };
+          break;
         case QueryParam.color:
         case QueryParam.condition:
         case QueryParam.size:

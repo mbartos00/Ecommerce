@@ -1,62 +1,79 @@
-<div>
-  <app-sort-bar
-    (viewTypeChange)="onViewTypeChange($event)"
-    (sortCriteriaChange)="onSortCriteriaChange($event)"
-    (productsPerPageChange)="onProductsPerPageChange($event)"
-    (orderChange)="onOrderChange($event)"
-    [totalProducts]="totalProducts"
-  ></app-sort-bar>
-</div>
+<div class="my-7 xl:px-20 2xl:container flex gap-7">
+  <section class="hidden xl:block xl:w-[20%]">
+    <app-product-filters></app-product-filters>
+  </section>
+  <section class="xl:w-[80%]">
+    <div class="mb-7">
+      <app-sneaker-section></app-sneaker-section>
+    </div>
+    <div>
+      <app-sort-bar
+        (viewTypeChange)="onViewTypeChange($event)"
+        (sortCriteriaChange)="onSortCriteriaChange($event)"
+        (productsPerPageChange)="onProductsPerPageChange($event)"
+        (orderChange)="onOrderChange($event)"
+        (openFilterDrawer)="openFilterDrawer()"
+        [totalProducts]="totalProducts"
+      ></app-sort-bar>
+    </div>
 
-@if (products$ | async; as products) {
-  @if (totalProducts > 0) {
-    <div class="container my-7 mx-auto p-2">
-      <div
-        *ngIf="isGridView; else listView"
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
-      >
-        <ng-container *ngFor="let product of products.data">
-          <app-product-card
-            [product]="product"
-            class="m-0 aspect-auto"
-          ></app-product-card>
-        </ng-container>
-      </div>
-      <ng-template #listView>
-        <div *ngFor="let product of products.data">
-          <app-product-list-card [product]="product"></app-product-list-card>
+    <app-drawer #drawer title="Filters">
+      <app-product-filters (closeDrawer)="closeDrawer()"></app-product-filters>
+    </app-drawer>
+
+    @if (products$ | async; as products) {
+      @if (totalProducts > 0) {
+        <div class="container my-7 mx-auto p-2">
+          <div
+            *ngIf="isGridView; else listView"
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
+          >
+            <ng-container *ngFor="let product of products.data">
+              <app-product-card
+                [product]="product"
+                class="m-0 aspect-auto"
+              ></app-product-card>
+            </ng-container>
+          </div>
+          <ng-template #listView>
+            <div *ngFor="let product of products.data">
+              <app-product-list-card
+                [product]="product"
+              ></app-product-list-card>
+            </div>
+          </ng-template>
         </div>
-      </ng-template>
-    </div>
-  } @else {
-    <div class="flex justify-center py-10 text-2xl">
-      <p>No Products Found</p>
-    </div>
-  }
-} @else {
-  <div class="container my-7 mx-auto p-2">
-    <div
-      *ngIf="isGridView; else listSkeletons"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
-    >
-      <ng-container *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7, 8]">
-        <app-skeleton-card class="m-0 aspect-auto"></app-skeleton-card>
-      </ng-container>
-    </div>
-    <ng-template #listSkeletons>
-      <div *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7, 8]">
-        <app-skeleton-card class="m-2"></app-skeleton-card>
+      } @else {
+        <div class="flex justify-center py-10 text-2xl">
+          <p>No Products Found</p>
+        </div>
+      }
+    } @else {
+      <div class="container my-7 mx-auto p-2">
+        <div
+          *ngIf="isGridView; else listSkeletons"
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
+        >
+          <ng-container *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7, 8]">
+            <app-skeleton-card class="m-0 aspect-auto"></app-skeleton-card>
+          </ng-container>
+        </div>
+        <ng-template #listSkeletons>
+          <div *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7, 8]">
+            <app-skeleton-card class="m-2"></app-skeleton-card>
+          </div>
+        </ng-template>
       </div>
-    </ng-template>
-  </div>
-}
+    }
 
-@if (totalProducts > +itemsPerPage) {
-  <div class="mb-40">
-    <app-pagination
-      [totalPages]="totalPages"
-      [currentPage]="currentPage"
-      (pageChange)="gotoPage($event)"
-    ></app-pagination>
-  </div>
-}
+    @if (totalProducts > +itemsPerPage) {
+      <div class="mb-40">
+        <app-pagination
+          [totalPages]="totalPages"
+          [currentPage]="currentPage"
+          (pageChange)="gotoPage($event)"
+        ></app-pagination>
+      </div>
+    }
+  </section>
+</div>

@@ -1,0 +1,103 @@
+@if (filters$ | async; as filters) {
+  <form
+    [formGroup]="form"
+    (ngSubmit)="applyFilters()"
+    class="flex flex-col gap-2 mt-4 px-2 lg:mt-16 xl:px-0"
+  >
+    <app-filter-wrapper title="Brand">
+      <app-autocomplete
+        [options]="filters.brand"
+        [control]="brandControl"
+        placeholder="Brand"
+        (selectedValue)="onBrandSelected($event)"
+      ></app-autocomplete>
+    </app-filter-wrapper>
+    <app-filter-wrapper title="Size">
+      <app-autocomplete
+        [options]="filters.size"
+        [control]="sizeControl"
+        placeholder="Size"
+        (selectedValue)="onSizeSelected($event)"
+      ></app-autocomplete>
+    </app-filter-wrapper>
+    <app-filter-wrapper title="Price">
+      <div class="flex flex-wrap justify-center xl:justify-normal">
+        <app-form-input
+          formControlName="min_price"
+          placeholder="Min price {{ filters.price.min | currency }}"
+          type="number"
+          [min]="filters.price.min"
+        ></app-form-input>
+        <app-form-input
+          formControlName="max_price"
+          placeholder="Max price {{ filters.price.max | currency }}"
+          type="number"
+          [max]="filters.price.max"
+        ></app-form-input>
+      </div>
+    </app-filter-wrapper>
+    <app-filter-wrapper title="Condition">
+      <div class="flex flex-col gap-2 items-center py-4 w-full">
+        @for (condition of filters.condition; track $index) {
+          <label [for]="condition" class="block rounded-full cursor-pointer">
+            <input
+              type="radio"
+              [formControl]="conditionControl"
+              [id]="condition"
+              name="condition"
+              [value]="condition"
+              class="hidden peer"
+            />
+            <span
+              class="block font-proxima font-medium size-full peer-checked:text-primary"
+              >{{ condition | titlecase }}</span
+            >
+          </label>
+        }
+      </div>
+    </app-filter-wrapper>
+    <app-filter-wrapper title="Color">
+      <div class="flex gap-2 py-4 w-full overflow-x-auto snap-x snap-mandatory">
+        @for (color of filters.color; track $index) {
+          <label
+            [for]="color + $index"
+            class="relative block size-6 rounded-full flex-shrink-0 snap-center cursor-pointer"
+            [style.backgroundColor]="color.replaceAll(' ', '')"
+          >
+            <input
+              type="radio"
+              [formControl]="colorControl"
+              [id]="color + $index"
+              name="color"
+              [value]="color"
+              class="hidden peer"
+            />
+            <span
+              class="absolute top-0 left-0 block size-full rounded-full peer-checked:ring-2 peer-checked:ring-blue-light peer-checked:ring-offset-2"
+            ></span>
+          </label>
+        }
+      </div>
+    </app-filter-wrapper>
+
+    <div class="flex gap-2 flex-wrap justify-center mb-4 lg:flex-nowrap">
+      <button
+        type="submit"
+        class="text-sm font-poppins shadow-lg px-8 py-3 bg-blue-light text-navy rounded-sm h-fit self-center hover:bg-white hover:text-black xl:px-2 2xl:px-8 xl:w-full"
+      >
+        Apply filters
+      </button>
+      <button
+        type="reset"
+        (click)="resetFilters()"
+        class="text-sm font-poppins bg-pink shadow-lg px-8 py-3 text-navy rounded-sm h-fit self-center hover:bg-blue-light lg:w-fit"
+      >
+        Reset
+      </button>
+    </div>
+  </form>
+} @else {
+  <div class="grid place-items-center h-[80svh]">
+    <hlm-spinner></hlm-spinner>
+  </div>
+}
