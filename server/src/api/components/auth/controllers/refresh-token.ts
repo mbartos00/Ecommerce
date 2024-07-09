@@ -6,11 +6,14 @@ import { generateAccessToken } from '@src/utils/tokens';
 import type { Request, Response } from 'express';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import { REFRESH_TOKEN_COOKIE_NAME } from '../constants';
+import type { User } from '@prisma/client';
 
 export function refreshToken({ prisma }: Dependecies) {
   return async (
     req: Request,
-    res: Response<ResponseFormat & { accessToken: string }>,
+    res: Response<
+      ResponseFormat & { accessToken: string; user: Omit<User, 'password'> }
+    >,
   ) => {
     const refreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME];
 
@@ -24,19 +27,32 @@ export function refreshToken({ prisma }: Dependecies) {
         env.REFRESH_TOKEN_SECRET,
       ) as JwtPayload;
 
-      const payload = {
-        id: decoded.id,
-        role: decoded.role,
-      };
+      const user = await prisma.user.findUnique({
+        where: { id: decoded.id },
+      });
 
-      const accessToken = generateAccessToken(payload);
+      if (!user) {
+        throw new HttpError('User not found', 403);
+      }
+
+      const accessToken = generateAccessToken({
+        id: user.id,
+        email: user.email,
+      });
+
+      const { password, ...reponseUser } = user;
 
       res.status(200).json({
         status: 'success',
         accessToken,
+        user: reponseUser,
       });
     } catch (err: unknown) {
-      throw new HttpError('Verification failed', 403);
+      if (err instanceof jwt.TokenExpiredError) {
+        throw new HttpError('Refresh Token expired', 403);
+      } else {
+        throw new HttpError('Verification failed', 403);
+      }
     }
   };
 }

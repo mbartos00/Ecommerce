@@ -1,13 +1,6 @@
-import {
-  Component,
-  effect,
-  inject,
-  ChangeDetectionStrategy,
-} from '@angular/core';
-import { SignupFormComponent } from './ui/signup-form.component';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SignupService } from './data-access/signup.service';
-import { Router } from '@angular/router';
-import { AuthService } from '@app/shared/data-access/auth.service';
+import { SignupFormComponent } from './ui/signup-form.component';
 
 @Component({
   selector: 'app-signup',
@@ -22,14 +15,4 @@ import { AuthService } from '@app/shared/data-access/auth.service';
 })
 export class SignupComponent {
   public signupService = inject(SignupService);
-  private authService = inject(AuthService);
-  private router = inject(Router);
-
-  constructor() {
-    effect(() => {
-      if (this.authService.user()) {
-        this.router.navigate(['home']);
-      }
-    });
-  }
 }

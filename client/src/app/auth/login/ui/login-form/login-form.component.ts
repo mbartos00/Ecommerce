@@ -58,9 +58,6 @@ export class LoginFormComponent implements OnChanges {
 
     this.login.emit(this.loginForm.getRawValue());
     this.loginForm.reset();
-    this.router.navigate(['/']).then(() => {
-      toast.success('Logged In');
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

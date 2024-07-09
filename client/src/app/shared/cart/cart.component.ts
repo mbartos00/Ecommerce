@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { CartService } from './cart.service';
-import { ProductInCart } from '../types/product.model';
-import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { provideIcons } from '@ng-icons/core';
 import { lucideX } from '@ng-icons/lucide';
-import { Observable } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { CounterInputComponent } from '../ui/counter-input/counter-input.component';
-import { FormsModule } from '@angular/forms';
+import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
+import { Observable, map } from 'rxjs';
+import { UserService } from '../data-access/user.service';
 import { Discount } from '../types/discount';
+import { ProductInCart } from '../types/product.model';
+import { CounterInputComponent } from '../ui/counter-input/counter-input.component';
+import { CartService } from './cart.service';
 import { Shipping } from '../types/shipping';
 import { RadioComponent } from '../ui/radio-button/radio.component';
 import { HlmButtonDirective } from '../ui/ui-button-helm/src';
@@ -25,13 +26,16 @@ import { HlmButtonDirective } from '../ui/ui-button-helm/src';
     FormsModule,
     RadioComponent,
     HlmButtonDirective,
+    AsyncPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartComponent implements OnInit {
   productsInCart$: Observable<ProductInCart[]> = this.cartService.cart$;
   subtotal$: Observable<number> = this.cartService.getSubtotal();
   shippingOptions$: Observable<Shipping[]> = new Observable<Shipping[]>();
   selectedShippingOption: Shipping | null = null;
+  isAuthenticated$!: Observable<boolean>;
   discount: Discount = {
     code: '',
     discount_amount: 0,
@@ -39,10 +43,14 @@ export class CartComponent implements OnInit {
     message: '',
   };
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private userService: UserService
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.shippingOptions$ = this.cartService.getShippingOptions();
+    this.isAuthenticated$ = this.userService.user$.pipe(map(d => d.isAuth));
   }
 
   onDeleteProductFromCart(product: ProductInCart): void {

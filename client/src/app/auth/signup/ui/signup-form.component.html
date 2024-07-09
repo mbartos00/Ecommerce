@@ -52,7 +52,9 @@
         [icon]="true"
       ></app-form-input>
     </div>
-    <div class="flex gap-4 w-full">
+    <div
+      class="flex max-[380px]:gap-2 gap-4 max-[380px]:flex-wrap sm:flex-nowrap w-full"
+    >
       <div class="relative w-full">
         <app-form-input
           class="calendar-picker"
@@ -63,7 +65,7 @@
           [dateRange]="birthdayDateRange"
         ></app-form-input>
       </div>
-      <div class="relative w-full my-1">
+      <div class="relative w-full max-[380px]:h-full max-[380px]:mb-6 my-1">
         <hlm-icon
           size="sm"
           name="lucideUserCircle"

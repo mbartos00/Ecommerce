@@ -23,6 +23,8 @@ import { getFavorites } from './controllers/favorites/get-favorites';
 import { addFavorite } from './controllers/favorites/add-favorites';
 import { removeFavorite } from './controllers/favorites/remove-favorites';
 import upload from '@src/config/multer';
+import { refreshToken } from './controllers/refresh-token';
+import { logout } from './controllers/logout';
 
 export function authRouter(deps: Dependecies) {
   const router = Router();
@@ -34,6 +36,9 @@ export function authRouter(deps: Dependecies) {
     register(deps),
   );
   router.post('/login', validate(loginSchema), login(deps));
+
+  router.get('/refresh-token', refreshToken(deps));
+  router.get('/logout', logout(deps));
 
   router.get('/user', auth(deps), getUserData(deps));
   router.patch(
