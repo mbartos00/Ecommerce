@@ -10,6 +10,7 @@ import { auth } from '@src/api/middleware/auth';
 import { getBestsellers } from './controllers/bestsellers';
 import { getAllDiscountedProducts } from './controllers/all-products-on-sale';
 import { getFeatured } from './controllers/featured';
+import { getProductFilters } from './controllers/get-product-filters';
 
 export function productsRouter(deps: Dependecies) {
   const router = Router();
@@ -19,12 +20,13 @@ export function productsRouter(deps: Dependecies) {
   router.get('/bestsellers', getBestsellers(deps));
   router.get('/sale', getAllDiscountedProducts(deps));
   router.get('/featured', getFeatured(deps));
-  router.get('/:id', getProductById(deps));
   router.post(
     '/discount',
     [auth(deps, 'admin'), validate(addDiscountSchema)],
     addProductDiscount(deps),
   );
+  router.get('/filters', getProductFilters(deps));
+  router.get('/:id', getProductById(deps));
 
   return router;
 }

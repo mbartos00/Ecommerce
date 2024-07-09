@@ -5,27 +5,31 @@ import {
   Component,
   OnDestroy,
   OnInit,
+  ViewChild,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from '@app/shared/localstorage/localstorage.service';
+import { ProductService } from '@app/shared/product/product.service';
+import { SneakerSectionComponent } from '@app/shared/sneaker-section/sneaker-section.component';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { ProductCardComponent } from '../product-card/product-card.component';
-import { SortBarComponent } from '../sort-bar/sort-bar.component';
-import { FormsModule } from '@angular/forms';
 import type {
   Order,
   ProductList,
   QueryParams,
 } from '../../types/product.model';
-import { ProductListCardComponent } from '../product-list-card/product-list-card.component';
-import { HlmSpinnerComponent } from '../ui-spinner-helm/src';
-import { SkeletonCardComponent } from '../skeleton-card/skeleton-card.component';
+import { DrawerComponent } from '../drawer/drawer.component';
 import { PaginationComponent } from '../pagination/pagination.component';
-import { ProductService } from '@app/shared/product/product.service';
+import { ProductCardComponent } from '../product-card/product-card.component';
+import { ProductListCardComponent } from '../product-list-card/product-list-card.component';
+import { SkeletonCardComponent } from '../skeleton-card/skeleton-card.component';
+import { SortBarComponent } from '../sort-bar/sort-bar.component';
 import {
   HlmPaginationNextComponent,
   HlmPaginationPreviousComponent,
 } from '../ui-pagination-helm/src';
+import { HlmSpinnerComponent } from '../ui-spinner-helm/src';
+import { ProductFiltersComponent } from './filters/filters.component';
 
 @Component({
   selector: 'app-product-list',
@@ -44,9 +48,13 @@ import {
     PaginationComponent,
     HlmPaginationNextComponent,
     HlmPaginationPreviousComponent,
+    SneakerSectionComponent,
+    ProductFiltersComponent,
+    DrawerComponent,
   ],
 })
 export class ProductListComponent implements OnInit, OnDestroy {
+  @ViewChild('drawer') drawer!: DrawerComponent;
   products$: Observable<ProductList> = new Observable<ProductList>();
   isGridView: boolean = true;
   currentPage: number = 1;
@@ -54,8 +62,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
   itemsPerPage: string = '20';
   sortBy: string = 'name';
   order: Order = 'asc';
-  category: string | undefined = undefined;
-  searchbarValue: string | undefined;
+  category?: string;
+  brand?: string;
+  min_price?: string;
+  max_price?: string;
+  condition?: string;
+  color?: string;
+  size?: string;
+  searchbarValue?: string;
   totalProducts: number = 10;
   isLoading: boolean = false;
   private destroy$: Subject<void> = new Subject<void>();
@@ -72,6 +86,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this.currentPage = 1;
       this.category = params['category'];
       this.searchbarValue = params['search'];
+      this.brand = params['brand'];
+      this.min_price = params['min_price'];
+      this.max_price = params['max_price'];
+      this.condition = params['condition'];
+      this.color = params['color'];
+      this.size = params['size'];
       this.fetchProducts();
       this.cdr.detectChanges();
     });
@@ -128,6 +148,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
       order: this.order,
       category: this.category,
       search: this.searchbarValue,
+      brand: this.brand,
+      min_price: this.min_price,
+      max_price: this.max_price,
+      color: this.color,
+      size: this.size,
+      condition: this.condition,
     };
 
     this.products$ = this.productService.getAllProducts(params);
@@ -141,6 +167,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
     });
 
     this.isLoading = false;
+    this.cdr.detectChanges();
+  }
+
+  openFilterDrawer(): void {
+    this.drawer.openDrawer();
+  }
+
+  closeDrawer(): void {
+    this.drawer.closeDrawer();
     this.cdr.detectChanges();
   }
 }

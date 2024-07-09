@@ -113,3 +113,27 @@ export type ProductInCart = {
   availableQuantity: number;
   quantityToBuy: number;
 };
+
+export type ProductFilters = {
+  status: string;
+  data: Filter[];
+};
+
+export type Filter = {
+  color: {
+    color: string;
+  }[];
+  size: {
+    size: Size;
+  }[];
+  condition: {
+    condition: 'new' | 'used';
+  }[];
+  price: {
+    _min: { price: number };
+    _max: { price: number };
+  };
+  brand: {
+    brand: string;
+  }[];
+};

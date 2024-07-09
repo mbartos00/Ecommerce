@@ -8,7 +8,7 @@ import {
 
 import { HlmIconComponent } from '../ui-icon-helm/src/lib/hlm-icon.component';
 import { provideIcons } from '@ng-icons/core';
-import { lucideLayoutGrid, lucideList } from '@ng-icons/lucide';
+import { lucideFilter, lucideLayoutGrid, lucideList } from '@ng-icons/lucide';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -17,15 +17,15 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sort-bar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [HlmIconComponent, CommonModule],
-  providers: [provideIcons({ lucideList, lucideLayoutGrid })],
+  providers: [provideIcons({ lucideList, lucideLayoutGrid, lucideFilter })],
 })
-// SortBarComponent
 export class SortBarComponent {
   @Input() totalProducts: number = 1;
   @Output() viewTypeChange = new EventEmitter<boolean>();
   @Output() sortCriteriaChange = new EventEmitter<string>();
   @Output() productsPerPageChange = new EventEmitter<string>();
   @Output() orderChange = new EventEmitter<string>();
+  @Output() openFilterDrawer = new EventEmitter<void>();
 
   updateSortCriteria(e: Event): void {
     this.sortCriteriaChange.emit((e.target as HTMLTextAreaElement).value);
@@ -45,5 +45,9 @@ export class SortBarComponent {
 
   getViewTypeClass(): string {
     return this.viewTypeChange ? 'bg-primary' : '';
+  }
+
+  openDrawer(): void {
+    this.openFilterDrawer.emit();
   }
 }
