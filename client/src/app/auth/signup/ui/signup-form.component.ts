@@ -42,6 +42,7 @@ import {
   passwordValidator,
   phoneValidator,
 } from '../utils/validators';
+import { Gender } from '@app/shared/types/user';
 
 @Component({
   selector: 'app-signup-form',
@@ -77,7 +78,7 @@ export class SignupFormComponent implements OnInit {
   signup = false;
   passwordMismatch = false;
   signupForm!: FormGroup;
-  genders = ['male', 'female', 'other'];
+  genders: Gender[] = ['male', 'female', 'other'];
   birthdayDateRange: [string, string] = [
     '1920-01-01',
     formatDate(new Date(), 'yyyy-MM-dd', 'en-US'),

@@ -2,13 +2,13 @@ import jwt from 'jsonwebtoken';
 import { env } from '@src/config/env';
 import type { User } from '@prisma/client';
 
-type AuthPayload = Pick<User, 'id' | 'role'>;
+type AuthPayload = Pick<User, 'id' | 'email'>;
 
 const ACCESS_TOKEN_EXPIRATION_TIME = '15m';
 const REFRESH_TOKEN_EXPIRATION_TIME = '1d';
 
 export function isAuthPayload(obj: any): obj is AuthPayload {
-  return typeof obj.id === 'string' && typeof obj.role === 'string';
+  return typeof obj.id === 'string' && typeof obj.email === 'string';
 }
 
 export const generateTokens = (payload: AuthPayload) => {

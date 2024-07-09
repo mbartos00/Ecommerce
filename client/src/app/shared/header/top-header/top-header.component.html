@@ -2,20 +2,44 @@
   <nav class="lg:w-full 2xl:container">
     <ul class="grid grid-cols-3 grid-rows-2 lg:grid-rows-1 lg:grid-cols-8">
       <li
-        class="lg:place-self-center z-[1] {{
+        class="lg:place-self-center z-[1] lg:flex lg:gap-6 lg:justify-end"
+        [ngClass]="
           isSearchbarOpen
             ? 'lg:col-start-4'
             : 'lg:col-start-6 lg:row-start-1 lg:col-span-1'
-        }}"
+        "
+        [ngClass]="
+          (isAuthenticated$ | async)
+            ? 'lg:col-start-5 lg:row-start-1 lg:col-span-2'
+            : 'lg:col-start-6 lg:row-start-1 lg:col-span-1'
+        "
       >
         <a
           class="flex items-center flex-col text-black lg:flex-row gap-2"
-          [routerLink]="['auth/login']"
+          [routerLink]="[
+            (isAuthenticated$ | async) ? '/account' : 'auth/login'
+          ]"
           routerLinkActive="text-blue"
         >
-          <hlm-icon size="base" name="lucideUser" />
-          <span class="text-xs font-poppins">Login</span>
+          <hlm-icon
+            size="base"
+            name="{{
+              (isAuthenticated$ | async) ? 'lucideUserCheck' : 'lucideUser'
+            }}"
+          />
+          <span class="text-xs font-poppins">{{
+            (isAuthenticated$ | async) ? 'Account' : 'Login'
+          }}</span>
         </a>
+        <button
+          (click)="this.logout()"
+          *ngIf="isAuthenticated$ | async"
+          type="button"
+          class="text-xs flex justify-center items-center gap-1 text-navy font-poppins p-1 rounded-sm h-fit mx-auto mt-2 lg:mt-0"
+        >
+          Logout
+          <hlm-icon size="sm" name="lucideLogOut" />
+        </button>
       </li>
       <li
         class="lg:place-self-center z-[1] {{
@@ -54,7 +78,7 @@
         </button>
       </li>
       <li
-        class="col-start-2 col-span-2 row-start-2 lg:row-start-1 lg:col-start-6 lg:place-self-center lg:w-full {{
+        class="col-start-2 col-span-2 row-start-2 lg:row-start-1 lg:col-start-6 place-self-center lg:w-full {{
           isSearchbarOpen ? 'max-[300px]:col-span-3' : ''
         }}"
       >

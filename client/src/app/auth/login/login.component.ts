@@ -1,14 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-} from '@angular/core';
-import { LoginService } from './data-access/login.service';
-import { AuthService } from '@app/shared/data-access/auth.service';
-import { Router } from '@angular/router';
-import { LoginFormComponent } from './ui/login-form/login-form.component';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { LoginService } from './data-access/login.service';
+import { LoginFormComponent } from './ui/login-form/login-form.component';
 
 @Component({
   selector: 'app-login',
@@ -24,16 +17,5 @@ import { CommonModule } from '@angular/common';
   providers: [LoginService],
 })
 export class LoginComponent {
-  private authService = inject(AuthService);
-  private router = inject(Router);
-
   loginService = inject(LoginService);
-
-  constructor() {
-    effect(() => {
-      if (this.authService.user()) {
-        this.router.navigate(['']);
-      }
-    });
-  }
 }
