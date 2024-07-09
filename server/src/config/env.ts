@@ -8,6 +8,11 @@ const environmentSchema = z.object({
   PORT: z.coerce.number().min(1000),
   ACCESS_TOKEN_SECRET: z.string(),
   REFRESH_TOKEN_SECRET: z.string(),
+  JWT_SECRET: z.string(),
+  EMAIL_USER: z.string().email(),
+  EMAIL_PASS: z.string(),
+  FRONTEND_DOMAIN: z.string(),
+  FRONTEND_PORT: z.coerce.number().min(1000),
 });
 
 export const env = environmentSchema.parse(process.env);

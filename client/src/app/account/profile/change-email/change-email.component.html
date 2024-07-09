@@ -1,0 +1,47 @@
+<section
+  class="container h-[75svh] pb-10 md:pt-10 xl:pb-24 px-4 sm:px-16 xl:px-24 md:pl-28 text-navy"
+>
+  <hr class="h-0.5 my-4 bg-grey-light border-0" />
+  <ng-container>
+    @if (isLoading) {
+      <div class="grid place-items-center h-[80svh]">
+        <hlm-spinner></hlm-spinner>
+      </div>
+    } @else {
+      <form
+        [formGroup]="changeEmailForm"
+        (ngSubmit)="onSubmit()"
+        class="flex flex-col justify-between gap-4 w-full h-full"
+      >
+        <div>
+          <h2 for="email" class="font-poppins font-bold text-navy mb-4">
+            Change email
+          </h2>
+          <div class="relative text-grey-neutral w-full">
+            <hlm-icon
+              size="sm"
+              name="lucideMail"
+              class="absolute top-3 left-4"
+            ></hlm-icon>
+            <app-form-input
+              formControlName="email"
+              placeholder="Email"
+              type="email"
+              [icon]="true"
+            ></app-form-input>
+          </div>
+          <p class="text-sm font-extralight text-primary mt-2">
+            We will send verification to your new email
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          class="bg-primary py-4 w-full rounded-sm text-white self-center shadow-lg"
+        >
+          Change email
+        </button>
+      </form>
+    }
+  </ng-container>
+</section>

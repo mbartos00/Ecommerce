@@ -1,8 +1,12 @@
-import { Request, Response } from 'express';
-import mailjet, { PostResource } from 'node-mailjet';
 import type { Dependecies } from '@src/config/dependencies';
-import type { ResponseFormat } from '@src/types/response';
 import { HttpError } from '@src/errors';
+import type { ResponseFormat } from '@src/types/response';
+import ejs from 'ejs';
+import type { Request, Response } from 'express';
+import fs from 'fs';
+import nodemailer from 'nodemailer';
+import type Mail from 'nodemailer/lib/mailer';
+import path from 'path';
 
 export function submitContactForm({ prisma }: Dependecies) {
   return async (
@@ -11,8 +15,22 @@ export function submitContactForm({ prisma }: Dependecies) {
   ) => {
     const { name, email, subject, message } = req.body;
 
+    const templateString = fs.readFileSync(
+      path.join(process.cwd(), 'src/email-templates/contact.ejs'),
+      'utf-8',
+    );
+
+    const logoPath = path.join(process.cwd(), 'src/email-templates/logo.png');
+    const image = fs.readFileSync(logoPath);
+
+    const emailData = {
+      name,
+    };
+
+    const html = ejs.render(templateString, emailData);
+
     try {
-      const submission = await prisma.contactSubmission.create({
+      await prisma.contactSubmission.create({
         data: {
           name,
           email,
@@ -21,38 +39,40 @@ export function submitContactForm({ prisma }: Dependecies) {
         },
       });
 
-      const mailjetClient = mailjet.apiConnect(
-        process.env.MAILJET_API_KEY,
-        process.env.MAILJET_API_SECRET,
-      );
-      const request: PostResource.Post = mailjetClient.post('send', {
-        version: 'v3.1',
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        secure: true,
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
       });
 
-      const requestPayload = {
-        Messages: [
+      const mailOptions: Mail.Options = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject,
+        html: html,
+        attachments: [
           {
-            From: {
-              Email: email,
-              Name: name,
-            },
-            To: [
-              {
-                Email: 'ecommcapstone@gmail.com',
-                Name: 'E-commerce Capstone',
-              },
-            ],
-            Subject: subject,
-            TextPart: message,
+            filename: 'image.png',
+            content: image,
+            encoding: 'base64',
+            cid: 'logo',
           },
         ],
       };
 
-      const result = await request.request(requestPayload);
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log('Error:', error);
+        } else {
+          console.log('Email sent: ', info.response);
+        }
+      });
 
       res.status(201).json({
         status: 'success',
-        message: 'Contact form submission successful',
       });
     } catch (error) {
       console.error('Internal server error:', error);
