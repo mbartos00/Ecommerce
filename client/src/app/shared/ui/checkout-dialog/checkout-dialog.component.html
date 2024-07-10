@@ -1,0 +1,205 @@
+@if (isOpen) {
+  <div
+    class="fixed inset-0 flex items-center justify-center backdrop-brightness-50 backdrop-blur-sm z-50"
+  >
+    <div
+      class="container flex flex-col relative bg-white rounded-lg p-10 w-dvw h-dvh lg:w-[80vw] lg:min-h-[750px] shadow-lg overflow-auto"
+    >
+      <button class="absolute top-5 right-5 text-2xl" (click)="closeDialog()">
+        ✕
+      </button>
+      <button class="absolute top-5 left-5 text-2xl" (click)="goBack()">
+        <hlm-icon size="sm" name="lucideChevronLeft" />
+      </button>
+      <h1 class="my-5 text-xl text-primary font-medium text-center">
+        Proceed Checkout
+      </h1>
+      @switch (currentView) {
+        @case ('checkout') {
+          <form
+            [formGroup]="checkoutForm"
+            (ngSubmit)="onSubmit()"
+            class="flex flex-col lg:grid lg:grid-cols-2 gap-3 lg:gap-14"
+          >
+            <div class="flex flex-col gap-y-3">
+              <app-form-input
+                formControlName="firstName"
+                placeholder="First Name"
+                type="text"
+              >
+              </app-form-input>
+              <app-form-input
+                formControlName="lastName"
+                placeholder="Last Name"
+                type="text"
+              >
+              </app-form-input>
+              <app-form-input
+                formControlName="email"
+                placeholder="Email Address"
+                type="text"
+              >
+              </app-form-input>
+              <app-form-input
+                formControlName="phoneNumber"
+                placeholder="Mobile Phone"
+                type="text"
+              >
+              </app-form-input>
+
+              <div class="flex flex-col gap-4">
+                @for (method of paymentMethods; track $index) {
+                  <button
+                    type="button"
+                    (click)="selectPaymentMethod(method)"
+                    class="flex items-center justify-between py-2 px-4 rounded cursor-pointer"
+                    [class.bg-blue-light]="
+                      checkoutForm.get('paymentMethod')!.value === method
+                    "
+                  >
+                    <div class="flex items-center gap-5">
+                      <img
+                        [src]="paymentIcons[method]"
+                        [alt]="method"
+                        class="w-6 h-6"
+                      />
+                      <span>{{ method | paymentType }}</span>
+                    </div>
+                    <input
+                      [id]="getPaymentMethodId(method)"
+                      formControlName="paymentMethod"
+                      type="radio"
+                      [value]="method"
+                    />
+                  </button>
+                }
+              </div>
+            </div>
+            <div class="flex flex-col gap-y-3 max-h-[500px]">
+              <div class="flex flex-col gap-5 overflow-y-scroll">
+                @for (address of addresses; track $index) {
+                  <button
+                    (click)="selectAddress(address)"
+                    type="button"
+                    class="p-5 rounded text-left capitalize"
+                    [ngClass]="
+                      checkoutForm.get('deliveryAddress')!.value === address.id
+                        ? 'bg-primary text-white '
+                        : 'bg-grey-light'
+                    "
+                  >
+                    <h1 class="mb-2 font-bold text-xl">
+                      {{ address.name }} {{ address.lastName }}
+                    </h1>
+                    <div class="flex flex-col gap-2 font-thin capitalize">
+                      <p>
+                        {{ address.street_address }},
+                        {{ address.street_address_2 }}
+                      </p>
+                      <p>
+                        {{ address.city }} {{ address.zip_code }}
+                        {{ address.country }}
+                      </p>
+                      <p>{{ address.phone_number }}</p>
+                    </div>
+                  </button>
+                }
+              </div>
+            </div>
+            <button
+              class="p-4 rounded-md text-white text-xl font-medium col-span-2 shadow-xl"
+              [ngClass]="
+                checkoutForm.invalid === true
+                  ? 'bg-grey-light'
+                  : 'bg-primary shadow-blue-light'
+              "
+              type="submit"
+              [disabled]="checkoutForm.invalid"
+            >
+              Go To Payment
+            </button>
+          </form>
+        }
+        @case ('payment') {
+          <h2>Select a Payment Method</h2>
+          <form
+            [formGroup]="paymentOptionForm"
+            (ngSubmit)="onProceedPayment()"
+            class="flex flex-col lg:grid lg:grid-cols-2 gap-4 lg:gap-14"
+          >
+            @for (method of userPaymentMethods; track $index) {
+              <button
+                type="button"
+                (click)="selectPaymentOption(method)"
+                class="p-5 rounded text-left capitalize"
+                [ngClass]="
+                  paymentOptionForm.get('paymentOption')!.value === method.id
+                    ? 'bg-primary text-white '
+                    : 'bg-grey-light'
+                "
+              >
+                <h1 class="mb-2 font-bold text-xl">
+                  {{ method.type | paymentType }}
+                </h1>
+                <p>
+                  {{
+                    method.accountNumber || method.cardNumber || method.email
+                  }}
+                  {{ method.bankName || method.expirationDate }}
+                </p>
+              </button>
+            }
+            <button
+              class="p-4 rounded-md text-white text-xl font-medium col-span-2 shadow-xl"
+              [ngClass]="
+                paymentOptionForm.invalid === true
+                  ? 'bg-grey-light'
+                  : 'bg-primary shadow-blue-light'
+              "
+              type="submit"
+              [disabled]="paymentOptionForm.invalid"
+            >
+              Proceed
+            </button>
+          </form>
+        }
+        @case ('final') {
+          @if (isLoading) {
+            <div class="flex justify-center items-center h-full">
+              <p>Processing your order...</p>
+            </div>
+          } @else if (errorMessage) {
+            <div class="flex flex-col justify-center items-center h-full">
+              <p class="text-pink">{{ errorMessage }}</p>
+              <button
+                class="mt-4 p-4 rounded-md bg-primary text-white text-xl font-medium shadow-xl shadow-blue-light"
+                (click)="showPaymentMethods()"
+              >
+                Try Again
+              </button>
+            </div>
+          } @else {
+            <div class="flex flex-col justify-around items-center flex-grow">
+              <div>
+                <div
+                  class="flex justify-center items-center w-[120px] h-[120px] bg-primary rounded-full text-white shadow-xl shadow-blue-light"
+                >
+                  <hlm-icon size="xl" name="lucideCheck" />
+                </div>
+                <h1 class="mt-6 text-xl font-bold text-black text-center">
+                  Success
+                </h1>
+              </div>
+              <button
+                class="p-4 rounded-md bg-primary text-white text-xl font-medium w-40 shadow-xl shadow-blue-light"
+                (click)="closeDialog()"
+              >
+                Complete
+              </button>
+            </div>
+          }
+        }
+      }
+    </div>
+  </div>
+}

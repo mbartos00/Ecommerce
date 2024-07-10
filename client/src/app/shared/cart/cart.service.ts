@@ -4,7 +4,12 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { Discount } from '../types/discount';
+<<<<<<< HEAD
+import { AvailabilityData } from '../types/product.model';
+import { ResponseFormat } from '../types/response';
+=======
 import { Shipping } from '../types/shipping';
+>>>>>>> origin/develop
 
 @Injectable({
   providedIn: 'root',
@@ -129,6 +134,15 @@ export class CartService {
       );
     }
     return subtotal - this.discount.discount_amount;
+  }
+
+  checkAvailability(
+    cartItems: AvailabilityData[]
+  ): Observable<ResponseFormat<AvailabilityData[]>> {
+    return this.http.post<ResponseFormat<AvailabilityData[]>>(
+      `${environment.API_URL}/products/check-availability`,
+      cartItems
+    );
   }
 
   private saveCart(): void {

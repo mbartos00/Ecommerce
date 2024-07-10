@@ -7,12 +7,19 @@ import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { Observable, map } from 'rxjs';
 import { UserService } from '../data-access/user.service';
 import { Discount } from '../types/discount';
+<<<<<<< HEAD
+import { CheckoutDialogComponent } from '../ui/checkout-dialog/checkout-dialog.component';
+import { AvailabilityData } from '../types/product.model';
+import { ResponseFormat } from '../types/response';
+import { toast } from 'ngx-sonner';
+=======
 import { ProductInCart } from '../types/product.model';
 import { CounterInputComponent } from '../ui/counter-input/counter-input.component';
 import { CartService } from './cart.service';
 import { Shipping } from '../types/shipping';
 import { RadioComponent } from '../ui/radio-button/radio.component';
 import { HlmButtonDirective } from '../ui/ui-button-helm/src';
+>>>>>>> origin/develop
 
 @Component({
   selector: 'app-cart',
@@ -23,19 +30,30 @@ import { HlmButtonDirective } from '../ui/ui-button-helm/src';
     HlmIconComponent,
     CommonModule,
     CounterInputComponent,
+<<<<<<< HEAD
+    CheckoutDialogComponent,
+    FormsModule,
+  ],
+=======
     FormsModule,
     RadioComponent,
     HlmButtonDirective,
     AsyncPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+>>>>>>> origin/develop
 })
 export class CartComponent implements OnInit {
   productsInCart$: Observable<ProductInCart[]> = this.cartService.cart$;
   subtotal$: Observable<number> = this.cartService.getSubtotal();
+<<<<<<< HEAD
+  isCheckoutDialogOpen = false;
+  cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+=======
   shippingOptions$: Observable<Shipping[]> = new Observable<Shipping[]>();
   selectedShippingOption: Shipping | null = null;
   isAuthenticated$!: Observable<boolean>;
+>>>>>>> origin/develop
   discount: Discount = {
     code: '',
     discount_amount: 0,
@@ -51,6 +69,14 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.shippingOptions$ = this.cartService.getShippingOptions();
     this.isAuthenticated$ = this.userService.user$.pipe(map(d => d.isAuth));
+  }
+
+  formatCartData(cartItems: ProductInCart[]): AvailabilityData[] {
+    return cartItems.map(item => ({
+      productId: item.id,
+      variantId: item.variantId,
+      quantityToBuy: item.quantityToBuy,
+    }));
   }
 
   onDeleteProductFromCart(product: ProductInCart): void {
@@ -83,6 +109,35 @@ export class CartComponent implements OnInit {
 
   getTotal(): number {
     return this.cartService.getTotal();
+  }
+
+  openCheckoutDialog(): void {
+    const cartData = this.formatCartData(this.cartItems);
+
+    this.cartService.checkAvailability(cartData).subscribe({
+      next: (response: ResponseFormat<AvailabilityData[]>) => {
+        if (response.status === 'success' && Array.isArray(response.data)) {
+          const unavailableItems = response.data.filter(
+            item => !item.isAvailable
+          );
+
+          if (unavailableItems.length > 0) {
+            toast.error('Some products in care are not available');
+          } else {
+            this.isCheckoutDialogOpen = true;
+          }
+        } else {
+          console.error('Invalid response format or data is not an array');
+        }
+      },
+      error: error => {
+        console.error('Error checking availability:', error);
+      },
+    });
+  }
+
+  handleDialogClose(): void {
+    this.isCheckoutDialogOpen = false;
   }
 
   private applySuccessfulDiscount(response: Discount): void {

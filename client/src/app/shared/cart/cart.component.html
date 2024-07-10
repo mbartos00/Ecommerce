@@ -151,6 +151,21 @@
         }
       </p>
 
+<<<<<<< HEAD
+      <p class="flex justify-between text-xl font-bold">
+        Total <span>{{ getTotal() | currency: 'USD' }}</span>
+      </p>
+      <button
+        class="text-white bg-blue h-full hover:bg-primary active:ring-2 active:outline-none active:ring-primary font-medium rounded-sm text-sm px-4 py-2"
+        (click)="openCheckoutDialog()"
+      >
+        Check out
+      </button>
+      <app-checkout-dialog
+        [isOpen]="isCheckoutDialogOpen"
+        (dialogClose)="handleDialogClose()"
+      ></app-checkout-dialog>
+=======
       <div class="mt-6">
         <p>Shipping fee</p>
         <div class="flex flex-col gap-4">
@@ -192,6 +207,7 @@
           Check out
         </button>
       </div>
+>>>>>>> origin/develop
     </div>
   </div>
 </div>
