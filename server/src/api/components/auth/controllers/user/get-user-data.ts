@@ -23,7 +23,7 @@ type UserResponse = Prisma.UserGetPayload<{
 export function getUserData({ prisma }: Dependecies) {
   return async (req: Request, res: Response<ResponseFormat<UserResponse>>) => {
     const { id } = req.user!;
-
+    
     const user = await prisma.user.findUnique({
       where: {
         id: id,

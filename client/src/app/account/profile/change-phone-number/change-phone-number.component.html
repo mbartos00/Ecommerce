@@ -1,0 +1,38 @@
+<section
+  class="container h-[75svh] pb-10 md:pt-10 xl:pb-24 px-4 sm:px-16 xl:px-24 md:pl-28 text-navy"
+>
+  <hr class="h-0.5 my-4 bg-grey-light border-0" />
+  <ng-container>
+    <form
+      [formGroup]="changePhoneNumberForm"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col justify-between gap-4 w-full h-full"
+    >
+      <div>
+        <h2 for="email" class="font-poppins font-bold text-navy mb-4">
+          Change Phone Number
+        </h2>
+        <div class="relative text-grey-neutral w-full">
+          <hlm-icon
+            size="sm"
+            name="lucidePhone"
+            class="absolute top-3 left-4"
+          ></hlm-icon>
+          <app-form-input
+            formControlName="phoneNumber"
+            placeholder="Phone Number"
+            type="text"
+            [icon]="true"
+          ></app-form-input>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="bg-primary py-4 w-full rounded-sm text-white self-center shadow-lg"
+      >
+        Save
+      </button>
+    </form>
+  </ng-container>
+</section>

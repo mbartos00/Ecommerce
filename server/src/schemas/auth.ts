@@ -152,3 +152,7 @@ export const addFavoriteSchema = z.object({
 });
 
 export type AddFavoriteSchema = z.infer<typeof addFavoriteSchema>;
+
+export const changePhoneNumberSchema = z.object({
+  phone_number: phoneValidation,
+});

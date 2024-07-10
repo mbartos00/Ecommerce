@@ -11,6 +11,7 @@ import {
   updateAddressSchema,
   addFavoriteSchema,
   emailValidation,
+  changePhoneNumberSchema,
 } from '@src/schemas/auth';
 import { Router } from 'express';
 import { deleteUser } from './controllers/user/delete-user';
@@ -23,6 +24,8 @@ import { updateAddress } from './controllers/address/update-addres';
 import { getFavorites } from './controllers/favorites/get-favorites';
 import { addFavorite } from './controllers/favorites/add-favorites';
 import { removeFavorite } from './controllers/favorites/remove-favorites';
+import { getPhoneNumber } from './controllers/user/get-phone';
+import { changePhoneNumber } from './controllers/user/change-phone';
 import upload from '@src/config/multer';
 import { refreshToken } from './controllers/refresh-token';
 import { logout } from './controllers/logout';
@@ -60,6 +63,7 @@ export function authRouter(deps: Dependecies) {
     [auth(deps), validate(addressSchema)],
     addAddress(deps),
   );
+
   router.get('/user/addresses', auth(deps), getAllAddresses(deps));
   router.patch(
     '/user/addresses/:id',
