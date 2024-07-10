@@ -9,6 +9,7 @@ import sanitizeFilename from '../utils/sanitizeFilename';
 export function updateUser({ prisma }: Dependecies) {
   return async (req: Request<{}, {}, UpdateUserSchema>, res: Response) => {
     const { id } = req.user!;
+    
     const { oldPassword, newPassword, repeatPassword, ...userData } = req.body;
 
     const avatarPath = req.file
@@ -19,7 +20,7 @@ export function updateUser({ prisma }: Dependecies) {
       where: { id },
     });
 
-    const passwordMatch = !!oldPassword
+    const passwordMatch = oldPassword
       ? await bcrypt.compare(oldPassword, user?.password!)
       : undefined;
 
@@ -41,7 +42,7 @@ export function updateUser({ prisma }: Dependecies) {
 
       const { password, ...userWithoutPassword } = updatedUser;
       res.json({ status: 'success', data: userWithoutPassword });
-    } catch (error) {
+    } catch {
       throw new HttpError('Unable to update user', 500);
     }
   };

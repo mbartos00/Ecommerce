@@ -38,6 +38,14 @@ export const routes: Route[] = [
         c => c.ChangeEmailComponent
       ),
   },
+    {
+    path: 'change-phone-number',
+    data: { breadcrumb: 'Phone Number' },
+    loadComponent: () =>
+      import('./change-phone-number/change-phone-number.component').then(
+        c => c.ChangePhoneNumberComponent
+      ),
+  },
   {
     path: '',
     redirectTo: 'profile',

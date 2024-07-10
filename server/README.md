@@ -33,7 +33,7 @@ Create .env file in the top level directory.
 Add new variable with connection string eg.
 
 ```
-DATABASE_URL="mongodb+srv://<username>:<password>@HOST:PORT/DATABASE"
+DATABASE_URL="mongodb+srv://mbiegan:J6eCNJW5CRyECMPa@HOST:PORT/DATABASE"
 ```
 
 ## Using prisma
