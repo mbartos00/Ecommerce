@@ -2,9 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HlmIconComponent } from '@app/shared/ui/ui-icon-helm/src';
-import { HlmInputDirective } from '@app/shared/ui/ui-input-helm/src';
-import { HlmBadgeDirective } from '@app/shared/ui/ui-badge-helm/src';
-import { ReactiveFormsModule } from '@angular/forms';
 import { provideIcons } from '@ng-icons/core';
 import {
   lucideCalendar,
@@ -26,9 +23,6 @@ import { ProfileListItemComponent } from '@app/shared/ui/profile-list-item/profi
     RouterModule,
     CommonModule,
     HlmIconComponent,
-    HlmInputDirective,
-    HlmBadgeDirective,
-    ReactiveFormsModule,
     ProfileListItemComponent,
   ],
   providers: [

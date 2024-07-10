@@ -7,6 +7,30 @@ export const routes: Route[] = [
       import('./profile.component').then(c => c.ProfileComponent),
   },
   {
+    path: 'name',
+    data: { breadcrumb: 'Name' },
+    loadComponent: () =>
+      import('./name/name.component').then(c => c.NameComponent),
+  },
+  {
+    path: 'gender',
+    data: { breadcrumb: 'Gender' },
+    loadComponent: () =>
+      import('./gender/gender.component').then(c => c.GenderComponent),
+  },
+  {
+    path: 'birthday',
+    data: { breadcrumb: 'Birthday' },
+    loadComponent: () =>
+      import('./birthday/birthday.component').then(c => c.BirthdayComponent),
+  },
+  {
+    path: 'password',
+    data: { breadcrumb: 'Password' },
+    loadComponent: () =>
+      import('./password/password.component').then(c => c.PasswordComponent),
+  },
+  {
     path: 'change-email',
     data: { breadcrumb: 'Email' },
     loadComponent: () =>

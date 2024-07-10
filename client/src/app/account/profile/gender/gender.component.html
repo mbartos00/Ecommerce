@@ -1,0 +1,24 @@
+<section
+  class="grid justify-items-center font-poppins text-navy font-medium md:py-20 px-4 md:px-16 xl:px-24"
+>
+  <form
+    class="flex flex-col justify-between max-w-lg w-full h-[75vh] sm:h-64 m-7"
+    [formGroup]="genderForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="grid gap-1">
+      <label class="text-navy font-medium text-sm">Choose gender</label>
+      <app-ui-select
+        formControlName="gender"
+        id="gender"
+        selectName="gender"
+        [values]="genders"
+        class="h-[5.5rem]"
+      ></app-ui-select>
+    </div>
+
+    <button hlmBtn type="submit" size="lg" [disabled]="!genderForm.valid">
+      Save
+    </button>
+  </form>
+</section>

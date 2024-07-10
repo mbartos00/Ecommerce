@@ -10,9 +10,11 @@
         [alt]="profile.name + 'avatar'"
       />
       <div class="mt-2 sm:mt-5 ml-4">
-        <h3 class="text-sm sm:text-base font-semibold mb-2">
-          {{ profile.name }} {{ profile.lastName }}
-        </h3>
+        <a [routerLink]="'name'"
+          ><h3 class="text-sm sm:text-base font-semibold mb-2">
+            {{ profile.name }} {{ profile.lastName }}
+          </h3></a
+        >
         <p class="text-sm sm:text-base text-grey">{{ profile.email }}</p>
       </div>
     </div>
@@ -21,14 +23,14 @@
         icon="lucideCircle"
         label="Gender"
         [value]="profile.gender"
-        [link]=""
+        [link]="'gender'"
         [profileInfo]="true"
       ></app-profile-list-item>
       <app-profile-list-item
         icon="lucideCalendar"
         label="Birthday"
         [value]="profile.birthday | date: 'dd-MM-yyyy'"
-        [link]=""
+        [link]="'birthday'"
         [profileInfo]="true"
       ></app-profile-list-item>
       <app-profile-list-item
@@ -49,7 +51,7 @@
         icon="lucideLock"
         label="Change Password"
         [value]="'•'.repeat(15)"
-        [link]=""
+        [link]="'password'"
         [profileInfo]="true"
       ></app-profile-list-item>
     </ul>

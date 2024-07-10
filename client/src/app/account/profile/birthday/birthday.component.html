@@ -1,0 +1,27 @@
+<section
+  class="grid justify-items-center font-poppins text-grey-dark md:py-20 px-4 md:px-16 xl:px-24"
+>
+  <form
+    class="flex flex-col justify-between max-w-lg w-full h-[75vh] sm:h-64 m-7"
+    [formGroup]="birthdayForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="grid gap-1">
+      <label class="text-navy font-medium text-sm">Your birthday</label>
+      <div class="relative w-full">
+        <app-form-input
+          class="calendar-picker"
+          formControlName="birthday"
+          placeholder="Birthday"
+          type="date"
+          [icon]="true"
+          [dateRange]="birthdayDateRange"
+        ></app-form-input>
+      </div>
+    </div>
+
+    <button hlmBtn type="submit" size="lg" [disabled]="!birthdayForm.valid">
+      Save
+    </button>
+  </form>
+</section>

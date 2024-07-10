@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { Profile } from '@app/shared/types/profile';
+import { Profile, changePasswordProfile } from '@app/shared/types/profile';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,10 @@ export class ProfileService {
       .pipe(map(response => response.data));
   }
 
-  updateUser(data: Profile | Partial<Profile>): Observable<Profile> {
+
+  updateUser(
+    data: Profile | Partial<changePasswordProfile>
+  ): Observable<Profile> {
     return this.http.patch<Profile>(environment.API_URL + '/user/update', data);
   }
 
