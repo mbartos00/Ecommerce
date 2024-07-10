@@ -1,0 +1,58 @@
+<div class="my-7 xl:px-20 2xl:container flex gap-7">
+  <section class="hidden xl:-mt-16 xl:block xl:w-[20%]">
+    <app-news-filters></app-news-filters>
+  </section>
+  <section class="xl:w-[80%]">
+    <app-sort-bar
+      [hasMultipleLayouts]="false"
+      (sortCriteriaChange)="onSortCriteriaChange($event)"
+      (productsPerPageChange)="onNewsPerPageChange($event)"
+      (orderChange)="onOrderChange($event)"
+      (openFilterDrawer)="openFilterDrawer()"
+      [totalProducts]="totalNews"
+      [sortOptions]="sortOptions"
+    ></app-sort-bar>
+
+    <app-drawer #drawer title="Filters">
+      <app-news-filters (closeDrawer)="closeDrawer()"></app-news-filters>
+    </app-drawer>
+
+    @if (news$ | async; as news) {
+      @if (totalNews > 0) {
+        <div class="container my-7 mx-auto p-2">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"
+          >
+            <ng-container *ngFor="let news of news.data">
+              <app-news-card [news]="news"></app-news-card>
+            </ng-container>
+          </div>
+        </div>
+      } @else {
+        <div class="flex justify-center py-10 text-2xl">
+          <p>No News Found</p>
+        </div>
+      }
+    } @else {
+      <div class="container my-7 mx-auto p-2">
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-6"
+        >
+          <ng-container *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7, 8]">
+            <app-skeleton-card class="m-0 aspect-auto"></app-skeleton-card>
+          </ng-container>
+        </div>
+      </div>
+    }
+
+    @if (totalNews > +itemsPerPage) {
+      <div class="mb-40">
+        <app-pagination
+          [totalPages]="totalPages"
+          [currentPage]="currentPage"
+          (pageChange)="gotoPage($event)"
+        ></app-pagination>
+      </div>
+    }
+  </section>
+</div>

@@ -72,6 +72,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   searchbarValue?: string;
   totalProducts: number = 10;
   isLoading: boolean = false;
+  sortOptions = ['name', 'price', 'rating'];
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(

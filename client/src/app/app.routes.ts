@@ -20,6 +20,11 @@ export const routes: Routes = [
     loadChildren: () => import('./shop/shop.routes').then(m => m.routes),
   },
   {
+    path: 'news',
+    data: { breadcrumb: 'News' },
+    loadChildren: () => import('./news/news.routes').then(m => m.routes),
+  },
+  {
     path: 'contact',
     data: { breadcrumb: 'Contact' },
     loadComponent: () =>

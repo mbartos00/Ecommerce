@@ -5,15 +5,16 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
+import { ProductService } from '@app/shared/product/product.service';
 import { Product } from '@app/shared/types/product.model';
+import { HlmSkeletonComponent } from '@app/shared/ui/ui-skeleton-helm/src';
 import { Observable } from 'rxjs';
 import { SalesCardComponent } from './ui/sales-card.component';
-import { ProductService } from '@app/shared/product/product.service';
 
 @Component({
   selector: 'app-sales',
   standalone: true,
-  imports: [SalesCardComponent, AsyncPipe],
+  imports: [SalesCardComponent, AsyncPipe, HlmSkeletonComponent],
   templateUrl: './sales.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

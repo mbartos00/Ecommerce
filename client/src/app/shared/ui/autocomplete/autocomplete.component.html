@@ -11,7 +11,7 @@
     type="text"
     [placeholder]="placeholder"
     class="w-full px-4 py-2 border border-grey rounded cursor-pointer"
-    [value]="this.control.value"
+    [value]="this.control.value | titlecase"
     [formControl]="control"
     (click)="openDropDown()"
     (keydown)="handleEscapeKey($event)"
@@ -31,7 +31,7 @@
         (click)="onSelect(option)"
         (keydown)="handleEscapeKey($event)"
       >
-        {{ option }}
+        {{ option | titlecase }}
       </button>
     </li>
   </ul>
