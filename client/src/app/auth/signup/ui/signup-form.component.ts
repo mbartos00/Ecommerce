@@ -123,7 +123,7 @@ export class SignupFormComponent implements OnInit {
 
     this.createUser.emit(this.signupForm.getRawValue());
     this.signupForm.reset();
-    this.router.navigate(['/login']).then(() => {
+    this.router.navigate(['auth/login']).then(() => {
       toast.success('The account has been created, you can log in');
     });
   }
