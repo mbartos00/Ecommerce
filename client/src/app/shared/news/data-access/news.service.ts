@@ -27,12 +27,6 @@ export class NewsService {
 
   constructor(private http: HttpClient) {}
 
-  getLatestNews(): Observable<News[]> {
-    return this.http
-      .get<NewsList>(`${this.apiUrl}/latest`)
-      .pipe(map(data => data.data));
-  }
-
   getAllNews(params: QueryParams): Observable<NewsList> {
     return this.http
       .get<NewsList>(this.apiUrl, {

@@ -6,6 +6,12 @@ export type NewsList = {
   data: News[];
 };
 
+export type LatestNews = {
+  status: string;
+  paginationInfo: PaginationInfo;
+  data: News[];
+};
+
 export type News = {
   id: string;
   title: string;
@@ -13,9 +19,12 @@ export type News = {
   description_short: string;
   content: string;
   news_category_id: string;
-  category: NewsCategory;
   author_full_name: string;
-  createdAt: string;
+  category: {
+    id: string;
+    name: string;
+  };
+  createdAt: Date;
 };
 
 export type NewsCategory = {

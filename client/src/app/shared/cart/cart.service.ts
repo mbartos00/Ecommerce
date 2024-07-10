@@ -4,12 +4,9 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { Discount } from '../types/discount';
-<<<<<<< HEAD
 import { AvailabilityData } from '../types/product.model';
 import { ResponseFormat } from '../types/response';
-=======
 import { Shipping } from '../types/shipping';
->>>>>>> origin/develop
 
 @Injectable({
   providedIn: 'root',

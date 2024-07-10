@@ -114,14 +114,14 @@ export type ProductInCart = {
   quantityToBuy: number;
 };
 
-<<<<<<< HEAD
 export type AvailabilityData = {
   productId: string;
   variantId: string;
   availableQuantity?: number;
   quantityToBuy: number;
   isAvailable?: boolean;
-=======
+};
+
 export type ProductFilters = {
   status: string;
   data: Filter[];
@@ -144,5 +144,4 @@ export type Filter = {
   brand: {
     brand: string;
   }[];
->>>>>>> origin/develop
 };
