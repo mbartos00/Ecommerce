@@ -9,3 +9,9 @@ export type Profile = {
   phone_number: string;
   profile_photo_url: string;
 };
+
+export type changePasswordProfile = Profile & {
+  oldPassword?: string;
+  newPassword?: string;
+  repeatPassword?: string;
+};

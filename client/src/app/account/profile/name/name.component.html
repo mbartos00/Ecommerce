@@ -1,0 +1,29 @@
+<section
+  class="grid justify-items-center font-poppins text-navy font-medium md:py-20 px-4 md:px-16 xl:px-24"
+>
+  <form
+    class="flex flex-col justify-between max-w-lg w-full h-[75vh] sm:h-64 m-7"
+    [formGroup]="nameForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="grid gap-1">
+      <app-form-input
+        formControlName="name"
+        placeholder="John"
+        label="First Name"
+        class="h-[5.5rem]"
+      ></app-form-input>
+
+      <app-form-input
+        formControlName="lastName"
+        placeholder="Doe"
+        label="Last Name"
+        class="h-[5.5rem]"
+      ></app-form-input>
+    </div>
+
+    <button hlmBtn type="submit" size="lg" [disabled]="!nameForm.valid">
+      Save
+    </button>
+  </form>
+</section>
