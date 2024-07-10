@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { PrismaClient, Size } from '@prisma/client';
+import { DiscountType, PrismaClient, Size } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const productDefaults = {
@@ -65,9 +65,8 @@ export async function seedProducts() {
   }
 
   function getRandomImageURLs(imageList: string[], numImages: number) {
-    const shuffled = imageList.sort(() => 0.5 - Math.random());
-    const selectedImages = shuffled.slice(0, numImages);
-    return selectedImages.map((image) => `${baseURL}${image}`);
+    const randomImage = imageList[Math.floor(Math.random() * imageList.length)];
+    return Array(numImages).fill(`${baseURL}${randomImage}`);
   }
 
   await prisma.product.deleteMany();
@@ -94,7 +93,7 @@ export async function seedProducts() {
       name: faker.commerce.product(),
       brand: faker.company.name(),
       description: faker.commerce.productDescription(),
-      price: parseFloat(faker.commerce.price()),
+      price: parseFloat(faker.commerce.price({ min: 10 })),
       rating: getRandNum(0, productDefaults.maxRating),
       images: getRandomImageURLs(
         productImages,
@@ -128,7 +127,7 @@ export async function seedProducts() {
       data: Array.from({ length: productDefaults.numOfVariantsPerProduct }).map(
         () => ({
           color: faker.color.human(),
-          condition: 'new',
+          condition: faker.helpers.arrayElement(['new', 'used']),
           size: getRandomSize(),
           quantity: getRandNum(0, productDefaults.maxQuantity),
           productId: product.id,
@@ -216,18 +215,30 @@ export async function seedNews() {
 export async function seedDiscountedProducts() {
   await prisma.productDiscount.deleteMany();
 
-  const productIds = await prisma.product.findMany({
+  const productIdsAndPrices = await prisma.product.findMany({
     select: {
       id: true,
+      price: true,
     },
   });
 
-  for (let i = 0; i < productIds.length / 2; i++) {
+  for (let i = 0; i < productIdsAndPrices.length / 2; i++) {
+    const product = productIdsAndPrices[i];
+
+    const discountType = faker.helpers.arrayElement(['percentage', 'fixed']);
+    let discountValue;
+
+    if (discountType === 'percentage') {
+      discountValue = getRandNum(1, 50);
+    } else {
+      discountValue = getRandNum(1, product.price * 0.5);
+    }
+
     await prisma.productDiscount.create({
       data: {
-        productId: productIds[i].id,
-        type: faker.helpers.arrayElement(['percentage', 'fixed']),
-        value: getRandNum(1, 99),
+        productId: productIdsAndPrices[i].id,
+        type: discountType as DiscountType,
+        value: discountValue,
         startDate: faker.date.between({
           from: '2024-04-01T00:00:00.000Z',
           to: '2024-05-28T00:00:00.000Z',
