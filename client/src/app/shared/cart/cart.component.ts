@@ -1,25 +1,22 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { provideIcons } from '@ng-icons/core';
 import { lucideX } from '@ng-icons/lucide';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { Observable, map } from 'rxjs';
 import { UserService } from '../data-access/user.service';
 import { Discount } from '../types/discount';
-<<<<<<< HEAD
 import { CheckoutDialogComponent } from '../ui/checkout-dialog/checkout-dialog.component';
 import { AvailabilityData } from '../types/product.model';
 import { ResponseFormat } from '../types/response';
 import { toast } from 'ngx-sonner';
-=======
 import { ProductInCart } from '../types/product.model';
 import { CounterInputComponent } from '../ui/counter-input/counter-input.component';
 import { CartService } from './cart.service';
 import { Shipping } from '../types/shipping';
 import { RadioComponent } from '../ui/radio-button/radio.component';
 import { HlmButtonDirective } from '../ui/ui-button-helm/src';
->>>>>>> origin/develop
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cart',
@@ -28,32 +25,24 @@ import { HlmButtonDirective } from '../ui/ui-button-helm/src';
   providers: [provideIcons({ lucideX })],
   imports: [
     HlmIconComponent,
-    CommonModule,
     CounterInputComponent,
-<<<<<<< HEAD
     CheckoutDialogComponent,
-    FormsModule,
-  ],
-=======
-    FormsModule,
     RadioComponent,
     HlmButtonDirective,
     AsyncPipe,
+    CommonModule,
+    FormsModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
->>>>>>> origin/develop
 })
 export class CartComponent implements OnInit {
   productsInCart$: Observable<ProductInCart[]> = this.cartService.cart$;
   subtotal$: Observable<number> = this.cartService.getSubtotal();
-<<<<<<< HEAD
   isCheckoutDialogOpen = false;
   cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-=======
   shippingOptions$: Observable<Shipping[]> = new Observable<Shipping[]>();
   selectedShippingOption: Shipping | null = null;
   isAuthenticated$!: Observable<boolean>;
->>>>>>> origin/develop
   discount: Discount = {
     code: '',
     discount_amount: 0,

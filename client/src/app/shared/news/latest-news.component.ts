@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { News } from '../types/news.model';
-import { NewsService } from './data-access/news.service';
+import { NewsService } from '../../news/data-access/news.service';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 
 @Component({

@@ -1,0 +1,23 @@
+<div class="container">
+  @if (news$ | async; as news) {
+    <div
+      class="flex flex-col m-10 xl:mx-[200px] mb-[500px] flex-wrap gap-3 justify-around items-center text-black"
+    >
+      <img [src]="news.imageUrl" [alt]="news.title" />
+
+      <h1 class="text-2xl text-center font-bold">{{ news.title }}</h1>
+
+      <div
+        class="w-full grid grid-cols-2 gap-3 justify-items-stretch border-y-2 border-y-grey-light py-4 text-grey-neutral text-xl font-light"
+      >
+        <h5>By: {{ news.author_full_name }}</h5>
+        <h5 class="place-self-end">{{ news.createdAt | date }}</h5>
+        <h6 class="capitalize">
+          Published in Category: {{ news.category.name }}
+        </h6>
+      </div>
+
+      <div class="mt-5 text-xl" [innerHTML]="news.content"></div>
+    </div>
+  }
+</div>

@@ -33,6 +33,12 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'news',
+    data: { breadcrumb: 'News' },
+    loadChildren: () => import('./news/news.routes').then(m => m.routes),
+  },
+
+  {
     path: 'account',
     data: { breadcrumb: 'Account' },
     loadChildren: () => import('./account/account.routes').then(m => m.routes),
