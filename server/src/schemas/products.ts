@@ -14,3 +14,11 @@ export const addDiscountSchema = z.object({
 });
 
 export type ProductDiscountSchema = z.infer<typeof addDiscountSchema>;
+
+export const variantToCheckSchema = z.object({
+  productId: z.string().uuid(),
+  variantId: z.string().uuid(),
+  quantityToBuy: z.number().int().positive(),
+});
+
+export type VariantToCheck = z.infer<typeof variantToCheckSchema>;
