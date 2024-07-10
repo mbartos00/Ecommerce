@@ -108,7 +108,7 @@ export type ProductInCart = {
   images: string[];
   variantId: string;
   color: string;
-  condition: Condition;
+  condition: string;
   size: string;
   availableQuantity: number;
   quantityToBuy: number;
@@ -144,4 +144,12 @@ export type Filter = {
   brand: {
     brand: string;
   }[];
+};
+
+export type Checkout = {
+  products: ProductInCart[];
+  addressId: string;
+  paymentMethodId: string;
+  discountId?: string;
+  shippingMethodId: string;
 };

@@ -1,9 +1,10 @@
-// src/app/services/user-address.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Address } from '@app/shared/types/address';
 import { PaymentMethod, PaymentTypeKey } from '../types/payment';
+import { Checkout } from '../types/product.model';
+import { environment } from '@environments/environment';
 
 interface ApiResponse {
   status: string;
@@ -14,20 +15,20 @@ interface ApiResponse {
   providedIn: 'root',
 })
 export class CheckoutService {
-  private apiUrlAddress = 'http://localhost:8080/api/user/addresses';
-  private apiUrlPayment = 'http://localhost:8080/api/payment-methods';
-
   constructor(private http: HttpClient) {}
 
   getUserAddresses(): Observable<Address[]> {
     return this.http
-      .get<ApiResponse>(this.apiUrlAddress)
+      .get<ApiResponse>(environment.API_URL + '/user/addresses')
       .pipe(map(response => response.data));
   }
 
   getPaymentMethods(): Observable<PaymentMethod[]> {
     return this.http
-      .get<{ status: string; data: PaymentMethod[] }>(this.apiUrlPayment)
+      .get<{
+        status: string;
+        data: PaymentMethod[];
+      }>(environment.API_URL + '/user/payment-methods')
       .pipe(map(response => response.data));
   }
 
@@ -39,8 +40,9 @@ export class CheckoutService {
     );
   }
 
-  // TODO adjust to checkout endpoint on backend
-  submitCheckout(data: any): Observable<any> {
-    return this.http.post<any>('your-api-endpoint/checkout', data);
+  submitCheckout(data: Checkout): Observable<Checkout> {
+    return this.http
+      .post<Checkout>(environment.API_URL + '/checkout', data)
+      .pipe(map(response => response));
   }
 }

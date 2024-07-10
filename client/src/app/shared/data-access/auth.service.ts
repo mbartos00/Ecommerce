@@ -68,6 +68,10 @@ export class AuthService {
       );
   }
 
+  getToken(): string {
+    return localStorage.getItem('access_token') || '';
+  }
+
   refreshToken(): Observable<{
     status: string;
     accessToken: string;

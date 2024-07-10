@@ -74,6 +74,12 @@
                   </button>
                 }
               </div>
+
+              @if (noPaymentMethodError) {
+                <div class="text-pink col-span-2 mt-4">
+                  {{ noPaymentMethodError }}
+                </div>
+              }
             </div>
             <div class="flex flex-col gap-y-3 max-h-[500px]">
               <div class="flex flex-col gap-5 overflow-y-scroll">
@@ -109,14 +115,14 @@
             <button
               class="p-4 rounded-md text-white text-xl font-medium col-span-2 shadow-xl"
               [ngClass]="
-                checkoutForm.invalid === true
+                checkoutForm.invalid || noPaymentMethodError
                   ? 'bg-grey-light'
                   : 'bg-primary shadow-blue-light'
               "
               type="submit"
-              [disabled]="checkoutForm.invalid"
+              [disabled]="checkoutForm.invalid || !!noPaymentMethodError"
             >
-              Go To Payment
+              > Go To Payment
             </button>
           </form>
         }
@@ -162,42 +168,6 @@
               Proceed
             </button>
           </form>
-        }
-        @case ('final') {
-          @if (isLoading) {
-            <div class="flex justify-center items-center h-full">
-              <p>Processing your order...</p>
-            </div>
-          } @else if (errorMessage) {
-            <div class="flex flex-col justify-center items-center h-full">
-              <p class="text-pink">{{ errorMessage }}</p>
-              <button
-                class="mt-4 p-4 rounded-md bg-primary text-white text-xl font-medium shadow-xl shadow-blue-light"
-                (click)="showPaymentMethods()"
-              >
-                Try Again
-              </button>
-            </div>
-          } @else {
-            <div class="flex flex-col justify-around items-center flex-grow">
-              <div>
-                <div
-                  class="flex justify-center items-center w-[120px] h-[120px] bg-primary rounded-full text-white shadow-xl shadow-blue-light"
-                >
-                  <hlm-icon size="xl" name="lucideCheck" />
-                </div>
-                <h1 class="mt-6 text-xl font-bold text-black text-center">
-                  Success
-                </h1>
-              </div>
-              <button
-                class="p-4 rounded-md bg-primary text-white text-xl font-medium w-40 shadow-xl shadow-blue-light"
-                (click)="closeDialog()"
-              >
-                Complete
-              </button>
-            </div>
-          }
         }
       }
     </div>

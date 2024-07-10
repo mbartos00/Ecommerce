@@ -28,4 +28,3 @@ export const PaymentTypes = {
 };
 
 export type PaymentTypeKey = keyof typeof PaymentTypes;
-// export type PaymentTypeValue = (typeof PaymentTypes)[PaymentTypeKey];
