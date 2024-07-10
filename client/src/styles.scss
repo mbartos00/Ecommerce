@@ -45,6 +45,10 @@
   --radius: 0.5rem;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 ::-webkit-file-upload-button {
   @apply sr-only;
 }

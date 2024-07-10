@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import {
   HlmPaginationContentDirective,
   HlmPaginationDirective,
@@ -8,7 +8,7 @@ import {
   HlmPaginationNextComponent,
   HlmPaginationPreviousComponent,
 } from '../ui-pagination-helm/src';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-pagination',
@@ -32,6 +32,8 @@ export class PaginationComponent {
 
   pageRange: number = 1;
   edgePageCount: number = 1;
+
+  private viewport = inject(ViewportScroller);
 
   get shouldShowLeftEllipsis(): boolean {
     return this.currentPage > this.pageRange + this.edgePageCount + 1;
@@ -65,17 +67,20 @@ export class PaginationComponent {
 
   gotoPage(page: number): void {
     this.pageChange.emit(page);
+    this.viewport.scrollToPosition([0, 0]);
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.gotoPage(this.currentPage - 1);
     }
+    this.viewport.scrollToPosition([0, 0]);
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages.length) {
       this.gotoPage(this.currentPage + 1);
     }
+    this.viewport.scrollToPosition([0, 0]);
   }
 }

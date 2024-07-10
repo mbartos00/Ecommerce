@@ -20,40 +20,47 @@ export const AuthInterceptor: HttpInterceptorFn = (
   const jwtHelper = new JwtHelperService();
   const accessToken = getAccessToken();
 
+  const protectedRoutes = [
+    '/user',
+    '/refresh-token',
+    '/checkout',
+    '/orders',
+    '/payment-methods',
+  ];
+
   let authReq = req;
 
-  if (req.url.includes('/login')) {
-    return next(req);
+  if (protectedRoutes.some(i => req.url.includes(i))) {
+    if (accessToken && !jwtHelper.isTokenExpired(accessToken)) {
+      authReq = req.clone({
+        setHeaders: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      return next(authReq).pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (
+            error.status === 403 &&
+            accessToken &&
+            jwtHelper.isTokenExpired(accessToken)
+          ) {
+            return authService.refreshToken().pipe(
+              switchMap(({ accessToken }) => {
+                const newAuthReq = req.clone({
+                  setHeaders: { Authorization: `Bearer ${accessToken}` },
+                });
+
+                return next(newAuthReq);
+              }),
+              catchError(err => {
+                authService.logout();
+                return throwError(() => new Error(err));
+              })
+            );
+          }
+          return throwError(() => new Error(error.message));
+        })
+      );
+    }
   }
-
-  if (accessToken && !jwtHelper.isTokenExpired(accessToken)) {
-    authReq = req.clone({
-      setHeaders: { Authorization: `Bearer ${accessToken}` },
-    });
-  }
-
-  return next(authReq).pipe(
-    catchError((error: HttpErrorResponse) => {
-      if (
-        error.status === 403 &&
-        accessToken &&
-        jwtHelper.isTokenExpired(accessToken)
-      ) {
-        return authService.refreshToken().pipe(
-          switchMap(({ accessToken }) => {
-            const newAuthReq = req.clone({
-              setHeaders: { Authorization: `Bearer ${accessToken}` },
-            });
-
-            return next(newAuthReq);
-          }),
-          catchError(err => {
-            authService.logout();
-            return throwError(() => new Error(err));
-          })
-        );
-      }
-      return throwError(() => new Error(error.message));
-    })
-  );
+  return next(req);
 };

@@ -1,0 +1,43 @@
+@if (filters$ | async; as filters) {
+  <form
+    [formGroup]="form"
+    (ngSubmit)="applyFilters()"
+    class="flex flex-col gap-2 mt-4 px-2 lg:mt-16 xl:px-0"
+  >
+    <app-filter-wrapper title="Category">
+      <app-autocomplete
+        [options]="filters"
+        [control]="categoryControl"
+        placeholder="Category"
+        (selectedValue)="onCategorySelect($event)"
+      ></app-autocomplete>
+    </app-filter-wrapper>
+    <app-filter-wrapper title="Title">
+      <app-form-input
+        formControlName="search"
+        placeholder="Title"
+        [icon]="false"
+      ></app-form-input>
+    </app-filter-wrapper>
+
+    <div class="flex gap-2 flex-wrap justify-center mb-4 lg:flex-nowrap">
+      <button
+        type="submit"
+        class="text-sm font-poppins shadow-lg px-8 py-3 bg-blue-light text-navy rounded-sm h-fit self-center hover:bg-white hover:text-black xl:px-2 2xl:px-8 xl:w-full"
+      >
+        Apply filters
+      </button>
+      <button
+        type="reset"
+        (click)="resetFilters()"
+        class="text-sm font-poppins bg-pink shadow-lg px-8 py-3 text-navy rounded-sm h-fit self-center hover:bg-blue-light lg:w-fit"
+      >
+        Reset
+      </button>
+    </div>
+  </form>
+} @else {
+  <div class="grid place-items-center h-[80svh]">
+    <hlm-spinner></hlm-spinner>
+  </div>
+}

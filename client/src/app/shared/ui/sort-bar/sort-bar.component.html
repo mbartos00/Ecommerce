@@ -8,18 +8,18 @@
       id="sort"
       name="sort"
       (change)="updateSortCriteria($event)"
-      class="peer h-full w-30 rounded-[7px] border border-grey border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-light placeholder-shown:border-t-blue empty:!bg-grey-dark focus:border-2 focus:border-primary focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-grey-light"
+      class="peer h-full w-30 rounded-[7px] border border-grey border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-light placeholder-shown:border-t-blue empty:!bg-grey-dark focus:border focus:border-primary focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-grey-light"
     >
-      <option value="name" active>Name</option>
-      <option value="price">Price</option>
-      <option value="rating">Rating</option>
+      @for (option of sortOptions; track $index) {
+        <option [value]="option">{{ option | capitalizeFirst }}</option>
+      }
     </select>
     <span class="ml-10 mr-1">Order</span>
     <select
       id="order"
       name="order"
       (change)="updateOrder($event)"
-      class="peer h-full w-30 rounded-[7px] border border-grey border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-light placeholder-shown:border-t-blue empty:!bg-grey-dark focus:border-2 focus:border-primary focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-grey-light"
+      class="peer h-full w-30 rounded-[7px] border border-grey border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-light placeholder-shown:border-t-blue empty:!bg-grey-dark focus:border focus:border-primary focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-grey-light"
     >
       >
       <option value="asc" active>Ascending</option>
@@ -31,7 +31,7 @@
       id="limit-products"
       name="limit-products"
       (change)="updateLimit($event)"
-      class="peer h-full w-30 rounded-[7px] border border-grey border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-light placeholder-shown:border-t-blue empty:!bg-grey-dark focus:border-2 focus:border-primary focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-grey-light"
+      class="peer h-full w-30 rounded-[7px] border border-grey border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-light placeholder-shown:border-t-blue empty:!bg-grey-dark focus:border focus:border-primary focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-grey-light"
     >
       >
       <option value="20" active>20</option>
@@ -45,7 +45,7 @@
       hlmBtn
       type="button"
       (click)="setViewType(true)"
-      class="flex items-center"
+      class="flex items-center {{ hasMultipleLayouts ? '' : 'hidden' }}"
     >
       <hlm-icon size="base" name="lucideLayoutGrid" class="mr-1 text-primary" />
     </button>
@@ -53,7 +53,7 @@
       hlmBtn
       type="button"
       (click)="setViewType(false)"
-      class="flex items-center"
+      class="flex items-center {{ hasMultipleLayouts ? '' : 'hidden' }}"
     >
       <hlm-icon size="base" name="lucideList" class="mr-1 text-primary" />
     </button>

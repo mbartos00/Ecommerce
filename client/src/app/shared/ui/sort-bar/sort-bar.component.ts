@@ -10,17 +10,20 @@ import { HlmIconComponent } from '../ui-icon-helm/src/lib/hlm-icon.component';
 import { provideIcons } from '@ng-icons/core';
 import { lucideFilter, lucideLayoutGrid, lucideList } from '@ng-icons/lucide';
 import { CommonModule } from '@angular/common';
+import { CapitalizeFirstPipe } from '@app/shared/pipes/capitalizeFirst.pipe';
 
 @Component({
   selector: 'app-sort-bar',
   standalone: true,
   templateUrl: './sort-bar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [HlmIconComponent, CommonModule],
+  imports: [HlmIconComponent, CommonModule, CapitalizeFirstPipe],
   providers: [provideIcons({ lucideList, lucideLayoutGrid, lucideFilter })],
 })
 export class SortBarComponent {
   @Input() totalProducts: number = 1;
+  @Input() hasMultipleLayouts = true;
+  @Input() sortOptions: string[] = [];
   @Output() viewTypeChange = new EventEmitter<boolean>();
   @Output() sortCriteriaChange = new EventEmitter<string>();
   @Output() productsPerPageChange = new EventEmitter<string>();
