@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import type { ResponseFormat } from '@src/types/response';
 import type { Dependecies } from '@src/config/dependencies';
 import { HttpError } from '@src/errors';
@@ -31,6 +31,7 @@ export function applyDiscount({ prisma }: Dependecies) {
 
       res.json({
         status: 'success',
+        id: discount.id,
         code: discount.code,
         discount_amount: discount.discountAmount,
         discount_type: discount.discountType,

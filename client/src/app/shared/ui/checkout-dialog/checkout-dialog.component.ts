@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import {
   Component,
   EventEmitter,
@@ -25,6 +26,9 @@ import {
 import { CheckoutService } from '@app/shared/data-access/checkout.service';
 import { CommonModule } from '@angular/common';
 import { PaymentTypePipe } from '@app/shared/utils/payment-type.pipe';
+import { ProductInCart } from '@app/shared/types/product.model';
+import { firstValueFrom } from 'rxjs';
+import { Shipping } from '@app/shared/types/shipping';
 
 @Component({
   selector: 'app-checkout-dialog',
@@ -41,14 +45,17 @@ import { PaymentTypePipe } from '@app/shared/utils/payment-type.pipe';
 })
 export class CheckoutDialogComponent implements OnInit {
   @Input() isOpen: boolean = false;
+  @Input() shippingMethod: Shipping | null = null;
   @Output() dialogClose = new EventEmitter<void>();
 
   paymentMethods = Object.keys(PaymentTypes) as PaymentTypeKey[];
   userPaymentMethods: PaymentMethod[] = [];
   addresses: Address[] = [];
-  currentView: 'checkout' | 'payment' | 'final' = 'checkout';
+  currentView: 'checkout' | 'payment' = 'checkout';
   isLoading = false;
   errorMessage: string | null = null;
+  products: ProductInCart[] = [{}] as ProductInCart[];
+  noPaymentMethodError: string | null = null;
 
   paymentIcons = {
     credit_card: '../../../../assets/buy.png',
@@ -60,11 +67,14 @@ export class CheckoutDialogComponent implements OnInit {
   private userService = inject(CheckoutService);
 
   ngOnInit(): void {
+    const cart = localStorage.getItem('cart');
+    if (cart) {
+      this.products = JSON.parse(cart);
+    }
     this.fetchPaymentMethods();
     this.fetchUserAddresses();
   }
 
-  //eslint-disable-next-line
   checkoutForm = this.fb.nonNullable.group({
     firstName: ['', [Validators.required, nameValidator]],
     lastName: ['', [Validators.required, nameValidator]],
@@ -74,7 +84,6 @@ export class CheckoutDialogComponent implements OnInit {
     deliveryAddress: ['', [Validators.required]],
   });
 
-  //eslint-disable-next-line
   paymentOptionForm = this.fb.group({
     paymentOption: ['', Validators.required],
   });
@@ -93,20 +102,29 @@ export class CheckoutDialogComponent implements OnInit {
     });
   }
 
-  fetchUserPaymentMethods(): void {
+  async fetchUserPaymentMethods(): Promise<void> {
     const selectedType = this.checkoutForm.get('paymentMethod')
       ?.value as PaymentTypeKey;
-    this.userService.getUserPaymentMethodsByType(selectedType).subscribe({
-      next: methods => (this.userPaymentMethods = methods),
-      error: err => console.error('Failed to load user payment methods', err),
-    });
+    try {
+      this.userPaymentMethods = await firstValueFrom(
+        this.userService.getUserPaymentMethodsByType(selectedType)
+      );
+      this.noPaymentMethodError =
+        this.userPaymentMethods.length === 0
+          ? `You don't have any ${PaymentTypes[selectedType]} payment methods. Please add one before proceeding.`
+          : null;
+    } catch (err) {
+      console.error('Failed to load user payment methods', err);
+      this.noPaymentMethodError =
+        'Failed to load payment methods. Please try again.';
+    }
   }
 
   selectAddress(address: Address): void {
     this.checkoutForm.patchValue({ deliveryAddress: address.id });
   }
 
-  selectPaymentMethod(method: PaymentTypeKey): void {
+  async selectPaymentMethod(method: PaymentTypeKey): Promise<void> {
     this.checkoutForm.patchValue({ paymentMethod: method });
   }
 
@@ -118,15 +136,15 @@ export class CheckoutDialogComponent implements OnInit {
     return method.toLowerCase().replace(/\s+/g, '-');
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.checkoutForm.invalid) return;
 
+    await this.fetchUserPaymentMethods();
     this.showPaymentMethods();
   }
 
   onProceedPayment(): void {
     if (this.paymentOptionForm.invalid) return;
-
     this.showFinalView();
   }
 
@@ -145,32 +163,31 @@ export class CheckoutDialogComponent implements OnInit {
 
   showPaymentMethods(): void {
     this.currentView = 'payment';
-    this.fetchUserPaymentMethods();
   }
 
   private showFinalView(): void {
     this.sendDataToBackend();
   }
 
-  // TODO adjust data type to properly send to backend
   private sendDataToBackend(): void {
-    this.isLoading = true;
     this.errorMessage = null;
 
     const checkoutData = this.checkoutForm.value;
     const paymentData = this.paymentOptionForm.value;
 
     const combinedData = {
-      ...checkoutData,
-      ...paymentData,
+      products: this.products,
+      addressId: checkoutData.deliveryAddress!,
+      paymentMethodId: paymentData.paymentOption!,
+      shippingMethodId: this.shippingMethod!.id,
     };
 
     this.userService.submitCheckout(combinedData).subscribe({
       next: response => {
         console.log('Checkout successful', response);
-        this.isLoading = false;
+        this.currentView = 'checkout';
         localStorage.removeItem('cart');
-        this.currentView = 'final';
+        this.isOpen = false;
       },
       error: error => {
         console.error('Checkout failed', error);

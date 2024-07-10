@@ -27,6 +27,7 @@ import { FormsModule } from '@angular/forms';
     HlmIconComponent,
     CounterInputComponent,
     CheckoutDialogComponent,
+    FormsModule,
     RadioComponent,
     HlmButtonDirective,
     AsyncPipe,
@@ -44,6 +45,7 @@ export class CartComponent implements OnInit {
   selectedShippingOption: Shipping | null = null;
   isAuthenticated$!: Observable<boolean>;
   discount: Discount = {
+    id: '',
     code: '',
     discount_amount: 0,
     discount_type: '',
