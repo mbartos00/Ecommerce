@@ -28,7 +28,7 @@ export class CheckoutService {
       .get<{
         status: string;
         data: PaymentMethod[];
-      }>(environment.API_URL + '/user/payment-methods')
+      }>(environment.API_URL + '/payment-methods')
       .pipe(map(response => response.data));
   }
 

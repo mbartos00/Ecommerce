@@ -3,7 +3,7 @@
     class="fixed inset-0 flex items-center justify-center backdrop-brightness-50 backdrop-blur-sm z-50"
   >
     <div
-      class="container flex flex-col relative bg-white rounded-lg p-10 w-dvw h-dvh lg:w-[80vw] lg:min-h-[750px] shadow-lg overflow-auto"
+      class="container flex flex-col relative bg-white rounded-lg p-10 w-dvw h-dvh lg:w-[80vw] lg:h-fit shadow-lg overflow-auto"
     >
       <button class="absolute top-5 right-5 text-2xl" (click)="closeDialog()">
         ✕
@@ -122,7 +122,7 @@
               type="submit"
               [disabled]="checkoutForm.invalid || !!noPaymentMethodError"
             >
-              > Go To Payment
+              Go To Payment
             </button>
           </form>
         }
@@ -168,6 +168,23 @@
               Proceed
             </button>
           </form>
+        }
+        @case ('success') {
+          <div class="flex flex-col items-center">
+            <hlm-icon
+              name="lucideCheck"
+              class="text-green-500"
+              size="2xl"
+            ></hlm-icon>
+            <h2 class="text-2xl font-semibold my-4">Checkout Successful!</h2>
+            <p>Your order has been placed successfully.</p>
+            <button
+              class="mt-6 p-4 rounded-md text-white text-xl font-medium bg-primary shadow-xl"
+              (click)="reloadCartPage()"
+            >
+              Reload Cart Page
+            </button>
+          </div>
         }
       }
     </div>

@@ -125,12 +125,21 @@ export class CartService {
       .getValue()
       .reduce((acc, product) => acc + product.price * product.quantityToBuy, 0);
 
+    let total = subtotal;
+
     if (this.discount.discount_type === 'percentage') {
-      return parseFloat(
+      total = parseFloat(
         (subtotal - (subtotal * this.discount.discount_amount) / 100).toFixed(2)
       );
+    } else {
+      total = subtotal - this.discount.discount_amount;
     }
-    return subtotal - this.discount.discount_amount;
+
+    if (this.selectedShippingOption) {
+      total += this.selectedShippingOption.shipping_price;
+    }
+
+    return total;
   }
 
   checkAvailability(

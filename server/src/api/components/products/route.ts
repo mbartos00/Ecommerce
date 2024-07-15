@@ -21,11 +21,7 @@ export function productsRouter(deps: Dependecies) {
   router.get('/bestsellers', getBestsellers(deps));
   router.get('/sale', getAllDiscountedProducts(deps));
   router.get('/featured', getFeatured(deps));
-  router.post(
-    '/check-availability',
-    validate(variantToCheckSchema),
-    checkAvailability(deps),
-  );
+  router.post('/check-availability', checkAvailability(deps));
   router.post(
     '/discount',
     [auth(deps, 'admin'), validate(addDiscountSchema)],
