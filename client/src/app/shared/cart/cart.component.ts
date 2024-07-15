@@ -103,6 +103,8 @@ export class CartComponent implements OnInit {
   }
 
   openCheckoutDialog(): void {
+    this.isCheckoutDialogOpen = true;
+
     const cartData = this.formatCartData(this.cartItems);
 
     this.cartService.checkAvailability(cartData).subscribe({

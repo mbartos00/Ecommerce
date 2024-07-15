@@ -37,17 +37,32 @@
       </div>
       <hr class="h-0.5 my-4 bg-grey-light border-0" />
       <div class="flex items-center gap-4">
-        <span class="text-xl font-semibold text-primary text-slate-900">
-          {{ product.price | currency: 'USD' }}
-        </span>
-        <p class="flex gap-2">
-          <span class="text-sm text-slate-900 text-grey line-through">
-            {{ product.price | currency: 'USD' }}
-          </span>
-          <span class="text-sm font-semibold text-pink text-slate-90"
-            >24% Off</span
-          >
-        </p>
+        <span class="text-xl font-semibold text-primary text-slate-900"
+          >${{
+            product.discount
+              ? (product.discountedPrice | number: '0.0-1')
+              : product.price
+          }}</span
+        >
+        @if (product.discount) {
+          <p class="flex gap-2">
+            <span class="text-sm text-grey line-through"
+              >${{ product.price | number: '0.0-2' }}</span
+            >
+            @if (product.discount!.type === 'percentage') {
+              <span class="text-sm font-semibold text-pink text-slate-90"
+                >{{ product.discount.value }}% Off</span
+              >
+            } @else {
+              <span class="text-sm font-semibold text-pink text-slate-90"
+                >{{
+                  (product.discount.value * 100) / product.price
+                    | number: '0.0-0'
+                }}% Off</span
+              >
+            }
+          </p>
+        }
       </div>
       <div class="mt-5">
         <p class="text-sm">{{ product.description }}</p>

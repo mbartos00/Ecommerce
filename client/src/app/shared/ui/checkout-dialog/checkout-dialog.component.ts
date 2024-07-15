@@ -51,7 +51,7 @@ export class CheckoutDialogComponent implements OnInit {
   paymentMethods = Object.keys(PaymentTypes) as PaymentTypeKey[];
   userPaymentMethods: PaymentMethod[] = [];
   addresses: Address[] = [];
-  currentView: 'checkout' | 'payment' = 'checkout';
+  currentView: 'checkout' | 'payment' | 'success' = 'checkout';
   isLoading = false;
   errorMessage: string | null = null;
   products: ProductInCart[] = [{}] as ProductInCart[];
@@ -136,6 +136,10 @@ export class CheckoutDialogComponent implements OnInit {
     return method.toLowerCase().replace(/\s+/g, '-');
   }
 
+  reloadCartPage(): void {
+    window.location.reload();
+  }
+
   async onSubmit(): Promise<void> {
     if (this.checkoutForm.invalid) return;
 
@@ -185,9 +189,8 @@ export class CheckoutDialogComponent implements OnInit {
     this.userService.submitCheckout(combinedData).subscribe({
       next: response => {
         console.log('Checkout successful', response);
-        this.currentView = 'checkout';
+        this.currentView = 'success';
         localStorage.removeItem('cart');
-        this.isOpen = false;
       },
       error: error => {
         console.error('Checkout failed', error);

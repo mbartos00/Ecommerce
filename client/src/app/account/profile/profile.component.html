@@ -4,11 +4,23 @@
   <hr class="h-0.5 my-4 bg-grey-light border-0" />
   <ng-container *ngIf="profile$ | async as profile">
     <div class="flex mb-8 md:mb-[initial]">
-      <img
-        class="size-[4.5rem] sm:size-40 rounded-full object-cover"
-        [src]="profile.profile_photo_url"
-        [alt]="profile.name + 'avatar'"
-      />
+      @if (profile.profile_photo_url) {
+        <img
+          class="size-[4.5rem] sm:size-40 rounded-full object-cover"
+          [src]="profile.profile_photo_url"
+          [alt]="profile.name + 'avatar'"
+        />
+      } @else {
+        <img
+          class="size-[4.5rem] sm:size-40 rounded-full object-cover"
+          [src]="
+            profile.gender === 'female'
+              ? '../../../assets/female_default_avatar.jpeg'
+              : '../../../assets/male_default_avatar.jpeg'
+          "
+          [alt]="profile.name + ' avatar'"
+        />
+      }
       <div class="mt-2 sm:mt-5 ml-4">
         <a [routerLink]="'name'"
           ><h3 class="text-sm sm:text-base font-semibold mb-2">
