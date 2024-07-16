@@ -8,7 +8,7 @@ export type Address = {
   street_address: string;
   street_address_2: string;
   city: string;
-  state_providence_region: string;
+  state_province_region: string;
   zip_code: string;
   phone_number: string;
   userId: string;

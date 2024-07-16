@@ -1,0 +1,74 @@
+<section
+  class="container pb-10 md:pt-10 px-4 sm:px-16 xl:px-24 md:pl-28 text-grey"
+>
+  <hr class="h-0.5 my-4 bg-grey-light border-0" />
+  <div class="flex flex-col justify-between w-full">
+    <ul class="flex flex-wrap self-center gap-6">
+      <div *ngIf="(addresses$ | async)?.length === 0">
+        <p>There are no addresses added yet.</p>
+      </div>
+
+      <ng-container *ngFor="let address of addresses$ | async as profile">
+        <li class="w-full lg:w-96">
+          <div
+            class="border-2 border-grey-light grid gap-4 p-6 rounded hover:border-primary transition"
+          >
+            <p class="text-navy font-bold">
+              {{ address.name }} {{ address.lastName }}
+            </p>
+            <p>
+              {{ address.zip_code }} {{ address.street_address }},
+              {{ address.city }},
+              {{ address.country }}
+            </p>
+            <p>+99 1234567890</p>
+            <div class="flex gap-8 items-center">
+              <button
+                hlmBtn
+                [size]="'lg'"
+                [routerLink]="['edit-address', address.id]"
+              >
+                Edit
+              </button>
+
+              <hlm-alert-dialog>
+                <button variant="outline" brnAlertDialogTrigger hlmBtn>
+                  <hlm-icon name="lucideTrash"></hlm-icon>
+                </button>
+                <hlm-alert-dialog-content *brnAlertDialogContent="let ctx">
+                  <hlm-alert-dialog-header>
+                    <h3 hlmAlertDialogTitle>Are you absolutely sure?</h3>
+                    <p hlmAlertDialogDescription>
+                      This will permanently delete your address and remove your
+                      data from our servers.
+                    </p>
+                  </hlm-alert-dialog-header>
+                  <hlm-alert-dialog-footer>
+                    <button hlmAlertDialogCancel (click)="ctx.close()">
+                      Cancel
+                    </button>
+                    <button
+                      hlmBtn
+                      variant="destructive"
+                      (click)="deleteAddress(address.id)"
+                    >
+                      Delete address
+                    </button>
+                  </hlm-alert-dialog-footer>
+                </hlm-alert-dialog-content>
+              </hlm-alert-dialog>
+            </div>
+          </div>
+        </li>
+      </ng-container>
+    </ul>
+    <button
+      [routerLink]="'add-address'"
+      hlmBtn
+      size="lg"
+      class="mt-12 w-full md:w-[37.5rem] self-center"
+    >
+      Add address
+    </button>
+  </div>
+</section>
