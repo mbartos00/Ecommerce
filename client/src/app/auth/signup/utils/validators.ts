@@ -98,3 +98,13 @@ export function dateValidator(): ValidatorFn {
     return null;
   };
 }
+
+export const zipCodeValidation: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const zipCodeRegex = /^\d{2}-\d{3}$/;
+  if (!zipCodeRegex.test(control.value)) {
+    return { invalidZipCode: true };
+  }
+  return null;
+};

@@ -1,0 +1,79 @@
+<section
+  class="grid justify-items-center font-poppins text-navy font-medium md:py-20 px-4 md:px-16 xl:px-24"
+>
+  <hr class="h-0.5 my-4 bg-grey-light w-full border-0" />
+
+  <form
+    class="flex flex-col justify-between max-w-lg w-full m-7"
+    [formGroup]="addressForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <ng-container *ngIf="address$ | async as address">
+      <div class="grid gap-1">
+        <app-form-input
+          formControlName="country"
+          [placeholder]="address.country"
+          label="Country or region"
+          class="h-[5.5rem]"
+        ></app-form-input>
+
+        <app-form-input
+          formControlName="name"
+          [placeholder]="address.name"
+          label="First Name"
+          class="h-[5.5rem]"
+        ></app-form-input>
+
+        <app-form-input
+          formControlName="lastName"
+          [placeholder]="address.lastName"
+          label="Last Name"
+          class="h-[5.5rem]"
+        ></app-form-input>
+
+        <app-form-input
+          formControlName="street_address"
+          [placeholder]="address.street_address"
+          label="Street address"
+          class="h-[5.5rem]"
+        ></app-form-input>
+
+        <app-form-input
+          formControlName="street_address_2"
+          [placeholder]="address.street_address_2"
+          label="Street address 2 (Optional)"
+          class="h-[5.5rem]"
+        ></app-form-input>
+
+        <app-form-input
+          formControlName="city"
+          [placeholder]="address.city"
+          label="City"
+          class="h-[5.5rem]"
+        ></app-form-input>
+
+        <app-form-input
+          formControlName="state_province_region"
+          [placeholder]="address.state_province_region"
+          label="State/Province/Region"
+          class="h-[5.5rem]"
+        ></app-form-input>
+
+        <app-form-input
+          formControlName="zip_code"
+          [placeholder]="address.zip_code"
+          label="Zip Code"
+          class="h-[5.5rem]"
+        ></app-form-input>
+
+        <app-form-input
+          formControlName="phone_number"
+          [placeholder]="address.phone_number"
+          label="Phone Number"
+          class="h-[5.5rem]"
+        ></app-form-input>
+      </div>
+    </ng-container>
+    <button hlmBtn type="submit" size="lg" class="my-14">Update address</button>
+  </form>
+</section>

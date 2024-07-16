@@ -18,6 +18,7 @@ import { deleteUser } from './controllers/user/delete-user';
 import { getUserData } from './controllers/user/get-user-data';
 import { updateUser } from './controllers/user/update-user';
 import { getAllAddresses } from './controllers/address/get-addresses';
+import { getAddress } from './controllers/address/get-address';
 import { addAddress } from './controllers/address/add-address';
 import { removeAddress } from './controllers/address/remove-address';
 import { updateAddress } from './controllers/address/update-addres';
@@ -65,6 +66,7 @@ export function authRouter(deps: Dependecies) {
   );
 
   router.get('/user/addresses', auth(deps), getAllAddresses(deps));
+  router.get('/user/addresses/:id', auth(deps), getAddress(deps));
   router.patch(
     '/user/addresses/:id',
     [auth(deps), validate(updateAddressSchema)],

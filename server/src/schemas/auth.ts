@@ -104,7 +104,7 @@ export const addressSchema = z.object({
   name: nameValidation,
   lastName: nameValidation,
   street_address: addressPartValidation,
-  street_address_2: addressPartValidation.optional(),
+  street_address_2: z.string().min(0).max(100).optional(),
   city: addressPartValidation,
   state_province_region: addressPartValidation,
   zip_code: zipcodeValidation,

@@ -1,0 +1,85 @@
+<section
+  class="grid justify-items-center font-poppins text-navy font-medium md:py-20 px-4 md:px-16 xl:px-24"
+>
+  <hr class="h-0.5 my-4 bg-grey-light w-full border-0" />
+  <form
+    class="flex flex-col justify-between max-w-lg w-full m-7"
+    [formGroup]="addressForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="grid gap-1">
+      <app-form-input
+        formControlName="country"
+        placeholder="Poland"
+        label="Country or region"
+        class="h-[5.5rem]"
+      ></app-form-input>
+
+      <app-form-input
+        formControlName="name"
+        placeholder="John"
+        label="First Name"
+        class="h-[5.5rem]"
+      ></app-form-input>
+
+      <app-form-input
+        formControlName="lastName"
+        placeholder="Doe"
+        label="Last Name"
+        class="h-[5.5rem]"
+      ></app-form-input>
+
+      <app-form-input
+        formControlName="street_address"
+        placeholder="2nd Avenue"
+        label="Street address"
+        class="h-[5.5rem]"
+      ></app-form-input>
+
+      <app-form-input
+        formControlName="street_address_2"
+        placeholder="2nd Avenue"
+        label="Street address 2 (Optional)"
+        class="h-[5.5rem]"
+      ></app-form-input>
+
+      <app-form-input
+        formControlName="city"
+        placeholder="Chicago"
+        label="City"
+        class="h-[5.5rem]"
+      ></app-form-input>
+
+      <app-form-input
+        formControlName="state_province_region"
+        placeholder="Illinois"
+        label="State/Province/Region"
+        class="h-[5.5rem]"
+      ></app-form-input>
+
+      <app-form-input
+        formControlName="zip_code"
+        placeholder="00-000"
+        label="Zip Code"
+        class="h-[5.5rem]"
+      ></app-form-input>
+
+      <app-form-input
+        formControlName="phone_number"
+        placeholder="666192111"
+        label="Phone Number"
+        class="h-[5.5rem]"
+      ></app-form-input>
+    </div>
+
+    <button
+      hlmBtn
+      type="submit"
+      size="lg"
+      class="my-14"
+      [disabled]="!addressForm.valid"
+    >
+      Add address
+    </button>
+  </form>
+</section>
