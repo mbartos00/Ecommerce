@@ -1,0 +1,25 @@
+<ul class="xl:w-fit mt-5">
+  @for (paymentType of paymentTypes; track $index) {
+    <li class="lg:rounded-sm hover:bg-blue-light">
+      <a
+        [routerLink]="[paymentType.replace('_', '-')]"
+        class="flex gap-4 py-5 px-4 items-center text-navy font-poppins font-bold text-sm"
+      >
+        @if (paymentType !== 'paypal') {
+          <hlm-icon
+            class="text-primary"
+            [name]="paymentType"
+            size="base"
+          ></hlm-icon>
+        } @else {
+          <img
+            class="size-6"
+            src="../../../assets/paypal-icon.svg"
+            alt="paypal icon"
+          />
+        }
+        <span>{{ paymentType.replace('_', ' ') | titlecase }}</span>
+      </a>
+    </li>
+  }
+</ul>

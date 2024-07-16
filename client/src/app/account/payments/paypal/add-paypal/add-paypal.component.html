@@ -1,0 +1,56 @@
+<section
+  class="max-w-[800px] mx-auto h-[75svh] pb-10 md:pt-10 xl:pb-24 px-4 sm:px-16 xl:px-24 md:pl-28 text-navy"
+>
+  <hr class="h-0.5 my-4 bg-grey-light border-0 lg:hidden" />
+  <ng-container>
+    <form
+      [formGroup]="addPaypalForm"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col justify-between gap-4 w-full h-full"
+    >
+      <div>
+        <h2 class="font-poppins font-bold text-navy">Add paypal</h2>
+        <p class="text-sm font-extralight text-grey mb-4">
+          To add paypal provide either email or phone number
+        </p>
+        <div class="relative text-grey-neutral w-full">
+          <hlm-icon
+            size="sm"
+            name="lucideMail"
+            class="absolute top-3 left-4"
+          ></hlm-icon>
+          <app-form-input
+            formControlName="email"
+            placeholder="Email"
+            type="email"
+            [icon]="true"
+          ></app-form-input>
+        </div>
+
+        <div class="relative text-grey-neutral w-full">
+          <hlm-icon
+            size="sm"
+            name="lucidePhone"
+            class="absolute top-3 left-4"
+          ></hlm-icon>
+          <app-form-input
+            formControlName="phoneNumber"
+            placeholder="Phone number"
+            type="text"
+            [icon]="true"
+            [minLength]="9"
+            [maxLength]="9"
+          ></app-form-input>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="this.addPaypalForm.invalid"
+        class="bg-primary py-4 w-full rounded-sm text-white self-center shadow-lg disabled:bg-grey-light"
+      >
+        Add paypal
+      </button>
+    </form>
+  </ng-container>
+</section>

@@ -61,8 +61,8 @@ export type PaymentMethod = {
 
 export type Gender = 'male' | 'female' | 'other';
 
-enum PaymentTypes {
-  credit_card,
-  paypal,
-  bank_transfer,
+export enum PaymentTypes {
+  credit_card = 'credit_card ',
+  paypal = 'paypal ',
+  bank_transfer = 'bank_transfer ',
 }

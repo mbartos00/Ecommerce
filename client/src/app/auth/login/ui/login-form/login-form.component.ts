@@ -53,18 +53,18 @@ export class LoginFormComponent implements OnChanges {
     }
   );
 
-  onSubmit(): void {
-    if (this.loginForm.invalid) return;
-
-    this.login.emit(this.loginForm.getRawValue());
-    this.loginForm.reset();
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['loginStatus']) {
       if (this.loginStatus === 'error' && this.message) {
         toast.error(this.message);
       }
     }
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.invalid) return;
+
+    this.login.emit(this.loginForm.getRawValue());
+    this.loginForm.reset();
   }
 }

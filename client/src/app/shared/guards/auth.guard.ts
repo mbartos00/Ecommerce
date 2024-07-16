@@ -7,14 +7,20 @@ export const AuthGuard: CanActivateFn = (): Observable<boolean | UrlTree> => {
   const userService = inject(UserService);
   const router = inject(Router);
 
-  return userService.user$.pipe(
-    take(1),
-    map(({ isAuth }) => {
-      if (isAuth) {
-        return true;
-      }
+  let canActivate!: Observable<true | UrlTree>;
 
-      return router.createUrlTree(['/auth']);
-    })
-  );
+  setTimeout(() => {
+    canActivate = userService.user$.pipe(
+      take(1),
+      map(({ isAuth }) => {
+        if (isAuth) {
+          return true;
+        }
+
+        return router.createUrlTree(['/auth']);
+      })
+    );
+  }, 50);
+
+  return canActivate;
 };

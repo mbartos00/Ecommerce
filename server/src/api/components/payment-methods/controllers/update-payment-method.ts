@@ -13,11 +13,13 @@ const SALT_ROUNDS = 10;
 
 export function updatePaymentMethod({ prisma }: Dependecies) {
   return async (req: Request<{}, {}, RequestType>, res: Response) => {
+    const userId = req.user!.id;
     const { id, type, ...details } = req.body;
 
     const originPaymentMethodType = await prisma.paymentMethod.findUnique({
       where: {
         id,
+        userId,
       },
       select: {
         type: true,

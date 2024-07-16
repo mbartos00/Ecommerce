@@ -21,18 +21,18 @@ export function refreshToken({ prisma }: Dependecies) {
       throw new HttpError('Refresh Token missing', 403);
     }
 
-    try {
-      const decoded = jwt.verify(
-        refreshToken,
-        env.REFRESH_TOKEN_SECRET,
-      ) as JwtPayload;
+    const decoded = jwt.verify(
+      refreshToken,
+      env.REFRESH_TOKEN_SECRET,
+    ) as JwtPayload;
 
+    try {
       const user = await prisma.user.findUnique({
         where: { id: decoded.id },
       });
 
       if (!user) {
-        throw new HttpError('User not found', 403);
+        throw new HttpError('User not found', 404);
       }
 
       const accessToken = generateAccessToken({
@@ -48,11 +48,7 @@ export function refreshToken({ prisma }: Dependecies) {
         user: reponseUser,
       });
     } catch (err: unknown) {
-      if (err instanceof jwt.TokenExpiredError) {
-        throw new HttpError('Refresh Token expired', 403);
-      } else {
-        throw new HttpError('Verification failed', 403);
-      }
+      throw new HttpError('Verification failed', 403);
     }
   };
 }

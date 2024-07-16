@@ -13,6 +13,14 @@ export const validationErrorMessages = {
   dateInvalidFormat: 'Date must be in YYYY-MM-DD format',
   yearOutOfRange: 'Date must be between 1920 and current year',
   dateInvalid: 'Please provide correct date',
+  invalidCardNumber: 'Invalid credit card number',
+  invalidCardNumberLength: 'Card number should have 16 digits',
+  invalidSecurityCode: 'Invalid security code',
+  invalidSecurityCodeLength: 'Security code should have 3 or 4 digits',
+  cardExpired: 'Card expired',
+  invalidExpirationDateFormat: 'Expiration date should have MM/YY format',
+  invalidZipCode: 'Zip code must be a 5-digit number',
+  invalidAccountNumber: 'Account number must have 26 digits',
 } as const;
 
 type ErrorNames = keyof typeof validationErrorMessages;

@@ -50,7 +50,7 @@ export function authRouter(deps: Dependecies) {
   router.get('/user', auth(deps), getUserData(deps));
 
   router.post('/user/email/change', auth(deps), changeEmailRequest(deps));
-  router.get('/user/email/verify', [auth(deps)], verifyEmail(deps));
+  router.get('/user/email/verify', auth(deps), verifyEmail(deps));
 
   router.patch(
     '/user/update',

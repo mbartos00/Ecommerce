@@ -1,0 +1,65 @@
+<div
+  class="container w-full lg:max-w-[80%] flex flex-col items-center px-4 md:px-2 lg:px-0 mt-4 mb-16 lg:mb-0"
+>
+  <ng-container *ngIf="bankTransfers$ | async as bankTransfers; else loading">
+    <div
+      *ngIf="bankTransfers.length > 0; else noData"
+      class="w-full flex flex-wrap justify-center gap-6"
+    >
+      <ng-container *ngFor="let bankTransfer of bankTransfers">
+        <a
+          [routerLink]="[bankTransfer.id]"
+          class="flex flex-col gap-4 cursor-pointer rounded-sm shadow-md font-poppins text-navy p-4 transition-all ease-in-out duration-200 hover:transform hover:scale-105 hover:shadow-lg"
+        >
+          <div class="flex gap-4">
+            <p class="flex flex-col">
+              <span class="text-grey text-sm">First name</span>
+              {{ bankTransfer.firstName }}
+            </p>
+            <p class="flex flex-col">
+              <span class="text-grey text-sm">Last name</span>
+              {{ bankTransfer.lastName }}
+            </p>
+          </div>
+          <div class="flex gap-2">
+            <p class="flex flex-col">
+              <span class="text-grey text-sm">Bank</span>
+              <span class="text-blue">{{ bankTransfer.bankName }}</span>
+            </p>
+            <p class="flex flex-col">
+              <span class="text-grey text-sm">Account number</span>
+              {{ formatAccountNumber(bankTransfer.accountNumber!) }}
+            </p>
+          </div>
+          <div>
+            <address class="flex flex-col not-italic">
+              <span class="text-grey text-sm">Address</span>
+              @for (line of bankTransfer.address!.split(','); track $index) {
+                <span class="text-blue">{{ line | titlecase }}</span>
+              }
+            </address>
+          </div>
+        </a>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="grid place-items-center min-h-[200px]">
+      <hlm-spinner></hlm-spinner>
+    </div>
+  </ng-template>
+
+  <ng-template #noData>
+    <div class="flex justify-center py-10 text-2xl">
+      <p>There is no added method</p>
+    </div>
+  </ng-template>
+
+  <a
+    [routerLink]="['add']"
+    class="block bg-primary mb-4 py-4 max-w-[350px] mt-4 w-full rounded-sm text-white text-center shadow-lg"
+  >
+    Add bank transfer
+  </a>
+</div>

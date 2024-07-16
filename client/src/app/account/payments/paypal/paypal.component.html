@@ -1,0 +1,48 @@
+<div
+  class="container w-full lg:max-w-[80%] flex flex-col items-center px-4 md:px-2 lg:px-0 mt-4 mb-16 lg:mb-0"
+>
+  <ng-container *ngIf="paypals$ | async as paypals; else loading">
+    <ng-container *ngIf="paypals.length > 0; else noMethods">
+      <div class="w-full flex flex-wrap gap-6">
+        <ng-container *ngFor="let paypalMethod of paypals">
+          <a
+            [routerLink]="[paypalMethod.id]"
+            class="w-full max-w-[350px] flex gap-4 items-center flex-wrap mx-auto rounded-md py-10 bg-gradient-to-r from-[#4581bf] to-[#3b3280]"
+          >
+            <img
+              class="size-20 mx-auto"
+              src="../../../../assets/paypal-icon.svg"
+              alt="paypal icon"
+            />
+            <p class="text-white font-poppins font-medium mx-auto">
+              {{
+                paypalMethod.email
+                  ? 'Email: ' + paypalMethod.email
+                  : 'Phone number: ' + paypalMethod.phoneNumber
+              }}
+            </p>
+          </a>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="grid place-items-center min-h-[200px]">
+      <hlm-spinner></hlm-spinner>
+    </div>
+  </ng-template>
+
+  <ng-template #noMethods>
+    <div class="flex justify-center py-10 text-2xl">
+      <p>There is no added method</p>
+    </div>
+  </ng-template>
+
+  <a
+    [routerLink]="['add']"
+    class="block bg-primary py-4 max-w-[350px] mt-4 w-full rounded-sm text-white text-center shadow-lg"
+  >
+    Add PayPal
+  </a>
+</div>

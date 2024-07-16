@@ -1,0 +1,38 @@
+<a
+  [routerLink]="[cardId]"
+  class="block cursor-pointer relative w-64 h-40 overflow-hidden"
+>
+  <div
+    class="absolute inset-0 w-full h-full bg-gradient-to-r from-blue to-navy rounded-lg shadow-lg pt-2"
+  >
+    <div class="flex justify-between mx-2">
+      <hlm-icon size="lg" class="text-white" name="lucideCreditCard"></hlm-icon>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="34"
+        height="34"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="#ffffff"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <circle cx="9.5" cy="9.5" r="5.5" fill="#fff" />
+        <circle cx="14.5" cy="14.5" r="5.5" />
+      </svg>
+    </div>
+    <div class="flex justify-center mt-4">
+      <h1 class="text-grey-light font-proxima">
+        {{ formatCardNumber(cardNumber) }}
+      </h1>
+    </div>
+    <div class="flex flex-col items-end mt-4 p-4 text-grey font-proxima">
+      <p class="w-fit font-bold text-xs">{{ expiration }}</p>
+      <h4 class="w-fit ml-4 uppercase tracking-wider font-semibold text-xs">
+        {{ cardHolder }}
+      </h4>
+    </div>
+  </div>
+</a>

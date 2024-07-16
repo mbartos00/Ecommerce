@@ -8,7 +8,7 @@ import {
 import { ProductService } from '@app/shared/product/product.service';
 import { Product } from '@app/shared/types/product.model';
 import { HlmSkeletonComponent } from '@app/shared/ui/ui-skeleton-helm/src';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { SalesCardComponent } from './ui/sales-card.component';
 
 @Component({
@@ -21,8 +21,13 @@ import { SalesCardComponent } from './ui/sales-card.component';
 export class SalesComponent implements OnInit {
   products$!: Observable<Product[]>;
   productService = inject(ProductService);
+  productsLength!: number;
 
   ngOnInit(): void {
-    this.products$ = this.productService.getProductsOnSale();
+    this.products$ = this.productService.getProductsOnSale().pipe(
+      tap(d => {
+        this.productsLength = d.length;
+      })
+    );
   }
 }

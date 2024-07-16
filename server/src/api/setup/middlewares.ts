@@ -17,6 +17,6 @@ export function setupMiddlewares(app: Express) {
   app.use(json());
   app.use(cookieParser());
   app.use(urlencoded({ extended: false }));
-  app.use(expressStatic('uploads'));
+  app.use('/uploads', expressStatic('uploads'));
   app.use(expressStatic('public'));
 }
