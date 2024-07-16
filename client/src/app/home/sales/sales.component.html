@@ -18,7 +18,7 @@
     class="grid !w-[80%] min-h-[300px] mx-auto col-span-full row-span-8 lg:row-span-3 lg:row-end-9 row-end-11 lg:grid-cols-3 items-center gap-1 lg:gap-0 lg:shadow lg:mx-auto 2xl:container"
   >
     @for (product of products$ | async; track product) {
-      @if ((products$ | async)?.length) {
+      @if (this.productsLength > 0) {
         <app-sales-card [product]="product"></app-sales-card>
       } @else {
         <div class="min-h-[300px]">

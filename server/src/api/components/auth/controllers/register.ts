@@ -13,7 +13,7 @@ export function register({ prisma }: Dependecies) {
       req.body;
 
     const avatarPath = req.file
-      ? `${process.env.DOMAIN}:${process.env.PORT}/${sanitizeFilename(req.file.path.split('uploads/')[1])}`
+      ? `${process.env.DOMAIN}:${process.env.PORT}/uploads/${sanitizeFilename(req.file.path.split('uploads/')[1])}`
       : `${process.env.DOMAIN}:${process.env.PORT}/defaultAvatar.png`;
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);

@@ -1,0 +1,38 @@
+<div
+  class="container w-full lg:max-w-[80%] flex flex-col items-center px-4 md:px-2 lg:px-0 mt-4 mb-16 lg:mb-0"
+>
+  <ng-container *ngIf="creditCards$ | async as creditCards; else loading">
+    <div
+      *ngIf="creditCards.length > 0; else noCards"
+      class="w-full flex justify-center flex-wrap gap-6"
+    >
+      <ng-container *ngFor="let creditCard of creditCards">
+        <app-ui-credit-card
+          [expiration]="creditCard.expirationDate!"
+          [cardHolder]="creditCard.cardHolder!"
+          [cardNumber]="creditCard.cardNumber!"
+          [cardId]="creditCard.id!"
+        ></app-ui-credit-card>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="grid place-items-center min-h-[200px]">
+      <hlm-spinner></hlm-spinner>
+    </div>
+  </ng-template>
+
+  <ng-template #noCards>
+    <div class="flex justify-center py-10 text-2xl">
+      <p>There is no added method</p>
+    </div>
+  </ng-template>
+
+  <a
+    [routerLink]="['add']"
+    class="block bg-primary py-4 max-w-[350px] mt-4 w-full rounded-sm text-white text-center shadow-lg"
+  >
+    Add credit card
+  </a>
+</div>

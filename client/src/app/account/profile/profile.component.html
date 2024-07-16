@@ -7,7 +7,7 @@
       @if (profile.profile_photo_url) {
         <img
           class="size-[4.5rem] sm:size-40 rounded-full object-cover"
-          [src]="profile.profile_photo_url"
+          [src]="profile.profile_photo_url.replace('_', '.')"
           [alt]="profile.name + 'avatar'"
         />
       } @else {

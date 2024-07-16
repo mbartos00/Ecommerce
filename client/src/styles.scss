@@ -62,3 +62,13 @@ input[type='date']::-webkit-calendar-picker-indicator {
   height: 16px;
   filter: invert(100%) brightness(60%);
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}

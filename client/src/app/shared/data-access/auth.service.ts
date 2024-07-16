@@ -4,7 +4,16 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '@environments/environment';
 import { toast } from 'ngx-sonner';
-import { Observable, catchError, shareReplay, tap, throwError } from 'rxjs';
+import {
+  Observable,
+  catchError,
+  concatMap,
+  from,
+  shareReplay,
+  take,
+  tap,
+  throwError,
+} from 'rxjs';
 import { ACCESS_TOKEN_STORAGE_KEY } from '../constants';
 import { ResponseFormat } from '../types/response';
 import { LoginSchema, SignupSchema } from '../types/schemas';
@@ -28,7 +37,9 @@ export class AuthService {
 
   login(credentials: LoginSchema): Observable<LoginResponse> {
     return this.http
-      .post<LoginResponse>(`${environment.API_URL}/login`, credentials)
+      .post<LoginResponse>(`${environment.API_URL}/login`, credentials, {
+        withCredentials: true,
+      })
       .pipe(
         tap(({ token, data: user }) => {
           saveAccessToken(token);
@@ -89,14 +100,20 @@ export class AuthService {
           this.userService.updateUserState(true, response.user);
         }),
         catchError(error => {
-          this.logout();
-          this.router.navigate(['/']).then(() => {
-            toast.success('Logged out', {
-              description: 'Session expired',
+          this.logout()
+            .pipe(
+              concatMap(() => from(this.router.navigate(['/']))),
+              take(1)
+            )
+            .subscribe(() => {
+              toast.success('Logged out', {
+                description: 'Session expired',
+              });
             });
-          });
 
-          return throwError(() => new Error(error.message));
+          return throwError(() => {
+            return new Error(error.message);
+          });
         })
       );
   }

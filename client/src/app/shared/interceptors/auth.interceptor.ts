@@ -31,7 +31,7 @@ export const AuthInterceptor: HttpInterceptorFn = (
   let authReq = req;
 
   if (protectedRoutes.some(i => req.url.includes(i))) {
-    if (accessToken && !jwtHelper.isTokenExpired(accessToken)) {
+    if (accessToken) {
       authReq = req.clone({
         setHeaders: { Authorization: `Bearer ${accessToken}` },
       });
@@ -57,7 +57,12 @@ export const AuthInterceptor: HttpInterceptorFn = (
               })
             );
           }
-          return throwError(() => new Error(error.message));
+          return throwError(() => {
+            if (error.error) {
+              return new Error(error.error.message);
+            }
+            return new Error(error.message);
+          });
         })
       );
     }

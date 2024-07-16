@@ -1,0 +1,121 @@
+<section
+  class="max-w-[800px] mx-auto h-[75svh] pb-10 md:pt-10 xl:pb-24 px-4 sm:px-16 xl:px-24 md:pl-28 text-navy"
+>
+  <hr class="h-0.5 my-4 bg-grey-light border-0 lg:hidden" />
+  <ng-container>
+    <form
+      [formGroup]="addBankTransferForm"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col justify-between gap-4 w-full h-full"
+    >
+      <div>
+        <h2 class="font-poppins font-bold text-navy mb-4">Add bank transfer</h2>
+        <div class="flex flex-wrap sm:flex-nowrap w-full gap-0 sm:gap-4">
+          <div class="relative text-grey-neutral w-full">
+            <hlm-icon
+              size="sm"
+              name="lucideUser2"
+              class="absolute top-4 left-4"
+            ></hlm-icon>
+            <app-form-input
+              formControlName="firstName"
+              placeholder="First Name"
+              type="text"
+              [icon]="true"
+            ></app-form-input>
+          </div>
+          <div class="relative text-grey-neutral w-full">
+            <hlm-icon
+              size="sm"
+              name="lucideUser2"
+              class="absolute top-4 left-4"
+            ></hlm-icon>
+            <app-form-input
+              formControlName="lastName"
+              placeholder="Last Name"
+              type="text"
+              [icon]="true"
+            ></app-form-input>
+          </div>
+        </div>
+        <div class="relative text-grey-neutral w-full">
+          <hlm-icon
+            size="sm"
+            name="lucideCreditCard"
+            class="absolute top-3 left-4"
+          ></hlm-icon>
+          <app-form-input
+            formControlName="accountNumber"
+            placeholder="Account Number"
+            type="text"
+            [icon]="true"
+            [minLength]="26"
+            [maxLength]="26"
+          ></app-form-input>
+        </div>
+        <div class="relative text-grey-neutral w-full">
+          <hlm-icon
+            size="sm"
+            name="lucideLandmark"
+            class="absolute top-3 left-4"
+          ></hlm-icon>
+          <app-form-input
+            formControlName="bankName"
+            placeholder="Bank Name"
+            type="text"
+            [icon]="true"
+          ></app-form-input>
+        </div>
+        <div class="relative text-grey-neutral w-full">
+          <hlm-icon
+            size="sm"
+            name="lucideHome"
+            class="absolute top-3 left-4"
+          ></hlm-icon>
+          <app-form-input
+            formControlName="street"
+            placeholder="Street"
+            type="text"
+            [icon]="true"
+          ></app-form-input>
+        </div>
+        <div class="relative text-grey-neutral w-full">
+          <hlm-icon
+            size="sm"
+            name="lucideHome"
+            class="absolute top-3 left-4"
+          ></hlm-icon>
+          <app-form-input
+            formControlName="city"
+            placeholder="City"
+            type="text"
+            [icon]="true"
+          ></app-form-input>
+        </div>
+        <div class="relative text-grey-neutral w-full">
+          <hlm-icon
+            size="sm"
+            name="lucideHome"
+            class="absolute top-3 left-4"
+          ></hlm-icon>
+          <app-form-input
+            formControlName="zipCode"
+            placeholder="Zip Code"
+            type="text"
+            [icon]="true"
+            [minLength]="5"
+            [maxLength]="5"
+          ></app-form-input>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="this.addBankTransferForm.invalid"
+        class="bg-primary py-4 w-full rounded-sm text-white self-center shadow-lg disabled:bg-grey-light"
+      >
+        Add bank transfer
+      </button>
+    </form>
+  </ng-container>
+</section>

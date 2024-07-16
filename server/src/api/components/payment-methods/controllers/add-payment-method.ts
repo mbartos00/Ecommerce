@@ -20,8 +20,11 @@ export function addPaymentMethod({ prisma }: Dependecies) {
         req.user!.id,
       );
       res.json({ status: 'success', data: paymentMethod });
-    } catch (error) {
-      throw new HttpError('Failed to create payment method', 500);
+    } catch (error: any) {
+      throw new HttpError(
+        error.message || 'Failed to create payment method',
+        500,
+      );
     }
   };
 }

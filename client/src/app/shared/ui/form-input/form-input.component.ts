@@ -43,6 +43,8 @@ import { HlmIconComponent } from '../ui-icon-helm/src';
         (change)="onChange($event)"
         [min]="dateRange ? dateRange[0] : min"
         [max]="dateRange ? dateRange[1] : max"
+        [minLength]="minLength"
+        [maxLength]="maxLength"
       />
     </label>
     @if (control.invalid && control.touched) {
@@ -60,6 +62,8 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() dateRange?: [string, string];
   @Input() min?: string | number;
   @Input() max?: string | number;
+  @Input() minLength?: number = 0;
+  @Input() maxLength?: number = 9999;
 
   @ViewChild(DefaultValueAccessor, { static: true }) dva!: DefaultValueAccessor;
 

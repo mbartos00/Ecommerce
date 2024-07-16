@@ -26,12 +26,16 @@ const zipCode = z
   .string()
   .regex(/^\d{5}$/, 'Zip code must be a 5-digit number');
 
-const addressSchema = z.object({
-  streetName,
-  city,
-  zipCode,
+const addressSchema = z.string().superRefine((data, ctx) => {
+  if (data.split(',').length !== 3) {
+    ctx.addIssue({
+      code: 'custom',
+      message:
+        'Address must contain street name, city and zip code in format "street, city, zip"',
+      path: ['address'],
+    });
+  }
 });
-
 const bankName = z.string().min(1, 'Bank name is required');
 const firstName = z.string().min(1, 'Bank name is required');
 const lastName = z.string().min(1, 'Bank name is required');
@@ -60,7 +64,7 @@ export const bankTransferSchema = z.object({
   firstName,
   lastName,
   accountNumber,
-  addressSchema,
+  address: addressSchema,
 });
 
 export const deleteMethodSchema = z.object({

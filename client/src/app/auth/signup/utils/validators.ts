@@ -34,10 +34,112 @@ export const passwordValidator: ValidatorFn = (
 export const phoneValidator: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
+  if (!control.value) {
+    return null;
+  }
+
   const phoneRegex = /^\(?\d{3}\)?[- .]?\d{3}[- .]?\d{3}$/;
   if (!phoneRegex.test(control.value)) {
     return { invalidPhoneNumber: true };
   }
+  return null;
+};
+
+export const creditCardValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const digitsRegex = /^\d+$/;
+
+  if (!control.value) {
+    return null;
+  }
+
+  if (!digitsRegex.test(control.value)) {
+    return { invalidCardNumber: true };
+  }
+
+  if (control.value.length !== 16) {
+    return { invalidCardNumberLength: true };
+  }
+
+  return null;
+};
+
+export const securityCodeValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const digitsRegex = /^\d+$/;
+
+  if (!control.value) {
+    return null;
+  }
+
+  if (!digitsRegex.test(control.value)) {
+    return { invalidSecurityCode: true };
+  }
+
+  if (control.value.length < 3 || control.value.length > 4) {
+    return { invalidSecurityCodeLength: true };
+  }
+
+  return null;
+};
+
+export const expirationDateValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const value: string = control.value;
+
+  if (!value) return null;
+
+  const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+
+  if (!regex.test(value)) {
+    return { invalidExpirationDateFormat: true };
+  }
+
+  const [month, year] = value.split('/').map(v => parseInt(v, 10));
+  const currentYear = new Date().getFullYear() % 100;
+  const currentMonth = new Date().getMonth() + 1;
+
+  if (year > currentYear || (year === currentYear && month > currentMonth)) {
+    return null;
+  }
+
+  return { cardExpired: true };
+
+  return null;
+};
+
+export const zipCodeValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const zipCodeRegex = /^\d{5}$/;
+
+  if (!control.value) {
+    return null;
+  }
+
+  if (!zipCodeRegex.test(control.value)) {
+    return { invalidZipCode: true };
+  }
+
+  return null;
+};
+
+export const accountNumberValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const accountNumberRegex = /^\d{26}$/;
+
+  if (!control.value) {
+    return null;
+  }
+
+  if (!accountNumberRegex.test(control.value)) {
+    return { invalidAccountNumber: true };
+  }
+
   return null;
 };
 
