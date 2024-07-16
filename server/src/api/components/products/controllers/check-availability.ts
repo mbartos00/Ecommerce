@@ -3,10 +3,7 @@ import type { Dependecies } from '@src/config/dependencies';
 import { HttpError } from '@src/errors';
 import type { ResponseFormat } from '@src/types/response';
 import type { Request, Response } from 'express';
-import { variantToCheckSchema } from '@src/schemas/products';
-import { z } from 'zod';
-
-const variantsToCheckSchema = z.array(variantToCheckSchema);
+import { type VariantToCheck } from '@src/schemas/products';
 
 interface AvailabilityResult {
   productId: string;
@@ -18,13 +15,12 @@ interface AvailabilityResult {
 
 export function checkAvailability({ prisma }: Dependecies) {
   return async (
-    req: Request,
+    req: Request<{}, {}, VariantToCheck>,
     res: Response<ResponseFormat<AvailabilityResult[]>>,
   ) => {
-    try {
-      // Validate the request body
-      const variantsToCheck = variantsToCheckSchema.parse(req.body);
+    const variantsToCheck = req.body;
 
+    try {
       const results = await prisma.$transaction(async (prisma) => {
         return await Promise.all(
           variantsToCheck.map(async (item) => {
@@ -63,14 +59,6 @@ export function checkAvailability({ prisma }: Dependecies) {
         data: filteredResults,
       });
     } catch (error: unknown) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'Invalid request',
-          details: error.errors,
-        });
-      }
-
       if (
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2023'

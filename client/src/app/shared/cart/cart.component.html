@@ -1,23 +1,100 @@
 <div class="p-4 lg:p-10 relative overflow-x-auto mb-16 lg:mb-0">
-  <table
-    class="hidden lg:table mb-4 md:mb-20 w-full text-sm text-left rtl:text-right"
-  >
-    <thead class="uppercase">
-      <tr class="border-grey-light border-b-2">
-        <th scope="col" class=""></th>
-        <th scope="col" class="px-6 py-3">Product</th>
-        <th scope="col" class="px-6 py-3">Size</th>
-        <th scope="col" class="px-6 py-3">Color</th>
-        <th scope="col" class="px-6 py-3">UNIT PRICE</th>
-        <th scope="col" class="px-6 py-3">QTY</th>
-        <th scope="col" class="px-6 py-3">Price</th>
-      </tr>
-    </thead>
-    <tbody class="text-grey-dark">
-      <ng-container *ngFor="let product of productsInCart$ | async">
-        <tr class="border-grey-light border-b-2">
-          <td>
-            <div class="flex justify-center">
+  @if (productsInCart$ | async; as productsInCart) {
+    @if (productsInCart.length > 0) {
+      <table
+        class="hidden lg:table mb-4 md:mb-20 w-full text-sm text-left rtl:text-right"
+      >
+        <thead class="uppercase">
+          <tr class="border-grey-light border-b-2">
+            <th scope="col" class=""></th>
+            <th scope="col" class="px-6 py-3">Product</th>
+            <th scope="col" class="px-6 py-3">Size</th>
+            <th scope="col" class="px-6 py-3">Color</th>
+            <th scope="col" class="px-6 py-3">UNIT PRICE</th>
+            <th scope="col" class="px-6 py-3">QTY</th>
+            <th scope="col" class="px-6 py-3">Price</th>
+          </tr>
+        </thead>
+        <tbody class="text-grey-dark">
+          @for (product of productsInCart; track $index) {
+            <tr class="border-grey-light border-b-2">
+              <td>
+                <div class="flex justify-center">
+                  <button
+                    class="flex rounded-full p-2 bg-pink-light hover:bg-white"
+                    (click)="onDeleteProductFromCart(product)"
+                  >
+                    <hlm-icon
+                      size="sm"
+                      name="lucideX"
+                      color="hsl(var(--pink))"
+                    ></hlm-icon>
+                  </button>
+                </div>
+              </td>
+
+              <th
+                scope="row"
+                class="flex items-center px-6 py-4 font-medium whitespace-nowrap"
+              >
+                <img
+                  src="{{ product.images[0] }}"
+                  alt="{{ product.name }}"
+                  width="130px"
+                  height="90px"
+                  class="rounded-md"
+                />
+                <span class="mx-5 whitespace-pre-wrap">
+                  {{ product.name }}
+                </span>
+              </th>
+              <td class="px-6 py-4">{{ product.size }}</td>
+              <td class="px-6 py-4">{{ product.color }}</td>
+              <td class="px-6 py-4">{{ product.price | currency: 'USD' }}</td>
+
+              <td class="px-6 py-4">
+                <app-counter-input
+                  [min]="1"
+                  [max]="product.availableQuantity"
+                  [currentValue]="product.quantityToBuy"
+                  (valueChange)="onQuantityChange(product, $event)"
+                ></app-counter-input>
+              </td>
+              <td class="px-6 py-4">
+                {{ product.price * product.quantityToBuy | currency: 'USD' }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="mb-4 lg:hidden md:space-y-2">
+        <ng-container *ngFor="let product of productsInCart$ | async">
+          <div
+            class="flex justify-between py-2 md:p-4 border-b md:border border-grey-light rounded-md"
+          >
+            <img
+              src="{{ product.images[0] }}"
+              alt="{{ product.name }}"
+              class="w-24 h-24 mr-2 rounded-md"
+            />
+
+            <div class="mt-2">
+              <p class="font-medium">
+                {{ product.name }}
+              </p>
+              <p>
+                Size:
+                <span class="font-thin"> {{ product.size }} </span>
+                Color:
+                <span class="font-thin"> {{ product.color }} </span>
+              </p>
+
+              <p class="text-primary font-medium">
+                {{ product.price * product.quantityToBuy! | currency: 'USD' }}
+              </p>
+            </div>
+            <div class="flex flex-col items-end">
               <button
                 class="flex rounded-full p-2 bg-pink-light hover:bg-white"
                 (click)="onDeleteProductFromCart(product)"
@@ -28,176 +105,110 @@
                   color="hsl(var(--pink))"
                 ></hlm-icon>
               </button>
+              <app-counter-input
+                [min]="1"
+                [max]="product.availableQuantity"
+                [currentValue]="product.quantityToBuy"
+                (valueChange)="onQuantityChange(product, $event)"
+                class="mt-2"
+              ></app-counter-input>
             </div>
-          </td>
+          </div>
+        </ng-container>
+      </div>
 
-          <th
-            scope="row"
-            class="flex items-center px-6 py-4 font-medium whitespace-nowrap"
-          >
-            <img
-              src="{{ product.images[0] }}"
-              alt="{{ product.name }}"
-              width="130px"
-              height="90px"
-              class="rounded-md"
-            />
-            <span class="mx-5 whitespace-pre-wrap">
-              {{ product.name }}
-            </span>
-          </th>
-          <td class="px-6 py-4">{{ product.size }}</td>
-          <td class="px-6 py-4">{{ product.color }}</td>
-          <td class="px-6 py-4">{{ product.price | currency: 'USD' }}</td>
-
-          <td class="px-6 py-4">
-            <app-counter-input
-              [min]="1"
-              [max]="product.availableQuantity"
-              [currentValue]="product.quantityToBuy"
-              (valueChange)="onQuantityChange(product, $event)"
-            ></app-counter-input>
-          </td>
-          <td class="px-6 py-4">
-            {{ product.price * product.quantityToBuy | currency: 'USD' }}
-          </td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
-  <div class="mb-4 lg:hidden md:space-y-2">
-    <ng-container *ngFor="let product of productsInCart$ | async">
       <div
-        class="flex justify-between py-2 md:p-4 border-b md:border border-grey-light rounded-md"
+        class="flex flex-col items-center gap-4 md:flex-row md:justify-around"
       >
-        <img
-          src="{{ product.images[0] }}"
-          alt="{{ product.name }}"
-          class="w-24 h-24 mr-2 rounded-md"
-        />
-
-        <div class="mt-2">
-          <p class="font-medium">
-            {{ product.name }}
+        <form class="w-full md:w-80" (ngSubmit)="onApplyDiscount()">
+          <div class="relative">
+            <input
+              type="search"
+              id="search"
+              class="block w-full p-4 ps-2 pr-28 md:ps-10 text-sm border border-grey rounded-sm focus:border-primary outline-none"
+              placeholder="Voucher code"
+              [(ngModel)]="discount.code"
+              name="discountCode"
+              required
+            />
+            <button
+              type="submit"
+              class="text-white absolute end-0 bottom-0 bg-blue h-full hover:bg-primary active:ring-2 active:outline-none active:ring-primary font-medium rounded-r-sm text-sm px-1 md:px-4 py-2"
+            >
+              Redeem
+            </button>
+          </div>
+          <p *ngIf="discount.message">{{ discount.message }}</p>
+        </form>
+        <div class="flex flex-col w-full md:w-60">
+          <p class="flex justify-between">
+            Subtotal <span>{{ subtotal$ | async | currency: 'USD' }}</span>
           </p>
-          <p>
-            Size:
-            <span class="font-thin"> {{ product.size }} </span>
-            Color:
-            <span class="font-thin"> {{ product.color }} </span>
+
+          <p class="flex justify-between">
+            @if (discount.discount_amount) {
+              Coupon
+              <span
+                >-{{
+                  (subtotal$ | async)! - getTotal() | currency: 'USD'
+                }}</span
+              >
+            } @else {
+              <span> No Coupon Applied </span>
+            }
           </p>
 
-          <p class="text-primary font-medium">
-            {{ product.price * product.quantityToBuy! | currency: 'USD' }}
-          </p>
-        </div>
-        <div class="flex flex-col items-end">
-          <button
-            class="flex rounded-full p-2 bg-pink-light hover:bg-white"
-            (click)="onDeleteProductFromCart(product)"
-          >
-            <hlm-icon
-              size="sm"
-              name="lucideX"
-              color="hsl(var(--pink))"
-            ></hlm-icon>
-          </button>
-          <app-counter-input
-            [min]="1"
-            [max]="product.availableQuantity"
-            [currentValue]="product.quantityToBuy"
-            (valueChange)="onQuantityChange(product, $event)"
-            class="mt-2"
-          ></app-counter-input>
-        </div>
-      </div>
-    </ng-container>
-  </div>
-
-  <div class="flex flex-col items-center gap-4 md:flex-row md:justify-around">
-    <form class="w-full md:w-80" (ngSubmit)="onApplyDiscount()">
-      <div class="relative">
-        <input
-          type="search"
-          id="search"
-          class="block w-full p-4 ps-2 pr-28 md:ps-10 text-sm border border-grey rounded-sm focus:border-primary outline-none"
-          placeholder="Voucher code"
-          [(ngModel)]="discount.code"
-          name="discountCode"
-          required
-        />
-        <button
-          type="submit"
-          class="text-white absolute end-0 bottom-0 bg-blue h-full hover:bg-primary active:ring-2 active:outline-none active:ring-primary font-medium rounded-r-sm text-sm px-1 md:px-4 py-2"
-        >
-          Redeem
-        </button>
-      </div>
-      <p *ngIf="discount.message">{{ discount.message }}</p>
-    </form>
-    <div class="flex flex-col w-full md:w-60">
-      <p class="flex justify-between">
-        Subtotal <span>{{ subtotal$ | async | currency: 'USD' }}</span>
-      </p>
-
-      <p class="flex justify-between">
-        @if (discount.discount_amount) {
-          Coupon
-          <span
-            >-{{ (subtotal$ | async)! - getTotal() | currency: 'USD' }}</span
-          >
-        } @else {
-          <span> No Coupon Applied </span>
-        }
-      </p>
-
-      <div class="mt-6">
-        <p>Shipping fee</p>
-        <div class="flex flex-col gap-4">
-          <ng-container *ngFor="let shipping of shippingOptions$ | async">
-            <div class="flex items-center gap-2">
-              <app-radio
-                [value]="shipping"
-                [(ngModel)]="selectedShippingOption"
-                [name]="'shippingOption'"
-                [id]="shipping.id"
-                (change)="onShippingOptionChange(shipping)"
-              ></app-radio>
-              <div class="flex justify-between place-items-center w-full">
-                <img
-                  class="h-7 shadow rounded p-px hover:shadow-md"
-                  [src]="shipping.shipping_carrier_image_url"
-                  [alt]="shipping.shipping_carrier"
-                />
-                <label [for]="shipping.id">
-                  {{ shipping.shipping_price | currency: 'USD' }}
-                </label>
-              </div>
+          <div class="mt-6">
+            <p>Shipping fee</p>
+            <div class="flex flex-col gap-4">
+              <ng-container *ngFor="let shipping of shippingOptions$ | async">
+                <div class="flex items-center gap-2">
+                  <app-radio
+                    [value]="shipping"
+                    [(ngModel)]="selectedShippingOption"
+                    [name]="'shippingOption'"
+                    [id]="shipping.id"
+                    (change)="onShippingOptionChange(shipping)"
+                  ></app-radio>
+                  <div class="flex justify-between place-items-center w-full">
+                    <img
+                      class="h-7 shadow rounded p-px hover:shadow-md"
+                      [src]="shipping.shipping_carrier_image_url"
+                      [alt]="shipping.shipping_carrier"
+                    />
+                    <label [for]="shipping.id">
+                      {{ shipping.shipping_price | currency: 'USD' }}
+                    </label>
+                  </div>
+                </div>
+              </ng-container>
             </div>
-          </ng-container>
+
+            <hr class="h-0.5 my-4 bg-grey-light border-0" />
+
+            <p class="flex justify-between text-xl font-bold">
+              Total <span>{{ getTotal() | currency: 'USD' }}</span>
+            </p>
+            <button
+              hlmBtn
+              [disabled]="
+                !selectedShippingOption || (isAuthenticated$ | async) === false
+              "
+              class="text-white bg-blue h-full mt-2 hover:bg-primary active:ring-2 active:outline-none active:ring-primary font-medium rounded-sm text-sm px-4 py-2"
+              (click)="openCheckoutDialog()"
+            >
+              Check out
+            </button>
+            <app-checkout-dialog
+              [isOpen]="isCheckoutDialogOpen"
+              [shippingMethod]="selectedShippingOption"
+              (dialogClose)="handleDialogClose()"
+            ></app-checkout-dialog>
+          </div>
         </div>
-
-        <hr class="h-0.5 my-4 bg-grey-light border-0" />
-
-        <p class="flex justify-between text-xl font-bold">
-          Total <span>{{ getTotal() | currency: 'USD' }}</span>
-        </p>
-        <button
-          hlmBtn
-          [disabled]="
-            !selectedShippingOption || (isAuthenticated$ | async) === false
-          "
-          class="text-white bg-blue h-full mt-2 hover:bg-primary active:ring-2 active:outline-none active:ring-primary font-medium rounded-sm text-sm px-4 py-2"
-          (click)="openCheckoutDialog()"
-        >
-          Check out
-        </button>
-        <app-checkout-dialog
-          [isOpen]="isCheckoutDialogOpen"
-          [shippingMethod]="selectedShippingOption"
-          (dialogClose)="handleDialogClose()"
-        ></app-checkout-dialog>
       </div>
-    </div>
-  </div>
+    } @else {
+      <h1 class="mt-10 text-center text-2xl font-bold">No Products in Cart</h1>
+    }
+  }
 </div>

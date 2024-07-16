@@ -48,4 +48,12 @@ export class UserService {
         });
     }
   }
+
+  getUserId(): string | null {
+    const currentUserState = this.userSubject.getValue();
+    if (currentUserState.isAuth && currentUserState.user) {
+      return currentUserState.user.id;
+    }
+    return null;
+  }
 }

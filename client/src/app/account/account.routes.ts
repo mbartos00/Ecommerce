@@ -13,6 +13,12 @@ export const routes: Route[] = [
     loadChildren: () => import('./profile/profile.routes').then(m => m.routes),
   },
   {
+    path: 'orders',
+    data: { breadcrumb: 'Orders' },
+    loadChildren: () =>
+      import('../shared/ui/orders/orders.routes').then(m => m.routes),
+  },
+  {
     path: 'payments',
     data: { breadcrumb: 'Payments' },
     loadChildren: () =>

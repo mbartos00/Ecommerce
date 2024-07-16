@@ -1,0 +1,37 @@
+@if (orders$ | async; as orders) {
+  @if (orders.length > 0) {
+    <div
+      class="flex flex-col items-center gap-4 py-20 px-2 md:px-20 border-t-2 border-grey-light"
+    >
+      @for (order of orders; track $index) {
+        <a
+          class="w-full border-2 border-grey-light rounded-lg p-4 shadow-none transition-shadow duration-300 cursor-pointer hover:border-primary hover:shadow-2xl hover:shadow-gray-dark"
+          [routerLink]="['/account/orders', order.id]"
+        >
+          <h3 class="md:text-xl font-bold mb-3">{{ order.id.substr(17) }}</h3>
+          <p class="text-grey-neutral">
+            Order at E-comm : {{ order.createdAt | date }}
+          </p>
+          <div
+            class="grid grid-cols-2 gap-3 mt-3 border-dashed border-t-2 border-t-grey-light pt-3 font-light md:text-xl"
+          >
+            <p class="text-grey-neutral">Items</p>
+            <p class="text-right">
+              {{ getTotalVariants(order) }}
+              {{ order.orderProducts.length === 1 ? 'Item' : 'Items' }}
+              purchased
+            </p>
+            <p class="text-grey-neutral">Price</p>
+            <p class="text-right text-primary font-bold">
+              {{ order.orderPrice | currency }}
+            </p>
+          </div>
+        </a>
+      }
+    </div>
+  } @else {
+    <h1 class="mt-10 text-center text-2xl font-bold">
+      No Orders Found For User
+    </h1>
+  }
+}
