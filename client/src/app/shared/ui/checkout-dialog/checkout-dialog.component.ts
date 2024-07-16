@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnInit,
   Output,
-  inject,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
@@ -29,6 +30,7 @@ import { PaymentTypePipe } from '@app/shared/utils/payment-type.pipe';
 import { ProductInCart } from '@app/shared/types/product.model';
 import { firstValueFrom } from 'rxjs';
 import { Shipping } from '@app/shared/types/shipping';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-checkout-dialog',
@@ -42,6 +44,7 @@ import { Shipping } from '@app/shared/types/shipping';
     PaymentTypePipe,
   ],
   providers: [provideIcons({ lucideChevronLeft, lucideCheck })],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutDialogComponent implements OnInit {
   @Input() isOpen: boolean = false;
@@ -51,9 +54,8 @@ export class CheckoutDialogComponent implements OnInit {
   paymentMethods = Object.keys(PaymentTypes) as PaymentTypeKey[];
   userPaymentMethods: PaymentMethod[] = [];
   addresses: Address[] = [];
-  currentView: 'checkout' | 'payment' | 'success' = 'checkout';
-  isLoading = false;
-  errorMessage: string | null = null;
+  currentView: 'checkout' | 'payment' | 'final' = 'checkout';
+  message: string | null = null;
   products: ProductInCart[] = [{}] as ProductInCart[];
   noPaymentMethodError: string | null = null;
 
@@ -63,8 +65,11 @@ export class CheckoutDialogComponent implements OnInit {
     bank_transfer: '../../../../assets/bank.png',
   };
 
-  private fb = inject(FormBuilder);
-  private userService = inject(CheckoutService);
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private fb: FormBuilder,
+    private userService: CheckoutService
+  ) {}
 
   ngOnInit(): void {
     const cart = localStorage.getItem('cart');
@@ -126,6 +131,7 @@ export class CheckoutDialogComponent implements OnInit {
 
   async selectPaymentMethod(method: PaymentTypeKey): Promise<void> {
     this.checkoutForm.patchValue({ paymentMethod: method });
+    await this.fetchUserPaymentMethods();
   }
 
   selectPaymentOption(option: PaymentMethod): void {
@@ -136,19 +142,15 @@ export class CheckoutDialogComponent implements OnInit {
     return method.toLowerCase().replace(/\s+/g, '-');
   }
 
-  reloadCartPage(): void {
-    window.location.reload();
-  }
-
-  async onSubmit(): Promise<void> {
+  onSubmit(): void {
     if (this.checkoutForm.invalid) return;
 
-    await this.fetchUserPaymentMethods();
     this.showPaymentMethods();
   }
 
   onProceedPayment(): void {
     if (this.paymentOptionForm.invalid) return;
+
     this.showFinalView();
   }
 
@@ -169,13 +171,17 @@ export class CheckoutDialogComponent implements OnInit {
     this.currentView = 'payment';
   }
 
-  private showFinalView(): void {
-    this.sendDataToBackend();
+  private async finalizeCheckout(): Promise<void> {
+    await this.sendDataToBackend();
   }
 
-  private sendDataToBackend(): void {
-    this.errorMessage = null;
+  private showFinalView(): void {
+    this.message = 'Finalization of Order';
+    this.currentView = 'final';
+    this.finalizeCheckout();
+  }
 
+  private async sendDataToBackend(): Promise<void> {
     const checkoutData = this.checkoutForm.value;
     const paymentData = this.paymentOptionForm.value;
 
@@ -187,15 +193,19 @@ export class CheckoutDialogComponent implements OnInit {
     };
 
     this.userService.submitCheckout(combinedData).subscribe({
-      next: response => {
-        console.log('Checkout successful', response);
-        this.currentView = 'success';
+      next: () => {
+        this.message = 'Checkout Success!';
+        this.cdr.detectChanges();
         localStorage.removeItem('cart');
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       },
       error: error => {
         console.error('Checkout failed', error);
-        this.isLoading = false;
-        this.errorMessage = 'Checkout failed. Please try again.';
+        toast.error('Checkout failed. Please try again.');
+        this.message = 'Checkout failed. Please try again.';
+        this.cdr.detectChanges();
       },
     });
   }

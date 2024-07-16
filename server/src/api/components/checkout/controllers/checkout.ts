@@ -62,7 +62,7 @@ export function checkout({ prisma }: Dependecies) {
         })
       : null;
 
-    const totalPrice = parseFloat(
+    const totalPrice = Number.parseFloat(
       calculateTotalPrice({
         products: cartProducts,
         shippingPrice: shippingMethod.shipping_price,
@@ -99,14 +99,22 @@ export function checkout({ prisma }: Dependecies) {
           shippingMethod: true,
         },
       })
-      .catch((e) => {
-        console.error(e);
+      .catch((error) => {
+        console.error(error);
         throw new HttpError('Error occured while creating order', 400);
       });
 
     await prisma.$transaction(async (prisma) => {
       try {
-        for (let product of cartProducts) {
+        for (const product of cartProducts) {
+          const variant = await prisma.variant.findUnique({
+            where: { id: product.variantId },
+          });
+
+          if (!variant) {
+            throw new HttpError('Variant not found', 404);
+          }
+
           if (product.availableQuantity - product.quantityToBuy === 0) {
             return await prisma.variant.delete({
               where: {
@@ -122,9 +130,19 @@ export function checkout({ prisma }: Dependecies) {
               quantity: product.availableQuantity - product.quantityToBuy,
             },
           });
+
+          await prisma.orderProduct.create({
+            data: {
+              orderId: order.id,
+              productId: product.id,
+              variantId: product.variantId,
+              quantityToBuy: product.quantityToBuy,
+            },
+          });
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+        console.error(error);
+        throw new HttpError('Error updating product variants', 400);
       }
     });
 
@@ -137,7 +155,7 @@ export function checkout({ prisma }: Dependecies) {
         status: 'success',
         data: order,
       });
-    } catch (error) {
+    } catch {
       throw new HttpError('Unexpected error occured', 500);
     }
   };

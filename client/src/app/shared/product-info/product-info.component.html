@@ -35,9 +35,6 @@
                   </svg>
                 }
                 <p class="ml-3 text-grey text-xs font-thin">0 reviews</p>
-                <a href="#" class="ml-3 text-primary text-xs font-light"
-                  >Submit a review</a
-                >
               </div>
               <hr class="h-0.5 my-4 bg-grey-light border-0" />
               <div class="flex items-center gap-4">
@@ -197,24 +194,12 @@
           <button hlmTabsTrigger="productInfo" class="font-xs">
             Product Information
           </button>
-          <button hlmTabsTrigger="reviews">Reviews</button>
-          <button hlmTabsTrigger="anotherTab">Another tab</button>
         </hlm-tabs-list>
         <div hlmTabsContent="productInfo" class="bg-primary-foreground">
           <section hlmCard>
             <p hlmCardContent>
               {{ product.description }}
             </p>
-          </section>
-        </div>
-        <div hlmTabsContent="reviews" class="bg-primary-foreground">
-          <section hlmCard>
-            <p hlmCardContent>product review</p>
-          </section>
-        </div>
-        <div hlmTabsContent="anotherTab" class="bg-primary-foreground">
-          <section hlmCard>
-            <p hlmCardContent>Yes it is another tab</p>
           </section>
         </div>
       </hlm-tabs>

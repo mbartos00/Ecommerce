@@ -36,6 +36,7 @@ export class BestsellerCardComponent implements OnInit, OnDestroy {
 
   prevProduct(event: Event): void {
     event.stopPropagation();
+    event.preventDefault();
 
     if (this.currentProductIndex > 0) {
       this.currentProductIndex--;
@@ -44,6 +45,8 @@ export class BestsellerCardComponent implements OnInit, OnDestroy {
 
   nextProduct(event: Event): void {
     event.stopPropagation();
+    event.preventDefault();
+
     this.products$.pipe(takeUntil(this.destroy$)).subscribe(products => {
       this.currentProductIndex =
         (products?.data?.length ?? 0) > this.currentProductIndex + 1
