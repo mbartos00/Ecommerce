@@ -11,6 +11,7 @@ import {
   lucideMapPin,
   lucideShoppingBag,
   lucideCreditCard,
+  lucideHeart,
 } from '@ng-icons/lucide';
 import { ProfileListItemComponent } from '@app/shared/ui/profile-list-item/profile-list-item.component';
 
@@ -32,6 +33,7 @@ import { ProfileListItemComponent } from '@app/shared/ui/profile-list-item/profi
       lucideMapPin,
       lucideShoppingBag,
       lucideCreditCard,
+      lucideHeart,
     }),
   ],
   templateUrl: './account.component.html',

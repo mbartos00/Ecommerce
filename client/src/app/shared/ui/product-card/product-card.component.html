@@ -13,16 +13,28 @@
     >
       <div
         class="flex bg-white items-center justify-center w-full h-full gap-7"
+        [ngClass]="{ hidden: (isAuthenticated$ | async) === false }"
       >
-        <div
-          class="w-12 h-12 rounded-full outline outline-offset-4 outline-blue-light hover:outline-blue transition-all flex items-center justify-center"
+        <button
+          [disabled]="(isAuthenticated$ | async) === false"
+          class="w-12 h-12 rounded-full outline outline-offset-4 outline-blue-light hover:outline-blue transition-all flex items-center justify-center disabled:hover:outline-grey"
+          (click)="toggleFavorites($event)"
+          type="button"
+          aria-label="Add to Favorites"
+          [ngClass]="{
+            'bg-pink outline-pink hover:outline-pink-light': isFavorite$ | async
+          }"
         >
           <hlm-icon
             size="lg"
             name="lucideHeart"
-            color="hsl(var(--primary))"
+            [color]="
+              (isFavorite$ | async)
+                ? 'hsl(var(--white))'
+                : 'hsl(var(--primary))'
+            "
           ></hlm-icon>
-        </div>
+        </button>
       </div>
     </div>
   </div>

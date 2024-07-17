@@ -34,7 +34,6 @@
                     />
                   </svg>
                 }
-                <p class="ml-3 text-grey text-xs font-thin">0 reviews</p>
               </div>
               <hr class="h-0.5 my-4 bg-grey-light border-0" />
               <div class="flex items-center gap-4">
@@ -142,12 +141,30 @@
                     <span class="ml-1 text-blue text-sm">Add To Cart</span>
                   </button>
                   <button
-                    class="text-white bg-baby-blue hover:bg-blue-light focus:ring-1 focus:outline-none focus:ring-blue font-medium rounded-md text-sm px-2.5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2"
+                    [disabled]="(isAuthenticated | async) === false"
+                    class="text-white bg-baby-blue hover:bg-blue-light focus:ring-1 focus:outline-none focus:ring-blue font-medium rounded-md text-sm px-2.5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2 disabled:!bg-grey-light"
+                    (click)="toggleFavorites($event, product.id)"
+                    type="button"
+                    aria-label="Add to Favorites"
+                    [ngStyle]="{
+                      'background-color':
+                        (isFavorite$ | async)
+                          ? 'hsl(var(--pink))'
+                          : 'hsl(var(--baby-blue))'
+                    }"
                   >
                     <hlm-icon
                       size="base"
                       name="lucideHeart"
-                      color="hsl(var(--blue))"
+                      [ngClass]="
+                        (isAuthenticated | async) === false ? '!text-grey' : ''
+                      "
+                      [ngStyle]="{
+                        color:
+                          (isFavorite$ | async)
+                            ? 'hsl(var(--white))'
+                            : 'hsl(var(--primary))'
+                      }"
                     ></hlm-icon>
                   </button>
                 </div>

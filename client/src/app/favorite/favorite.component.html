@@ -1,0 +1,14 @@
+@if (favorites$ | async; as favorites) {
+  <div class="container my-7 mx-auto p-2">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
+    >
+      @for (favoriteItem of favorites.products; track $index) {
+        <app-product-card
+          [product]="favoriteItem"
+          class="m-0 aspect-auto"
+        ></app-product-card>
+      }
+    </div>
+  </div>
+}

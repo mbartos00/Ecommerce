@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnInit,
+  Input,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
@@ -33,6 +34,8 @@ import {
   switchMap,
   take,
   tap,
+  catchError,
+  throwError,
 } from 'rxjs';
 import { CartService } from '../cart/cart.service';
 import { ProductService } from '../product/product.service';
@@ -44,6 +47,9 @@ import { ProductCardComponent } from '../ui/product-card/product-card.component'
 import { SelectComponent } from '../ui/ui-select/ui-select.component';
 import calculateDiscountedPrice from '../utils/calculate-discounted-price';
 import { getStarsArray } from '../utils/utils';
+import { FavoriteService } from '../../favorite/favorite.service';
+import { toast } from 'ngx-sonner';
+import { UserService } from '../data-access/user.service';
 
 @Component({
   selector: 'app-product-info',
@@ -76,6 +82,7 @@ import { getStarsArray } from '../utils/utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductInfoComponent implements OnInit {
+  @Input() product: Product = {} as Product;
   selectedProduct: ProductInCart = {} as ProductInCart;
   product$: Observable<Product> = of();
   sizes$: Observable<string[]> = of();
@@ -87,22 +94,32 @@ export class ProductInfoComponent implements OnInit {
   quantityToBuy: number = 1;
   relatedProducts!: Product[];
   calculateDiscountedPrice!: (product: Product) => number;
+  isFavorite$: Observable<boolean> = new Observable<boolean>();
+  isAuthenticated!: Observable<boolean>;
   private DEFAULT_RELATED_PRODUCTS_LIMIT = 4;
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private cartService: CartService,
+    private userService: UserService,
+    private favoriteService: FavoriteService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    this.isAuthenticated = this.userService.user$.pipe(map(d => d.isAuth));
     this.initOptions();
     this.isLoading = false;
     this.calculateDiscountedPrice = calculateDiscountedPrice;
     this.getRelatedProducts().subscribe(d => {
       this.relatedProducts = d;
     });
+    const productId = this.route.snapshot.paramMap.get('id');
+
+    this.isFavorite$ = this.favoriteService.favoriteList$.pipe(
+      map(favorites => favorites.products.some(fav => fav.id === productId))
+    );
   }
 
   initOptions(): void {
@@ -256,5 +273,36 @@ export class ProductInfoComponent implements OnInit {
 
   getStarsArray(): number[] {
     return getStarsArray();
+  }
+
+  toggleFavorites(event: Event, productId: string): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (this.favoriteService.isFavorite(productId)) {
+      this.favoriteService
+        .removeFavorite(productId)
+        .pipe(
+          catchError(err => {
+            toast.error('Failed to remove product from favorites');
+            return throwError(() => err.message);
+          })
+        )
+        .subscribe(() => {
+          toast.success('Product removed from favorites');
+        });
+    } else {
+      this.favoriteService
+        .addFavorite(productId)
+        .pipe(
+          catchError(err => {
+            toast.error('Failed to add product to favorites');
+            return throwError(() => err.message);
+          })
+        )
+        .subscribe(() => {
+          toast.success('Product added to favorites');
+        });
+    }
   }
 }

@@ -7,7 +7,6 @@ import { FormInputComponent } from '@app/shared/ui/form-input/form-input.compone
 import { FormTextareaComponent } from '@app/shared/ui/form-textarea/form-textarea.component';
 import { ContactService } from './data-access/contact.service';
 import { toast } from 'ngx-sonner';
-import { FooterComponent } from '@app/shared/footer/footer.component';
 import { ContactFormSchema } from '@app/shared/types/schemas';
 import {
   ReactiveFormsModule,
@@ -28,7 +27,6 @@ import {
     FormInputComponent,
     FormTextareaComponent,
     HlmInputDirective,
-    FooterComponent,
   ],
   providers: [ContactService],
   templateUrl: './contact-form.component.html',

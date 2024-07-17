@@ -2,12 +2,15 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgxSonnerToaster } from 'ngx-sonner';
 import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgxSonnerToaster, HeaderComponent],
+  imports: [RouterOutlet, NgxSonnerToaster, HeaderComponent, FooterComponent],
   template: `<app-header></app-header>
+
     <router-outlet></router-outlet>
+    <app-footer></app-footer>
     <ngx-sonner-toaster
       visibleToasts="5"
       [toastOptions]="{

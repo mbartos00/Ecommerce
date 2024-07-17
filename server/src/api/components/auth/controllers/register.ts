@@ -18,7 +18,7 @@ export function register({ prisma }: Dependecies) {
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
-    await prisma.user
+    const user = await prisma.user
       .create({
         data: {
           email,
@@ -41,6 +41,16 @@ export function register({ prisma }: Dependecies) {
 
         throw error;
       });
+
+    await prisma.favorites.create({
+      data: {
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+    });
 
     res.sendStatus(201);
   };
