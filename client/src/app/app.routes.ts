@@ -45,6 +45,12 @@ export const routes: Routes = [
     data: { breadcrumb: 'Account' },
     loadChildren: () => import('./account/account.routes').then(m => m.routes),
   },
+  {
+    path: 'favorite-list',
+    data: { breadcrumb: 'Favorite List' },
+    loadComponent: () =>
+      import('./favorite/favorite.component').then(c => c.FavoriteComponent),
+  },
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '/404', pathMatch: 'full' },
 ];

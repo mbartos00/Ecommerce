@@ -70,13 +70,14 @@
     </div>
     <div class="mt-5 flex gap-4">
       <button
-        class="p-4 rounded-sm bg-blue-light hover:outline-blue transition-all flex items-center justify-center"
+        [disabled]="(isAuthenticated$ | async) === false"
+        class="p-4 rounded-sm bg-baby-blue hover:outline-blue hover:bg-blue-light transition-all flex items-center justify-center disabled:bg-grey-light"
+        [ngClass]="(isFavorite$ | async) ? 'bg-pink' : ''"
+        (click)="toggleFavorites($event)"
+        type="button"
+        aria-label="Add to Favorites"
       >
-        <hlm-icon
-          size="lg"
-          name="lucideHeart"
-          color="hsl(var(--blue))"
-        ></hlm-icon>
+        <hlm-icon size="base" name="lucideHeart" class="text-white"></hlm-icon>
       </button>
     </div>
   </div>
