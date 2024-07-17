@@ -59,10 +59,7 @@ export class FavoriteService {
         tap(data => {
           const updatedFavorites = {
             ...this.favoriteListSubject.value,
-            products: [
-              ...this.favoriteListSubject.value.products,
-              ...data.data.products,
-            ],
+            products: [...data.data.products],
           };
           this.favoriteListSubject.next(updatedFavorites);
         }),
