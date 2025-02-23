@@ -109,7 +109,9 @@ export class ProductInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAuthenticated = this.userService.user$.pipe(map(d => d.isAuth));
-    this.initOptions();
+    this.route.params.subscribe(() => {
+      this.initOptions();
+    });
     this.isLoading = false;
     this.calculateDiscountedPrice = calculateDiscountedPrice;
     this.getRelatedProducts().subscribe(d => {
