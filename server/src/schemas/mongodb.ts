@@ -6,7 +6,8 @@ export const mongoURLSchema = z.string().refine(
       return false;
     }
 
-    const regex = /^mongodb\+srv:\/\/(.+):(.+)@(.+)\/(.+)$/;
+    const regex = /^mongodb\+srv:\/\/([^:]+):([^@]+)@([^/]+)\/([^?]+)(\?.*)?$/;
+
     const match = value.match(regex);
 
     if (!match) {
