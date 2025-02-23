@@ -1,12 +1,15 @@
 <section
-  class="grid justify-items-center font-poppins text-grey-dark md:py-20 px-4 md:px-16 xl:px-24"
+  class="max-w-[800px] mx-auto h-[75svh] pb-10 md:pt-10 xl:pb-24 px-4 sm:px-16 xl:px-24 md:pl-28 text-navy"
 >
   <form
-    class="flex flex-col justify-between max-w-lg w-full h-[75vh] sm:h-64 m-7"
+    class="flex flex-col justify-between gap-4 w-full h-full"
     [formGroup]="birthdayForm"
     (ngSubmit)="onSubmit()"
   >
     <div class="grid gap-1">
+      <h2 class="font-poppins font-bold text-navy mb-4">
+        Change your birthday
+      </h2>
       <label class="text-navy font-medium text-sm">Your birthday</label>
       <div class="relative w-full">
         <app-form-input
