@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { BestSellerList, Product } from '@app/shared/types/product.model';
 import { getStarsArray } from '@app/shared/utils/utils';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -7,12 +13,22 @@ import { HlmSkeletonComponent } from '../ui-skeleton-helm/src/lib/hlm-skeleton.c
 import { BestsellerService } from '@app/shared/bestseller-section/bestseller.service';
 import { RouterModule } from '@angular/router';
 import calculateDiscountedPrice from '@app/shared/utils/calculate-discounted-price';
+import { provideIcons } from '@ng-icons/core';
+import { HlmIconComponent } from '../ui-icon-helm/src';
+import { lucideArrowLeft, lucideArrowRight } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-bestseller-card',
   standalone: true,
   templateUrl: './bestseller-card.component.html',
-  imports: [CommonModule, RouterModule, HlmSkeletonComponent],
+  imports: [CommonModule, RouterModule, HlmSkeletonComponent, HlmIconComponent],
+  providers: [
+    provideIcons({
+      lucideArrowLeft,
+      lucideArrowRight,
+    }),
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BestsellerCardComponent implements OnInit, OnDestroy {
   products$: Observable<BestSellerList> = new Observable<BestSellerList>();
@@ -21,7 +37,10 @@ export class BestsellerCardComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private bestsellerService: BestsellerService) {}
+  constructor(
+    private bestsellerService: BestsellerService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.fetchProducts();
@@ -52,6 +71,7 @@ export class BestsellerCardComponent implements OnInit, OnDestroy {
         (products?.data?.length ?? 0) > this.currentProductIndex + 1
           ? this.currentProductIndex + 1
           : this.currentProductIndex;
+      this.cdr.detectChanges();
     });
   }
 
