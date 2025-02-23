@@ -2,19 +2,14 @@
   <app-top-header></app-top-header>
 </div>
 <header
-  class="fixed 2xl:container lg:mx-auto bottom-0 left-0 border-t-[1px] z-50 w-full bg-white border-blue-light lg:flex lg:items-center lg:static lg:py-6 lg:px-10 lg:justify-between cursor-pointer"
+  class="fixed 2xl:container lg:mx-auto bottom-0 left-0 border-t-[1px] z-50 w-full bg-white border-blue-light lg:flex lg:items-center lg:static lg:py-6 lg:px-10 lg:justify-between"
 >
-  <img
-    class="hidden lg:block"
-    src="../../../assets/logo.png"
-    [routerLink]="['/']"
-    alt="App logo"
-  />
+  <img class="hidden lg:block" src="../../../assets/logo.png" alt="App logo" />
   <nav>
     <ul
       class="flex justify-between items-center mx-6 my-2 text-grey-neutral font-poppins text-xs lg:text-xl lg:gap-10 lg:text-black"
     >
-      <li>
+      <li class="lg:hover:text-primary">
         <a
           class="flex items-center flex-col"
           [routerLink]="['/']"
@@ -37,7 +32,7 @@
           >
         </a>
       </li>
-      <li>
+      <li class="lg:hover:text-primary">
         <a
           class="flex items-center flex-col"
           [routerLink]="['/news']"
@@ -47,7 +42,7 @@
           <span>News</span>
         </a>
       </li>
-      <li>
+      <li class="lg:hover:text-primary">
         <a
           class="flex items-center flex-col"
           [routerLink]="['/contact']"
