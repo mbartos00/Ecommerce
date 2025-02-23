@@ -118,6 +118,7 @@ export class CheckoutDialogComponent implements OnInit {
         this.userPaymentMethods.length === 0
           ? `You don't have any ${PaymentTypes[selectedType]} payment methods. Please add one before proceeding.`
           : null;
+      this.cdr.detectChanges();
     } catch (err) {
       console.error('Failed to load user payment methods', err);
       this.noPaymentMethodError =
