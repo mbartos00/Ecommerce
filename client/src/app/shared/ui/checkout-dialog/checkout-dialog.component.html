@@ -82,8 +82,8 @@
                 </div>
               }
             </div>
-            <div class="flex flex-col gap-y-3 max-h-[500px]">
-              <div class="flex flex-col gap-5 overflow-y-scroll">
+            <div class="flex flex-col gap-y-3 max-h-[500px] overflow-y-scroll">
+              <div class="flex flex-col gap-5">
                 @for (address of addresses; track $index) {
                   <button
                     (click)="selectAddress(address)"
