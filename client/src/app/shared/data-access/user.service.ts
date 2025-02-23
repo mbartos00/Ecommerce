@@ -29,24 +29,48 @@ export class UserService {
     this.userSubject.next({ isAuth: isAuthenticated, user });
   }
 
-  initializeUser(): void {
-    const token = getAccessToken();
-    if (token) {
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-      });
+  // initializeUser(): void {
+  //   const token = getAccessToken();
+  //   if (token) {
+  //     const headers = new HttpHeaders({
+  //       Authorization: `Bearer ${token}`,
+  //     });
 
-      this.http
-        .get<UserResponse>(`${environment.API_URL}/user`, { headers })
-        .subscribe({
-          next: user => {
-            this.updateUserState(true, user.data);
-          },
-          error: () => {
-            this.updateUserState(false, null);
-          },
-        });
-    }
+  //     this.http
+  //       .get<UserResponse>(`${environment.API_URL}/user`, { headers })
+  //       .subscribe({
+  //         next: user => {
+  //           this.updateUserState(true, user.data);
+  //         },
+  //         error: () => {
+  //           this.updateUserState(false, null);
+  //         },
+  //       });
+  //   }
+  // }
+
+  initializeUser(): Promise<void> {
+    return new Promise(resolve => {
+      const token = getAccessToken();
+      if (token) {
+        const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+        this.http
+          .get<UserResponse>(`${environment.API_URL}/user`, { headers })
+          .subscribe({
+            next: user => {
+              this.updateUserState(true, user.data);
+              resolve(); // Mark initialization as complete
+            },
+            error: () => {
+              this.updateUserState(false, null);
+              resolve(); // Still resolve, even on error
+            },
+          });
+      } else {
+        resolve(); // No token, resolve immediately
+      }
+    });
   }
 
   getUserId(): string | null {
