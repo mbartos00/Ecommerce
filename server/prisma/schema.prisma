@@ -35,18 +35,8 @@ model User {
   favorites_list Favorites?
   paymentMethods PaymentMethod[]
 
-  OAuthToken OAuthToken[]
-  addresses  Address[]
-  orders     Order[]
-}
-
-model OAuthToken {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  provider String
-  token    String
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @db.ObjectId
+  addresses Address[]
+  orders    Order[]
 }
 
 model Product {
