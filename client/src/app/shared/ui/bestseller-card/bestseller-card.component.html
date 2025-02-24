@@ -2,17 +2,17 @@
   <div class="relative max-w-80 group mb-20">
     <button
       (click)="prevProduct($event)"
-      class="flex justify-center items-center absolute text-white bg-primary m-2 p-3 rounded-full inset-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      class="flex justify-center items-center absolute text-white bg-primary m-2 p-3 rounded-full inset-y-1/2 z-10 xl:opacity-0 group-hover:opacity-100 transition-opacity duration-300"
       aria-label="Previous product"
     >
-      &#9664;
+      <hlm-icon name="lucideArrowLeft"></hlm-icon>
     </button>
     <button
       (click)="nextProduct($event)"
-      class="flex justify-center items-center absolute text-white bg-primary m-2 p-3 rounded-full right-0 inset-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      class="flex justify-center items-center absolute text-white bg-primary m-2 p-3 rounded-full right-0 inset-y-1/2 z-10 xl:opacity-0 group-hover:opacity-100 transition-opacity duration-300"
       aria-label="Next product"
     >
-      &#9654;
+      <hlm-icon name="lucideArrowRight"></hlm-icon>
     </button>
     <a
       [routerLink]="[

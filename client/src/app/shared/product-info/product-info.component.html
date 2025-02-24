@@ -66,16 +66,18 @@
                 }
               </div>
               <div class="grid gap-6 mt-6 text-sm">
-                <p>
-                  Availability:
-                  <span class="ml-2">
-                    {{
-                      selectedProduct.availableQuantity > 0
-                        ? 'In Stock'
-                        : 'Out of stock'
-                    }}
-                  </span>
-                </p>
+                @if (selectedProduct.color && selectedProduct.size) {
+                  <p>
+                    Availability:
+                    <span class="ml-2">
+                      {{
+                        selectedProduct.availableQuantity > 0
+                          ? 'In Stock'
+                          : 'Out of stock'
+                      }}
+                    </span>
+                  </p>
+                }
                 <p>
                   Category:
                   @for (category of product.categories; track category) {
@@ -86,32 +88,44 @@
               </div>
               <hr class="h-0.5 my-4 bg-grey-light border-0" />
               <div class="grid gap-6">
-                <p class="flex items-center">
-                  <span class="mr-3">Select Color:</span>
-                  @for (color of colors$ | async; track color; let i = $index) {
-                    <button (click)="selectColorVariant(i)">
-                      <div
-                        class="m-2 w-6 h-6 rounded-full border-2 border-grey mr-1"
-                        [class]="{
-                          'border-primary': i === selectedColorIndex
-                        }"
-                        [style.background]="color"
-                      ></div>
-                    </button>
-                  }
-                </p>
-                <div class="flex gap-10 items-center">
-                  Size:
+                <div class="flex gap-8 items-center">
+                  <span>Select Size:</span>
                   <app-ui-select
                     [selectId]="'productSize'"
                     [selectName]="'productSize'"
                     [values]="(sizes$ | async)!"
                     [(selectedValue)]="selectedProduct.size"
-                    (selectedValueChange)="setSizeAndColor($event)"
+                    (selectedValueChange)="setSize($event)"
                   ></app-ui-select>
                 </div>
+
+                @if (selectedProduct.size) {
+                  <div class="flex items-center">
+                    <span class="mr-3">Select Color:</span>
+                    @for (
+                      color of colors$ | async;
+                      track color;
+                      let i = $index
+                    ) {
+                      <button (click)="selectColorVariant(i)">
+                        <div
+                          class="m-2 w-6 h-6 rounded-full border-2 border-grey mr-1"
+                          [class]="{
+                            'border-primary':
+                              selectedProduct.color && i === selectedColorIndex
+                          }"
+                          [style.background]="color"
+                        ></div>
+                      </button>
+                    }
+                  </div>
+                }
               </div>
-              @if (selectedProduct.availableQuantity) {
+              @if (
+                selectedProduct.size &&
+                selectedProduct.color &&
+                selectedProduct.availableQuantity
+              ) {
                 <div class="mt-2">
                   Available quantity:
                   {{ selectedProduct.availableQuantity }}
@@ -130,19 +144,34 @@
 
                 <div class="flex gap-4">
                   <button
-                    class="text-white bg-baby-blue hover:bg-blue-light focus:ring-1 focus:outline-none focus:ring-blue font-medium rounded-md text-xs sm:text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2"
+                    class="text-white bg-baby-blue hover:bg-blue-light focus:ring-1 cursor-pointer disabled:bg-grey-light disabled:text-white disabled:cursor-not-allowed focus:outline-none focus:ring-blue font-medium rounded-md text-xs sm:text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2"
+                    [disabled]="
+                      !(selectedProduct.size && selectedProduct.color)
+                    "
                     (click)="addToCart()"
                   >
                     <hlm-icon
                       size="base"
                       name="lucideShoppingCart"
-                      color="hsl(var(--blue))"
+                      [color]="
+                        !(selectedProduct.size && selectedProduct.color)
+                          ? 'hsl(var(--white))'
+                          : 'hsl(var(--blue))'
+                      "
                     ></hlm-icon>
-                    <span class="ml-1 text-blue text-sm">Add To Cart</span>
+                    <span
+                      class="ml-1 text-sm"
+                      [class]="
+                        !(selectedProduct.size && selectedProduct.color)
+                          ? 'text-white'
+                          : 'text-primary'
+                      "
+                      >Add To Cart</span
+                    >
                   </button>
                   <button
                     [disabled]="(isAuthenticated | async) === false"
-                    class="text-white bg-baby-blue hover:bg-blue-light focus:ring-1 focus:outline-none focus:ring-blue font-medium rounded-md text-sm px-2.5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2 disabled:!bg-grey-light"
+                    class="text-white bg-baby-blue hover:bg-blue-light focus:ring-1 focus:outline-none focus:ring-blue font-medium rounded-md text-sm px-2.5 py-2.5 text-center inline-flex items-center dark:focus:ring-navy/55 me-2 mb-2 disabled:!bg-grey-light disabled:cursor-not-allowed"
                     (click)="toggleFavorites($event, product.id)"
                     type="button"
                     aria-label="Add to Favorites"

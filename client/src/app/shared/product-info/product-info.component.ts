@@ -97,6 +97,7 @@ export class ProductInfoComponent implements OnInit {
   isFavorite$: Observable<boolean> = new Observable<boolean>();
   isAuthenticated!: Observable<boolean>;
   private DEFAULT_RELATED_PRODUCTS_LIMIT = 4;
+  private DEFAULT_SIZE_STRING = 'Pick size';
 
   constructor(
     private route: ActivatedRoute,
@@ -109,7 +110,9 @@ export class ProductInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAuthenticated = this.userService.user$.pipe(map(d => d.isAuth));
-    this.initOptions();
+    this.route.params.subscribe(() => {
+      this.initOptions();
+    });
     this.isLoading = false;
     this.calculateDiscountedPrice = calculateDiscountedPrice;
     this.getRelatedProducts().subscribe(d => {
@@ -133,9 +136,7 @@ export class ProductInfoComponent implements OnInit {
         const sizes = Array.from(
           new Set(product.variants.map(variant => variant.size))
         );
-        const defaultSize = sizes[0];
-        this.selectedSize$.next(defaultSize);
-        return sizes;
+        return [this.DEFAULT_SIZE_STRING, ...sizes];
       })
     );
 
@@ -195,8 +196,10 @@ export class ProductInfoComponent implements OnInit {
                   quantityToBuy: this.quantityToBuy,
                 };
                 this.cartService.addToCart(this.selectedProduct);
+                toast.success(`${product.name} added to cart`);
               } else {
                 console.error('Product not found.');
+                toast.success('Unable to add to cart');
               }
             })
           );
@@ -205,22 +208,17 @@ export class ProductInfoComponent implements OnInit {
       .subscribe();
   }
 
-  setSizeAndColor(size: string, color: string = ''): void {
+  setSize(size: string): void {
+    if (this.selectedProduct.size === this.DEFAULT_SIZE_STRING) {
+      this.selectedProduct.size = '';
+      this.selectedSize$.next('');
+      this.cdr.detectChanges();
+    }
+
     this.selectedProduct.size = size;
     this.selectedSize$.next(size);
-
-    this.colors$
-      .pipe(
-        take(1),
-        tap(colors => {
-          const newColor = color || colors[0];
-          this.selectedColor$.next(newColor);
-          this.selectedProduct.color = newColor;
-          this.selectedColorIndex = colors.indexOf(newColor);
-          this.updateAvailableQuantity();
-        })
-      )
-      .subscribe();
+    this.selectedColor$.next('');
+    this.selectedProduct.color = '';
   }
 
   onQuantityChange(newQuantity: number): void {
@@ -235,6 +233,7 @@ export class ProductInfoComponent implements OnInit {
           this.selectedProduct.availableQuantity = variant
             ? variant.quantity
             : 0;
+          this.cdr.detectChanges();
         })
       )
       .subscribe();
@@ -250,6 +249,7 @@ export class ProductInfoComponent implements OnInit {
           this.selectedColor$.next(newColor);
           this.selectedProduct.color = newColor;
           this.updateAvailableQuantity();
+          this.cdr.detectChanges();
         })
       )
       .subscribe();

@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HlmIconComponent } from '@app/shared/ui/ui-icon-helm/src';
 import { provideIcons } from '@ng-icons/core';
 import {
   lucideCalendar,
@@ -19,12 +18,7 @@ import { ProfileListItemComponent } from '@app/shared/ui/profile-list-item/profi
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [
-    RouterModule,
-    CommonModule,
-    HlmIconComponent,
-    ProfileListItemComponent,
-  ],
+  imports: [RouterModule, CommonModule, ProfileListItemComponent],
   providers: [
     provideIcons({
       lucideCalendar,

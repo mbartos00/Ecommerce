@@ -32,8 +32,9 @@ function getRandomSize() {
 
   return sizeValues[randomIndex];
 }
+
 export async function seedProducts() {
-  const baseURL = `${process.env.DOMAIN}:${process.env.PORT}/productsImages/`;
+  const baseURL = `${process.env.NODE_ENV === 'production' ? 'https' : 'http'}://${process.env.DOMAIN}:${process.env.PORT}/productsImages/`;
   const productImages = [
     'bag1.png',
     'bag2.png',

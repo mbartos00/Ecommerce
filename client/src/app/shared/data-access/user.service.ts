@@ -29,24 +29,28 @@ export class UserService {
     this.userSubject.next({ isAuth: isAuthenticated, user });
   }
 
-  initializeUser(): void {
-    const token = getAccessToken();
-    if (token) {
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-      });
+  initializeUser(): Promise<void> {
+    return new Promise(resolve => {
+      const token = getAccessToken();
+      if (token) {
+        const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
-      this.http
-        .get<UserResponse>(`${environment.API_URL}/user`, { headers })
-        .subscribe({
-          next: user => {
-            this.updateUserState(true, user.data);
-          },
-          error: () => {
-            this.updateUserState(false, null);
-          },
-        });
-    }
+        this.http
+          .get<UserResponse>(`${environment.API_URL}/user`, { headers })
+          .subscribe({
+            next: user => {
+              this.updateUserState(true, user.data);
+              resolve();
+            },
+            error: () => {
+              this.updateUserState(false, null);
+              resolve();
+            },
+          });
+      } else {
+        resolve();
+      }
+    });
   }
 
   getUserId(): string | null {

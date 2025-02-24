@@ -199,16 +199,22 @@
             >
               Check out
             </button>
-            <app-checkout-dialog
-              [isOpen]="isCheckoutDialogOpen"
-              [shippingMethod]="selectedShippingOption"
-              (dialogClose)="handleDialogClose()"
-            ></app-checkout-dialog>
+            @if (isCheckoutDialogOpen) {
+              <app-checkout-dialog
+                [isOpen]="isCheckoutDialogOpen"
+                [shippingMethod]="selectedShippingOption"
+                (dialogClose)="handleDialogClose()"
+              ></app-checkout-dialog>
+            }
           </div>
         </div>
       </div>
     } @else {
-      <h1 class="mt-10 text-center text-2xl font-bold">No Products in Cart</h1>
+      <div class="w-full h-[35svh]">
+        <h1 class="mt-10 text-center text-2xl font-bold">
+          No Products in Cart
+        </h1>
+      </div>
     }
   }
 </div>
