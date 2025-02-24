@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { Favorites } from '@app/shared/types/user';
 import { ProductCardComponent } from '@app/shared/ui/product-card/product-card.component';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { FavoriteService } from './favorite.service';
+import { Product } from '@app/shared/types/product.model';
 
 @Component({
   selector: 'app-favorite',
@@ -13,11 +13,13 @@ import { FavoriteService } from './favorite.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavoriteComponent implements OnInit {
-  favorites$: Observable<Favorites> = new Observable<Favorites>();
+  favorites$: Observable<Product[]> = new Observable<Product[]>();
 
   constructor(private favoriteService: FavoriteService) {}
 
   ngOnInit(): void {
-    this.favorites$ = this.favoriteService.favoriteList$;
+    this.favorites$ = this.favoriteService.favoriteList$.pipe(
+      map(favList => favList.products)
+    );
   }
 }

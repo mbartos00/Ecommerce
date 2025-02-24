@@ -1,14 +1,20 @@
-@if (favorites$ | async; as favorites) {
+@if ((favorites$ | async)?.length) {
   <div class="container my-7 mx-auto p-2">
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6"
     >
-      @for (favoriteItem of favorites.products; track $index) {
+      @for (favoriteItem of favorites$ | async; track $index) {
         <app-product-card
           [product]="favoriteItem"
           class="m-0 aspect-auto"
         ></app-product-card>
       }
     </div>
+  </div>
+} @else {
+  <div class="w-full h-[35svh]">
+    <h1 class="mt-10 text-center text-2xl font-bold">
+      You have no favorites items
+    </h1>
   </div>
 }
