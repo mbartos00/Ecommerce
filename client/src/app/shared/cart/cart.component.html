@@ -199,11 +199,13 @@
             >
               Check out
             </button>
-            <app-checkout-dialog
-              [isOpen]="isCheckoutDialogOpen"
-              [shippingMethod]="selectedShippingOption"
-              (dialogClose)="handleDialogClose()"
-            ></app-checkout-dialog>
+            @if (isCheckoutDialogOpen) {
+              <app-checkout-dialog
+                [isOpen]="isCheckoutDialogOpen"
+                [shippingMethod]="selectedShippingOption"
+                (dialogClose)="handleDialogClose()"
+              ></app-checkout-dialog>
+            }
           </div>
         </div>
       </div>
