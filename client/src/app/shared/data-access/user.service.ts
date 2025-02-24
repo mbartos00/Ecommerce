@@ -29,26 +29,6 @@ export class UserService {
     this.userSubject.next({ isAuth: isAuthenticated, user });
   }
 
-  // initializeUser(): void {
-  //   const token = getAccessToken();
-  //   if (token) {
-  //     const headers = new HttpHeaders({
-  //       Authorization: `Bearer ${token}`,
-  //     });
-
-  //     this.http
-  //       .get<UserResponse>(`${environment.API_URL}/user`, { headers })
-  //       .subscribe({
-  //         next: user => {
-  //           this.updateUserState(true, user.data);
-  //         },
-  //         error: () => {
-  //           this.updateUserState(false, null);
-  //         },
-  //       });
-  //   }
-  // }
-
   initializeUser(): Promise<void> {
     return new Promise(resolve => {
       const token = getAccessToken();
@@ -60,15 +40,15 @@ export class UserService {
           .subscribe({
             next: user => {
               this.updateUserState(true, user.data);
-              resolve(); // Mark initialization as complete
+              resolve();
             },
             error: () => {
               this.updateUserState(false, null);
-              resolve(); // Still resolve, even on error
+              resolve();
             },
           });
       } else {
-        resolve(); // No token, resolve immediately
+        resolve();
       }
     });
   }
