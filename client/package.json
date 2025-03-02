@@ -10,9 +10,7 @@
     "lint:fix": "eslint --fix 'src/**/*.ts'",
     "format": "prettier --write 'src/**/*.+(ts|html|json|css|scss|md)'",
     "format:lint": "npm run format && npm run lint",
-    "watch": "ng build --watch --configuration development",
-    "prestart": "npm run lint:fix",
-    "precommit": "npm run format:lint"
+    "watch": "ng build --watch --configuration development"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +26,7 @@
     "@auth0/angular-jwt": "^5.2.0",
     "@ng-icons/core": "^25.1.0",
     "@ng-icons/lucide": "^26.3.0",
+    "@ngx-env/builder": "^19.0.4",
     "@spartan-ng/ui-alertdialog-brain": "0.0.1-alpha.347",
     "@spartan-ng/ui-dialog-brain": "0.0.1-alpha.347",
     "@spartan-ng/ui-label-brain": "0.0.1-alpha.347",

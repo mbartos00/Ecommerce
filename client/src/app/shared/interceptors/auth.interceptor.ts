@@ -39,7 +39,7 @@ export const AuthInterceptor: HttpInterceptorFn = (
       return next(authReq).pipe(
         catchError((error: HttpErrorResponse) => {
           if (
-            error.status === 403 &&
+            (error.status === 403 || error.status === 401) &&
             accessToken &&
             jwtHelper.isTokenExpired(accessToken)
           ) {

@@ -34,6 +34,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
   private userService = inject(UserService);
+  private numberOfRetries = 2;
 
   login(credentials: LoginSchema): Observable<LoginResponse> {
     return this.http
@@ -88,33 +89,51 @@ export class AuthService {
     accessToken: string;
     user: Omit<User, 'password'>;
   }> {
-    return this.http
-      .get<{
-        status: string;
-        accessToken: string;
-        user: Omit<User, 'password'>;
-      }>(`${environment.API_URL}/refresh-token`, { withCredentials: true })
-      .pipe(
-        tap(response => {
-          saveAccessToken(response.accessToken);
-          this.userService.updateUserState(true, response.user);
-        }),
-        catchError(error => {
-          this.logout()
-            .pipe(
-              concatMap(() => from(this.router.navigate(['/']))),
-              take(1)
-            )
-            .subscribe(() => {
-              toast.success('Logged out', {
-                description: 'Session expired',
+    this.numberOfRetries--;
+    if (this.numberOfRetries > 0) {
+      return this.http
+        .get<{
+          status: string;
+          accessToken: string;
+          user: Omit<User, 'password'>;
+        }>(`${environment.API_URL}/refresh-token`, { withCredentials: true })
+        .pipe(
+          tap(response => {
+            saveAccessToken(response.accessToken);
+            this.userService.updateUserState(true, response.user);
+          }),
+          catchError(error => {
+            this.logout()
+              .pipe(
+                concatMap(() => from(this.router.navigate(['/']))),
+                take(1)
+              )
+              .subscribe(() => {
+                toast.success('Logged out', {
+                  description: 'Session expired',
+                });
               });
-            });
 
-          return throwError(() => {
-            return new Error(error.message);
+            return throwError(() => {
+              return new Error(error.message);
+            });
+          })
+        );
+    }
+
+    return throwError(() => {
+      this.logout()
+        .pipe(
+          concatMap(() => from(this.router.navigate(['/']))),
+          take(1)
+        )
+        .subscribe(() => {
+          toast.success('Logged out', {
+            description: 'Session expired',
           });
-        })
-      );
+        });
+
+      return new Error('Session expired');
+    });
   }
 }
