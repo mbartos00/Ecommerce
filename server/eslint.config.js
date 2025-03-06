@@ -7,7 +7,6 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
-  eslintPluginUnicorn.configs['flat/all'],
   eslintConfigPrettier,
   eslintPluginPrettier,
   {

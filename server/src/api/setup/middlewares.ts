@@ -6,6 +6,7 @@ import {
   urlencoded,
   static as expressStatic,
 } from 'express';
+import rateLimiter from '../middleware/rateLimiter';
 
 export function setupMiddlewares(app: Express) {
   app.use(
@@ -19,4 +20,5 @@ export function setupMiddlewares(app: Express) {
   app.use(urlencoded({ extended: false }));
   app.use('/uploads', expressStatic('uploads'));
   app.use(expressStatic('public'));
+  app.use(rateLimiter);
 }
