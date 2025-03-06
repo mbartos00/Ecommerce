@@ -4,17 +4,12 @@ import type { UpdateUserSchema } from '@src/schemas/auth';
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 import { SALT_ROUNDS } from '../../constants';
-import sanitizeFilename from '../utils/sanitizeFilename';
 
 export function updateUser({ prisma }: Dependecies) {
   return async (req: Request<{}, {}, UpdateUserSchema>, res: Response) => {
     const { id } = req.user!;
-    
-    const { oldPassword, newPassword, repeatPassword, ...userData } = req.body;
 
-    const avatarPath = req.file
-      ? `${process.env.DOMAIN}:${process.env.PORT}/${sanitizeFilename(req.file.path.split('uploads/')[1])}`
-      : undefined;
+    const { oldPassword, newPassword, repeatPassword, ...userData } = req.body;
 
     const user = await prisma.user.findUnique({
       where: { id },
@@ -35,7 +30,6 @@ export function updateUser({ prisma }: Dependecies) {
           password: newPassword
             ? await bcrypt.hash(newPassword, SALT_ROUNDS)
             : undefined,
-          profile_photo_url: avatarPath,
           ...userData,
         },
       });

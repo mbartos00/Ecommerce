@@ -10,8 +10,6 @@ import {
   addressSchema,
   updateAddressSchema,
   addFavoriteSchema,
-  emailValidation,
-  changePhoneNumberSchema,
 } from '@src/schemas/auth';
 import { Router } from 'express';
 import { deleteUser } from './controllers/user/delete-user';
@@ -25,15 +23,14 @@ import { updateAddress } from './controllers/address/update-addres';
 import { getFavorites } from './controllers/favorites/get-favorites';
 import { addFavorite } from './controllers/favorites/add-favorites';
 import { removeFavorite } from './controllers/favorites/remove-favorites';
-import { getPhoneNumber } from './controllers/user/get-phone';
-import { changePhoneNumber } from './controllers/user/change-phone';
 import upload from '@src/config/multer';
 import { refreshToken } from './controllers/refresh-token';
 import { logout } from './controllers/logout';
 import { changeEmailRequest } from './controllers/user/change-email';
 import { verifyEmail } from './controllers/user/verify-email';
+import cleanupFileOnError from '@src/api/middleware/cleanupFile';
 
-export function authRouter(deps: Dependecies) {
+export function authRouter(deps: Dependecies): Router {
   const router = Router();
   const uploadFile = upload();
 
@@ -41,6 +38,7 @@ export function authRouter(deps: Dependecies) {
     '/register',
     [uploadFile.single('avatar'), validate(registerSchema)],
     register(deps),
+    cleanupFileOnError,
   );
   router.post('/login', validate(loginSchema), login(deps));
 
@@ -52,11 +50,7 @@ export function authRouter(deps: Dependecies) {
   router.post('/user/email/change', auth(deps), changeEmailRequest(deps));
   router.get('/user/email/verify', auth(deps), verifyEmail(deps));
 
-  router.patch(
-    '/user/update',
-    [auth(deps), uploadFile.single('avatar'), validate(updateUserSchema)],
-    updateUser(deps),
-  );
+  router.patch('/user/update', validate(updateUserSchema), updateUser(deps));
   router.delete('/user/delete', auth(deps), deleteUser(deps));
 
   router.post(
