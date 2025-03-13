@@ -20,5 +20,6 @@ export function setupMiddlewares(app: Express) {
   app.use(urlencoded({ extended: false }));
   app.use('/uploads', expressStatic('uploads'));
   app.use(expressStatic('public'));
+  app.set('trust proxy', 1);
   app.use(rateLimiter);
 }
