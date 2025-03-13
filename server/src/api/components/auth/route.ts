@@ -50,7 +50,12 @@ export function authRouter(deps: Dependecies): Router {
   router.post('/user/email/change', auth(deps), changeEmailRequest(deps));
   router.get('/user/email/verify', auth(deps), verifyEmail(deps));
 
-  router.patch('/user/update', validate(updateUserSchema), updateUser(deps));
+  router.patch(
+    '/user/update',
+    auth(deps),
+    validate(updateUserSchema),
+    updateUser(deps),
+  );
   router.delete('/user/delete', auth(deps), deleteUser(deps));
 
   router.post(
